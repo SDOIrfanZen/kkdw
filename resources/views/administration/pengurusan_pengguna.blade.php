@@ -96,7 +96,7 @@
                 <table id="penggunaTable2" class="table">
                     <thead>
                       <tr>
-                        <th scope="col">No</th>
+                        <th scope="col">No.</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Kad Pengenalan</th>
                         <th scope="col">Bahagian/Agensi/Institusi</th>
