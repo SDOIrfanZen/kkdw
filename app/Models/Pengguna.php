@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable; // Make sure to use Authenticatable
+use App\Models\Peranan;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Peranan;
+use Illuminate\Foundation\Auth\User as Authenticatable; // Make sure to use Authenticatable
 
 class Pengguna extends Authenticatable // Change this line
 {
+    use HasRoles;
     use HasFactory;
     use Notifiable;
 

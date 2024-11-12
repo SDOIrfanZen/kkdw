@@ -63,7 +63,7 @@ form .btn-reset {
                     </div>
                     <div class="col-md-3 label-column">Peranan</div>
                     <div class="col-md-3">
-                        <input readonly class="form-control" value="{{ $userProfile->Peranan->peranan}}">
+                        <input readonly class="form-control" value="{{ $userProfile->roles->first()->name ?? 'No Role Assigned' }}">
                     </div>
                 </div>
                 <div class="row pb-2">
