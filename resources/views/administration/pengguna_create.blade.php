@@ -61,7 +61,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="col-md-3 label-column">Role</div>
+                        <div class="col-md-3 label-column">Peranan</div>
                         <div class="col-md-3">
                             <select class="form-control @error('peranan') is-invalid @enderror" name="peranan">
                                 <option value="">Pilih Peranan</option>

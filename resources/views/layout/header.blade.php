@@ -36,7 +36,7 @@
     </div>
     
     <!-- Responsive navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar fixed-top" style="top: 1.5rem;">
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar fixed-top" style="top: 1.4rem;">
         <div class="container-fluid d-flex justify-content-center">
             <a class="nav-link me-5" href="#!">
                 <img src="{{ asset('images/kkdw-logo.svg') }}" alt="Laman Utama" class="nav-icon" style="width: 100px">

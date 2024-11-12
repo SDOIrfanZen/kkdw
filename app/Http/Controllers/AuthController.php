@@ -115,7 +115,6 @@ class AuthController extends Controller
             'kad_pengenalan' => $request->kad_pengenalan,
             'bahagian' => $request->bahagian,
             'jawatan' => $request->jawatan,
-            'peranan' => 2, //New users will be set 0
             'emel' => $request->emel,
             'no_tel' => $request->no_tel,
             'status' => 0, // New users are set as 0 = 'pending'

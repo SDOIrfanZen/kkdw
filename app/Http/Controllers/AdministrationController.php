@@ -144,6 +144,47 @@ class AdministrationController extends Controller
         // Redirect with success message
         return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya ditambah!');
     }
+
+    public function pengguna_approval_list($id) {
+        $userProfile = Pengguna::findorFail($id);
+        $roles = Role::all();
+        return view ('administration.pengguna_approval', compact('userProfile', 'roles'));
+    }
+
+    public function pengguna_approval_process(Request $request, $id)
+    {
+        // Custom validation messages for role and status
+        $customMessages = [
+            'role.required' => 'Peranan diperlukan.',
+            'role.exists' => 'Peranan yang dipilih tidak sah.',
+        ];
+
+        // Validate the incoming data
+        $validated = $request->validate([
+            'role' => 'required|exists:roles,name', // Validate role selection
+        ], $customMessages);
+
+        // Find the user by ID
+        $user = Pengguna::findOrFail($id); // Assuming you're working with a 'User' model
+
+        // Update the user status to 1 (aktif)
+        $user->status = "1";  // Approved status (assuming 1 means approved)
+        
+        // Assign the selected role to the user
+        $role = Role::findByName($validated['role']); // Find the role by name
+        if ($role) {
+            $user->syncRoles($role); // Sync the selected role with the user
+        } else {
+            return back()->withErrors(['role' => 'Role not found!']);
+        }
+
+        // Save the changes
+        $user->save();
+
+        // Redirect back with a success message
+        return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya diluluskan!');
+    }
+
     
     public function edit_pengguna($id) {
         $userProfile = Pengguna::findorFail($id);
