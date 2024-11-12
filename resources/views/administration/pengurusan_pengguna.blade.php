@@ -37,8 +37,7 @@
 <div class="container-fluid d-flex justify-content-center">
     <div class="card mt-4 mx-auto" style="width: 90%;">
         <div class="card-header d-flex align-items-center custom-card-header" style="background: rgba(8, 12, 85, 1); height: 3.5rem;">
-            <img src="{{ asset('images/user-information.svg') }}" alt="Profile Icon" class="me-2" style="width: 24px; height: 24px;">
-            Maklumat Pengguna
+            Senarai Pengguna Menunggu Kelulusan
         </div>
         <div class="card-body">
             <form method="post" action="" id="" class="d-flex flex-column h-100">
@@ -65,7 +64,7 @@
                             <td>{{ $user->kad_pengenalan }}</td>
                             <td>{{ $user->bahagian }}</td>
                             <td>{{ $user->jawatan }}</td>
-                            <td>{{ $user->Peranan->peranan }}</td>
+                            <td>{{ $user->roles->first()->name ?? 'Peranan Belum Ditetapkan' }}</td>
                             <td>{{ $user->emel }}</td>
                             <td>
                                 @if($user->status === "0")
@@ -87,8 +86,7 @@
 <div class="container-fluid d-flex justify-content-center">
     <div class="card mt-4 mx-auto" style="width: 90%;">
         <div class="card-header d-flex align-items-center custom-card-header" style="background: rgba(8, 12, 85, 1); height: 3.5rem;">
-            <img src="{{ asset('images/kata-laluan.svg') }}" alt="Profile Icon" class="me-2" style="width: 24px; height: 24px;">
-            Kata Laluan
+            Pengurusan Pengguna > Pengguna
         </div>
         <div class="card-body">
             <form method="post" action="" id="" class="d-flex flex-column h-100">
@@ -102,6 +100,7 @@
                         <th scope="col">Bahagian/Agensi/Institusi</th>
                         <th scope="col">Jawatan</th>
                         <th scope="col">Peranan</th>
+                        {{-- <th scope="col">Peranan</th> --}}
                         <th scope="col">Emel</th>
                         <th scope="col">Status</th>
                         <th scope="col">Tindakan</th>
@@ -115,7 +114,8 @@
                             <td>{{ $user->kad_pengenalan }}</td>
                             <td>{{ $user->bahagian }}</td>
                             <td>{{ $user->jawatan }}</td>
-                            <td>{{ $user->Peranan->peranan }}</td>
+                            <td>{{ $user->roles->first()->name ?? 'Peranan Belum Ditetapkan' }}</td>
+                            {{-- <td>{{ $user->Peranan->peranan }}</td> --}}
                             <td>{{ $user->emel }}</td>
                             <td>
                                 @if($user->status === "1")
@@ -139,10 +139,70 @@
 </div>
 
 <script>
-    $(document).ready(function() {
-        $('#penggunaTable1').DataTable(); // Initialize first DataTable
-        $('#penggunaTable2').DataTable(); // Initialize second DataTable
+$(document).ready(function() {
+    // Initialize DataTable for penggunaTable2 only
+    $('#penggunaTable2').DataTable({
+        dom: "<'row'<'col-sm-4 d-flex justify-content-start'f><'col-sm-4 d-flex justify-content-start custom-filters'><'col-sm-4 d-flex justify-content-end'B>>" +
+             "<'row'<'col-sm-12'tr>>" +                             
+             "<'row'<'col-sm-6 mt-2'l><'col-sm-6'p>>",
+        buttons: [
+            {
+                text: '+ Tambah pengguna',
+                action: function () {
+                    // Redirect to the 'tambah-pengguna' route using Laravel's named route
+                    window.location.href = '{{ route("administration.tambah_pengguna") }}'; 
+                },
+                className: 'btn btn-primary' // Add Bootstrap class for styling the button
+            }
+        ],
+        initComplete: function () {
+            // Add dropdowns for 'Peranan' and 'Bahagian' filtering
+            var perananDropdown2 = $('<select class="form-select me-2"><option value="">Peranan</option></select>');
+            var bahagianDropdown2 = $('<select class="form-select"><option value="">Bahagian</option></select>');
+
+            // Populate options dynamically (optional)
+            var perananOptions2 = [...new Set($('#penggunaTable2 tbody tr').map(function() {
+                return $(this).find('td:nth-child(6)').text();
+            }).get())];
+
+            var bahagianOptions2 = [...new Set($('#penggunaTable2 tbody tr').map(function() {
+                return $(this).find('td:nth-child(4)').text();
+            }).get())];
+
+            perananOptions2.forEach(option => perananDropdown2.append('<option value="'+option+'">'+option+'</option>'));
+            bahagianOptions2.forEach(option => bahagianDropdown2.append('<option value="'+option+'">'+option+'</option>'));
+
+            // Append dropdowns to custom-filters div
+            $('.custom-filters').append(perananDropdown2).append(bahagianDropdown2);
+
+            // Apply slight left margin adjustment
+            $('.custom-filters').css('margin-left', '-163px'); // Adjust this value as needed
+
+            // Adjust button position (move slightly to the right)
+            $('.dt-buttons').css('margin-right', '-40%'); // Move the button to the right a bit
+
+            // Event listeners for filtering
+            perananDropdown2.on('change', function () {
+                var searchTerm = $(this).val();
+                $('#penggunaTable2').DataTable().column(5).search(searchTerm).draw();
+            });
+
+            bahagianDropdown2.on('change', function () {
+                var searchTerm = $(this).val();
+                $('#penggunaTable2').DataTable().column(3).search(searchTerm).draw();
+            });
+        }
     });
+});
 </script>
+
+
+
+
+
+
+
+
+
 
 @endsection
