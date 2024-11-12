@@ -68,11 +68,11 @@
                             <td>{{ $user->emel }}</td>
                             <td>
                                 @if($user->status === "0")
-                                    <span class="text-warning">menunggu keputusan</span>
+                                    <span class="text-warning">Menunggu kelulusan</span>
                                 @endif
                             </td>
                             <td>
-                                <button class="btn btn-primary btn-sm" type="button">Tindakan</button>
+                                <a href="{{route('administration.pengguna_approval', $user->id)}}" class="btn btn-primary btn-sm">Tindakan</a>
                             </td>
                         </tr>
                         @endforeach
@@ -126,9 +126,11 @@
                                     <span class="text-muted">Unknown Status</span> <!-- Optional: handle other statuses -->
                                 @endif
                             </td>                            
-                            <td>
-                                <button class="btn btn-primary btn-sm" type="button">Tindakan</button>
-                            </td>
+                            <td class="text-center">
+                                <a href="{{route('administration.edit_pengguna', $user->id)}}" class="d-flex justify-content-center align-items-center" style="padding-top: 12%; height: 100%">
+                                    <img src="{{ asset('images/tindakan.svg') }}" alt="Tindakan Icon" width="18" height="18" style="cursor: pointer;">
+                                </a>
+                            </td>                                                         
                         </tr>
                         @endforeach
                     </tbody>
@@ -152,7 +154,16 @@ $(document).ready(function() {
                     // Redirect to the 'tambah-pengguna' route using Laravel's named route
                     window.location.href = '{{ route("administration.tambah_pengguna") }}'; 
                 },
-                className: 'btn btn-primary' // Add Bootstrap class for styling the button
+                className: 'btn', // Basic button class
+                init: function (api, node, config) {
+                    // Apply the custom background color using jQuery
+                    $(node).css({
+                        'background-color': 'rgba(35, 44, 108, 1)',
+                        'color': 'white', // Ensure text color is visible
+                        'border': 'none', // Optional: to remove the default border
+                        'box-shadow': '3px 3px 4px rgba(0, 0, 0, 0.25)' // Optional: Add shadow effect if needed
+                    });
+                }
             }
         ],
         initComplete: function () {
