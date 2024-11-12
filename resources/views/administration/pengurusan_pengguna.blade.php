@@ -126,9 +126,11 @@
                                     <span class="text-muted">Unknown Status</span> <!-- Optional: handle other statuses -->
                                 @endif
                             </td>                            
-                            <td>
-                                <button class="btn btn-primary btn-sm" type="button">Tindakan</button>
-                            </td>
+                            <td class="text-center">
+                                <a href="{{route('administration.edit_pengguna', $user->id)}}" class="d-flex justify-content-center align-items-center" style="padding-top: 12%; height: 100%">
+                                    <img src="{{ asset('images/tindakan.svg') }}" alt="Tindakan Icon" width="18" height="18" style="cursor: pointer;">
+                                </a>
+                            </td>                                                         
                         </tr>
                         @endforeach
                     </tbody>

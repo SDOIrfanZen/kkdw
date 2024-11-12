@@ -48,6 +48,8 @@ route::post('manage-account-password', [AdministrationController::class, 'manage
 route::get('pengurusan-pengguna', [AdministrationController::class, 'pengurusan_pengguna_list'])->name('administration.pengurusan_pengguna')->middleware('can:Melihat Senarai Pengguna');
 route::get('tambah-pengguna', [AdministrationController::class, 'tambah_pengguna_list'])->name('administration.tambah_pengguna');
 route::post('tambah-pengguna-process', [AdministrationController::class, 'tambah_pengguna_process'])->name('administration.tambah_pengguna_process');
+route::get('edit-pengguna/{id}', [AdministrationController::class, 'edit_pengguna'])->name('administration.edit_pengguna');
+Route::put('update-pengguna/{id}', [AdministrationController::class, 'update_pengguna'])->name('administration.update_pengguna');
 
 
 route::get('give-permission-to-role', function () {

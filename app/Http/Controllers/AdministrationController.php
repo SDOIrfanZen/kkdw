@@ -12,7 +12,7 @@ class AdministrationController extends Controller
 {
     public function manage_account() 
     {
-        $userProfile = Auth::user()->load('Peranan');
+        $userProfile = Auth::user();
         return view ('administration.manage_account', compact('userProfile'));
     }
 
@@ -145,6 +145,91 @@ class AdministrationController extends Controller
         return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya ditambah!');
     }
     
-    
+    public function edit_pengguna($id) {
+        $userProfile = Pengguna::findorFail($id);
+        $roles = Role::all();
+        return view ('administration.pengguna_edit', compact('userProfile', 'roles'));
+    }
+
+    public function update_pengguna(Request $request, $id)
+    {
+        // Define custom validation messages
+        $customMessages = [
+            'nama.required' => 'Nama Penuh diperlukan.',
+            'nama.string' => 'Nama Penuh mesti dalam bentuk teks.',
+            'nama.max' => 'Nama Penuh tidak boleh melebihi 255 aksara.',
+            
+            'role.required' => 'Peranan diperlukan.',
+            'role.exists' => 'Peranan yang dipilih tidak sah.',
+            
+            'kad_pengenalan.required' => 'Kad Pengenalan diperlukan.',
+            'kad_pengenalan.numeric' => 'Kad Pengenalan mesti dalam format nombor.',
+            
+            'emel.required' => 'Alamat e-mel rasmi diperlukan.',
+            'emel.email' => 'Alamat e-mel rasmi mesti dalam format yang sah.',
+            'emel.unique' => 'Alamat e-mel rasmi ini sudah digunakan.',
+            
+            'bahagian.required' => 'Bahagian/Agensi/Institusi diperlukan.',
+            'bahagian.string' => 'Bahagian/Agensi/Institusi mesti dalam bentuk teks.',
+            'bahagian.max' => 'Bahagian/Agensi/Institusi tidak boleh melebihi 255 aksara.',
+            
+            'no_tel.required' => 'No Telefon diperlukan.',
+            'no_tel.string' => 'No Telefon mesti dalam format nombor.',
+            
+            'jawatan.required' => 'Jawatan diperlukan.',
+            'jawatan.string' => 'Jawatan mesti dalam bentuk teks.',
+            'jawatan.max' => 'Jawatan tidak boleh melebihi 255 aksara.',
+            
+            'kata_laluan.required' => 'Kata Laluan diperlukan.',
+            'kata_laluan.string' => 'Kata Laluan mesti dalam bentuk teks.',
+            'kata_laluan.min' => 'Kata Laluan mesti sekurang-kurangnya 8 aksara.',
+
+            'status.required' => 'Status diperlukan.',
+            'status.in' => 'Status mesti dalam pilihan yang sah.',
+        ];
+
+        // Validate the incoming data with custom messages
+        $validated = $request->validate([
+            'nama' => 'required|string|max:255',
+            'role' => 'required|exists:roles,id',  // Make sure the role exists
+            'kad_pengenalan' => 'required|numeric', // Unique check can be skipped for updating
+            'emel' => 'required|email|unique:Pengguna,emel,' . $id, // Update with unique constraint excluding current user's email
+            'bahagian' => 'required|string|max:255',
+            'no_tel' => 'required|string',
+            'jawatan' => 'required|string|max:255',
+            'kata_laluan' => 'nullable|string|min:8',  // Optional during update
+            'status' => 'required|string|in:1,2',
+        ], $customMessages);
+
+        // Find the user by ID
+        $user = Pengguna::findOrFail($id);
+
+        // Update the user's profile
+        $user->update([
+            'nama' => $validated['nama'],
+            'kad_pengenalan' => $validated['kad_pengenalan'],
+            'emel' => $validated['emel'],
+            'bahagian' => $validated['bahagian'],
+            'no_tel' => $validated['no_tel'],
+            'jawatan' => $validated['jawatan'],
+            'status' => $validated['status'] ?? $user->status,  // Keep the old status if not updated
+        ]);
+
+        // If password is provided, update it
+        if ($request->filled('kata_laluan')) {
+            $user->kata_laluan = Hash::make($validated['kata_laluan']);
+        }
+
+        $role = Role::find($validated['role']); // Find the role by its ID
+        if ($role) {
+            $user->syncRoles($role); // Sync the role with the new role
+        } else {
+            return back()->withErrors(['role' => 'Role not found!']);
+        }
+
+        // Redirect with success message
+        return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya dikemaskini!');
+    }
+
 
 }
