@@ -283,5 +283,27 @@ class AdministrationController extends Controller
         return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya dikemaskini!');
     }
 
+    public function update_pengguna_password(Request $request, $id)
+    {
+        // Validate the request
+        $request->validate([
+            'kata_laluan_baharu' => 'required|min:8',
+            'kata_laluan_pengesahan' => 'required|same:kata_laluan_baharu', // Ensure confirmation matches new password
+        ], [
+            'kata_laluan_baharu.required' => 'Sila masukkan kata laluan baharu.',
+            'kata_laluan_pengesahan.same' => 'Kata laluan baharu dan kata laluan pengesahan tidak sepadan.', // Error message for mismatch
+            'kata_laluan_pengesahan.required' => 'Sila masukkan kata laluan pengesahan.',
+        ]);
+    
+        // Find the user by ID
+        $user = Pengguna::findOrFail($id);
+    
+        // Update the password
+        $user->kata_laluan = Hash::make($request->kata_laluan_baharu); // Hash the new password
+        $user->save(); // Save the updated user
+    
+        // Redirect with success message
+        return back()->with('success', 'Kata laluan telah berjaya dikemaskini.');
+    }
 
 }

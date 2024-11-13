@@ -110,9 +110,46 @@ form .btn-reset {
     </div>
 </div>
 
-
-    
-    
-
+<div class="container-fluid d-flex justify-content-center">
+    <div class="card mt-4 mx-auto" style="width: 90%;">
+        <div class="card-header d-flex align-items-center custom-card-header" style="background: rgba(8, 12, 85, 1); height: 3.5rem;">
+            <img src="{{ asset('images/kata-laluan.svg') }}" alt="Profile Icon" class="me-2" style="width: 24px; height: 24px;">
+            Kata Laluan
+        </div>
+        <div class="card-body" style="height: 250px;">
+            <form method="post" action="{{ route('administration.update_pengguna_password', $userProfile->id) }}" id="updatePasswordForm" class="d-flex flex-column h-100">
+                @csrf
+                @method('PUT')
+                <div class="flex-grow-1">
+                    <!-- Kata Laluan Baharu -->
+                    <div class="row pb-2">
+                        <div class="col-md-3 label-column">Kata Laluan Baharu</div>
+                        <div class="col-md-3">
+                            <input type="password" class="form-control" name="kata_laluan_baharu" required>
+                            @error('kata_laluan_baharu')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <!-- Kata Laluan Pengesahan -->
+                    <div class="row pb-2">
+                        <div class="col-md-3 label-column">Kata Laluan Pengesahan</div>
+                        <div class="col-md-3">
+                            <input type="password" class="form-control" name="kata_laluan_pengesahan" required>
+                            @error('kata_laluan_pengesahan')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+                <!-- Buttons at Bottom Right -->
+                <div class="d-flex justify-content-end mt-4">
+                    <button class="btn btn-primary me-3" type="submit">Simpan</button>
+                    <button class="btn btn-reset" type="button" onclick="window.history.back();">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @endsection
