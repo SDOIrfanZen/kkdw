@@ -148,6 +148,13 @@ form .btn-reset {
                     <button class="btn btn-reset" type="button" onclick="window.history.back();">Batal</button>
                 </div>
             </form>
+            <div class="d-flex justify-content-end">
+                <form method="POST" action="{{ route('administration.delete_pengguna', $userProfile->id) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger mt-3 mb-3" style="width: 100px" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
