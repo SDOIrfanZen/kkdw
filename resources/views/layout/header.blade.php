@@ -37,56 +37,71 @@
     
     <!-- Responsive navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark custom-navbar fixed-top" style="top: 1.4rem;">
-        <div class="container-fluid d-flex justify-content-center">
-            <a class="nav-link me-5" href="#!">
-                <img src="{{ asset('images/kkdw-logo.svg') }}" alt="Laman Utama" class="nav-icon" style="width: 100px">
-            </a>
-            <ul class="navbar-nav mb-2 mb-lg-0 d-flex justify-content-center">       
-                <li class="nav-item">
-                    <a class="nav-link" href="#!">
-                        <img src="{{ asset('images/laman-utama.svg') }}" alt="Laman Utama" class="nav-icon"> Laman Utama
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#!">
-                        <img src="{{ asset('images/dashboard.svg') }}" alt="Dashboard" class="nav-icon"> Dashboard
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#!">
-                        <img src="{{ asset('images/prestasi-perbelanjaan-bahagian.svg') }}" alt="Prestasi Perbelanjaan Bahagian" class="nav-icon"> Prestasi Perbelanjaan Bahagian
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#!">
-                        <img src="{{ asset('images/pengurusan-data.svg') }}" alt="Pengurusan Data" class="nav-icon"> Pengurusan Data
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('administration.pengurusan_pengguna')}}">
-                        <img src="{{ asset('images/pengurusan-pengguna.svg') }}" alt="Pengurusan Pengguna" class="nav-icon"> Pengurusan Pengguna
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#!">
-                        <img src="{{ asset('images/audit-trail.svg') }}" alt="Audit Trail" class="nav-icon"> Audit Trail
-                    </a>
-                </li>
-            </ul>
-            <div class="nav-item dropdown ms-5">
-                <a class="nav-link dropdown-toggle fs-5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img class="img-xs rounded-circle" src="{{ asset('images/example-profile-picture.svg') }}" alt="Default Profile Image" width="60%">
+        <div class="container-fluid d-flex justify-content-between">
+            
+            <!-- Left Section (Logo) -->
+            <div class="d-flex justify-content-start">
+                <a class="nav-link me-5" href="#!">
+                    <img src="{{ asset('images/kkdw-logo.svg') }}" alt="Laman Utama" class="nav-icon" style="width: 100px">
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="{{route('administration.manage_account')}}">View Information</a></li>
-                    <li>
-                        <form action="{{route('auth.logout')}}" method="POST">
-                            @csrf
-                            <button type="submit" class="dropdown-item">Sign Out</button>
-                        </form>
+            </div>
+    
+            <!-- Center Section (Nav Links) -->
+            <div class="d-flex justify-content-center">
+                <ul class="navbar-nav mb-2 mb-lg-0 d-flex">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!">
+                            <img src="{{ asset('images/laman-utama.svg') }}" alt="Laman Utama" class="nav-icon"> Laman Utama
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!">
+                            <img src="{{ asset('images/dashboard.svg') }}" alt="Dashboard" class="nav-icon"> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!">
+                            <img src="{{ asset('images/prestasi-perbelanjaan-bahagian.svg') }}" alt="Prestasi Perbelanjaan Bahagian" class="nav-icon"> Prestasi Perbelanjaan Bahagian
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!">
+                            <img src="{{ asset('images/pengurusan-data.svg') }}" alt="Pengurusan Data" class="nav-icon"> Pengurusan Data
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        @can('Melihat Senarai Pengguna')
+                        <a class="nav-link" href="{{route('administration.pengurusan_pengguna')}}">
+                            <img src="{{ asset('images/pengurusan-pengguna.svg') }}" alt="Pengurusan Pengguna" class="nav-icon"> Pengurusan Pengguna
+                        </a>
+                        @endcan
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!">
+                            <img src="{{ asset('images/audit-trail.svg') }}" alt="Audit Trail" class="nav-icon"> Audit Trail
+                        </a>
                     </li>
                 </ul>
             </div>
+    
+            <!-- Right Section (Profile Dropdown) -->
+            <div class="d-flex justify-content-end">
+                <div class="nav-item dropdown ms-5">
+                    <a class="nav-link dropdown-toggle fs-5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class="img-xs rounded-circle" src="{{ asset('images/example-profile-picture.svg') }}" alt="Default Profile Image" width="60%">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{route('administration.manage_account')}}">View Information</a></li>
+                        <li>
+                            <form action="{{route('auth.logout')}}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item">Sign Out</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </nav>
+    
 </header>

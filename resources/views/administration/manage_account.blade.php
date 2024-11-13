@@ -120,7 +120,7 @@ form .btn-reset {
                     <div class="row pb-2">
                         <div class="col-md-3 label-column">Kata Laluan Baharu</div>
                         <div class="col-md-3">
-                            <input type="password" class="form-control" name="kata_laluan_baharu" value="">
+                            <input type="password" class="form-control" name="kata_laluan_baharu" value="" required>
                             @error('kata_laluan_baharu')
                                 <div class="text-danger">{{ $message }}</div> <!-- Display validation message -->
                             @enderror
@@ -129,7 +129,7 @@ form .btn-reset {
                     <div class="row pb-2">
                         <div class="col-md-3 label-column">Kata Laluan Pengesahan</div>
                         <div class="col-md-3">
-                            <input type="password" class="form-control" name="kata_laluan_pengesahan" value="">
+                            <input type="password" class="form-control" name="kata_laluan_pengesahan" value="" required>
                             @error('kata_laluan_pengesahan')
                                 <div class="text-danger">{{ $message }}</div> <!-- Display validation message -->
                             @enderror

@@ -4,8 +4,9 @@
 <div class="login-dark">
     <div class="form-container">
         <div class="d-flex justify-content-center mb-2">
-            <img src="{{ asset('images/login-kkdw-logo.png') }}" alt="kkdw logo">
-        </div>
+            <img src="{{ asset('images/jata-negara.png') }}" alt="jata negara logo" style="width: 186px; height: 139px; margin-right: 43%;">
+            <img src="{{ asset('images/dashboard-eksekutif.svg') }}" alt="dashboard eksekutif logo" style="width: 153px; height: 158px;">
+        </div>        
         <form method="post" action="{{ route('auth.login_process') }}">
             @csrf
             <div class="text-center mb-5">
@@ -42,12 +43,12 @@
             </div>
 
             <div class="d-flex justify-content-end">
-                <div class="mr-4">
+                <div class="">
                     <a href="{{ route('auth.register') }}">Pendaftaran Baharu</a>
                 </div>
-                <div class="mr-4">
+                {{-- <div class="mr-4">
                     <a href="">Lupa Kata Laluan</a>
-                </div>
+                </div> --}}
             </div>
             <div class="d-flex justify-content-center mt-4">
                 <button class="btn btn-primary mr-3" type="submit">Log Masuk</button>

@@ -1,7 +1,7 @@
 .login-dark {
   height: 100vh;
   overflow: hidden; /* Prevents scrolling */
-  background: url('/images/login-background.png') no-repeat center center;
+  background: url('/images/background-login-register.jpg') no-repeat center center;
   background-size: cover;
   position: relative;
 }
