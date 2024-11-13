@@ -185,6 +185,17 @@ class AdministrationController extends Controller
         return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya diluluskan!');
     }
 
+    public function pengguna_reject($id)
+    {
+        // Find the user by ID and delete them
+        $user = Pengguna::findOrFail($id);
+        $user->delete();
+
+        // Redirect with a success message
+        return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya ditolak dan dipadamkan.');
+    }
+
+
     
     public function edit_pengguna($id) {
         $userProfile = Pengguna::findorFail($id);

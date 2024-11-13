@@ -44,7 +44,7 @@
                 @csrf
                 <table id="penggunaTable1" class="table">
                     <thead>
-                      <tr>
+                      <tr style="background: rgba(222, 225, 230, 1);">
                         <th scope="col">No</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Kad Pengenalan</th>
@@ -91,9 +91,9 @@
         <div class="card-body">
             <form method="post" action="" id="" class="d-flex flex-column h-100">
                 @csrf
-                <table id="penggunaTable2" class="table">
+                <table id="penggunaTable2" class="table mt-3">
                     <thead>
-                      <tr>
+                      <tr style="background: rgba(222, 225, 230, 1);">
                         <th scope="col">No.</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Kad Pengenalan</th>
