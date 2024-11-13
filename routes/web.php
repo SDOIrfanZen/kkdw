@@ -40,7 +40,7 @@ route::post('register', [AuthController::class, 'registration_process'])->name('
 Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout')->middleware('auth');
 
 // after success login go to manage-account
-route::get('manage-account', [AdministrationController::class, 'manage_account'])->name('administration.manage_account');
+route::get('manage-account', [AdministrationController::class, 'manage_account'])->name('administration.manage_account')->middleware('auth');
 route::post('manage-account-profile', [AdministrationController::class, 'manage_account_profile'])->name('administration.manage_account_profile');
 route::post('manage-account-password', [AdministrationController::class, 'manage_account_password'])->name('administration.manage_account_password');
 
@@ -51,6 +51,8 @@ route::post('tambah-pengguna-process', [AdministrationController::class, 'tambah
 
 route::get('pengguna-approval/{id}', [AdministrationController::class, 'pengguna_approval_list'])->name('administration.pengguna_approval');
 route::put('pengguna-approval-process/{id}', [AdministrationController::class, 'pengguna_approval_process'])->name('administration.pengguna_approval_process');
+Route::delete('pengguna_reject/{id}', [AdministrationController::class, 'pengguna_reject'])->name('administration.pengguna_reject_process');
+
 
 route::get('edit-pengguna/{id}', [AdministrationController::class, 'edit_pengguna'])->name('administration.edit_pengguna');
 Route::put('update-pengguna/{id}', [AdministrationController::class, 'update_pengguna'])->name('administration.update_pengguna');
