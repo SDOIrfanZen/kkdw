@@ -306,4 +306,16 @@ class AdministrationController extends Controller
         return back()->with('success', 'Kata laluan telah berjaya dikemaskini.');
     }
 
+    public function delete_pengguna($id)
+    {
+        $user = Pengguna::findOrFail($id);
+        
+        // Ensure you perform any necessary checks like authorization
+        
+        $user->delete();
+        
+        return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya dihapus.');
+    }
+
+
 }
