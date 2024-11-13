@@ -6,8 +6,9 @@
     <div class="container-fluid">
         <div class="form-container" style="width: 100%; max-width: 1080px;">
             <div class="d-flex justify-content-center mb-2">
-                <img src="{{ asset('images/login-kkdw-logo.png') }}" alt="kkdw logo">
-            </div>
+                <img src="{{ asset('images/jata-negara.png') }}" alt="jata negara logo" style="width: 186px; height: 139px; margin-right: 43%;">
+                <img src="{{ asset('images/dashboard-eksekutif.svg') }}" alt="dashboard eksekutif logo" style="width: 153px; height: 158px;">
+            </div>  
             @if (session('success'))
                 <div class="alert alert-success">
                     {{ session('success') }}
@@ -85,10 +86,19 @@
                     </div>
                 </div>
             
-                <div class="d-flex justify-content-center mt-4">
-                    <button class="btn btn-primary mr-3" type="submit">Daftar</button>
-                    <button class="btn btn-reset" type="reset">Reset</button>
+                <div class="d-flex justify-content-between mt-4">
+                    <!-- Back button aligned to the start -->
+                    <div class="d-flex justify-content-start">
+                        <a href="{{ route('auth.login')}}" class="btn btn-secondary" style="width: 120px">Balik</a>
+                    </div>
+                
+                    <!-- Daftar and Reset buttons aligned to the end -->
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary mr-3" type="submit" style="width: 120px;">Daftar</button>
+                        <button class="btn btn-secondary" type="reset" style="width: 120px;">Reset</button>
+                    </div>
                 </div>
+                
             </form>
                       
         </div>

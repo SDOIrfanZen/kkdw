@@ -42,26 +42,23 @@ class AdministrationController extends Controller
     {
         // Validate the request
         $request->validate([
-            'kata_laluan_baharu' => 'required', // New password must be required
-            'kata_laluan_pengesahan' => 'required', // Current password must be required
+            'kata_laluan_baharu' => 'required|min:8',
+            'kata_laluan_pengesahan' => 'required|same:kata_laluan_baharu', // Ensure confirmation matches new password
         ], [
-            'kata_laluan_baharu.required' => 'Sila masukkan kata laluan baharu.', // Custom message for new password required
-            'kata_laluan_pengesahan.required' => 'Sila masukkan kata laluan pengesahan.', // Custom message for current password required
+            'kata_laluan_baharu.required' => 'Sila masukkan kata laluan baharu.',
+            'kata_laluan_pengesahan.same' => 'Kata laluan baharu dan kata laluan pengesahan tidak sepadan.', // Error message for mismatch
+            'kata_laluan_pengesahan.required' => 'Sila masukkan kata laluan pengesahan.',
         ]);
-
-        // Get the currently authenticated user
+    
+        
         $user = Auth::user();
-
-        // Check if the provided current password matches the stored password
-        if (!Hash::check($request->kata_laluan_pengesahan, $user->kata_laluan)) {
-            return back()->withErrors(['kata_laluan_pengesahan' => 'Kata laluan pengesahan tidak betul.']); // Return error if current password is incorrect
-        }
-
+    
         // Update the password
-        $user->kata_laluan = Hash::make($request->kata_laluan_baharu); // Hash the new password and store it
+        $user->kata_laluan = Hash::make($request->kata_laluan_baharu); // Hash the new password
         $user->save(); // Save the updated user
-
-        return back()->with('success', 'Kata laluan telah berjaya dikemaskini.'); // Return success message
+    
+        // Redirect with success message
+        return back()->with('success', 'Kata laluan telah berjaya dikemaskini.');
     }
 
     public function pengurusan_pengguna_list() {
