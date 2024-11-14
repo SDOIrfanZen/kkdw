@@ -44,6 +44,13 @@ class AuthController extends Controller
             ]);
         }
 
+        if ($user->status === "0") {
+            // Status is "0", indicating the account is pending approval
+            return back()->withErrors([
+                'status' => 'Akaun anda belum diluluskan oleh pentadbir. Sila tunggu sehingga akaun anda disahkan.',
+            ]);
+        }
+
         if ($user->status !== "1") {
             // Status is not "1", so login is not allowed
             return back()->withErrors([
@@ -122,7 +129,7 @@ class AuthController extends Controller
         ]);
 
         // Redirect with success message
-        return redirect()->back()->with('success', 'Thank you for submitting the registration. Your request is being processed and kindly please check your email for any updates');
+        return redirect()->back()->with('success', 'Terima kasih kerana menghantar pendaftaran, permohonan anda sedang diproses.');
     }
 
     public function logout(Request $request)

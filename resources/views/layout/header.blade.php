@@ -70,11 +70,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        @can('Melihat Senarai Pengguna')
+                       
                         <a class="nav-link" href="{{route('administration.pengurusan_pengguna')}}">
                             <img src="{{ asset('images/pengurusan-pengguna.svg') }}" alt="Pengurusan Pengguna" class="nav-icon"> Pengurusan Pengguna
                         </a>
-                        @endcan
+                        
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#!">

@@ -45,7 +45,7 @@ route::post('manage-account-profile', [AdministrationController::class, 'manage_
 route::post('manage-account-password', [AdministrationController::class, 'manage_account_password'])->name('administration.manage_account_password');
 
 // pengurusan pengguna
-route::get('pengurusan-pengguna', [AdministrationController::class, 'pengurusan_pengguna_list'])->name('administration.pengurusan_pengguna')->middleware('can:Melihat Senarai Pengguna');
+route::get('pengurusan-pengguna', [AdministrationController::class, 'pengurusan_pengguna_list'])->name('administration.pengurusan_pengguna');
 route::get('tambah-pengguna', [AdministrationController::class, 'tambah_pengguna_list'])->name('administration.tambah_pengguna');
 route::post('tambah-pengguna-process', [AdministrationController::class, 'tambah_pengguna_process'])->name('administration.tambah_pengguna_process');
 
@@ -62,9 +62,9 @@ Route::delete('delete-pengguna/{id}', [AdministrationController::class, 'delete_
 
 route::get('give-permission-to-role', function () {
 
-    // $role = Role::findOrFail(12); //ICT
+    $role = Role::findOrFail(1); //ICT
     
-    // $permission = Permission::findOrFail(1);
+    $permission = Permission::findOrFail(1);
     // $permission1 = Permission::findOrFail(2);
     // $permission2 = Permission::findOrFail(3);
     // $permission3 = Permission::findOrFail(4);
@@ -77,14 +77,14 @@ route::get('give-permission-to-role', function () {
     // $permission10 = Permission::findOrFail(11);
     // $permission11 = Permission::findOrFail(12);
 
-    // $role->givePermissionTo([$permission, $permission1, $permission2, $permission3, $permission9, $permission10, $permission11]);
+    $role->givePermissionTo($permission);
 });
 
 Route::get('assign-role-to-user', function() {
      
-    $user = Pengguna::findOrFail(2);
+    $user = Pengguna::findOrFail(5);
 
-    $role = Role::findOrFail(12); 
+    $role = Role::findOrFail(1); 
 
 
     $user->assignRole($role);
