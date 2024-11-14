@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="form-container" style="width: 100%; max-width: 1080px;">
             <div class="d-flex justify-content-center mb-2">
-                <img src="{{ asset('images/jata-negara.png') }}" alt="jata negara logo" style="width: 186px; height: 139px; margin-right: 43%;">
+                <img src="{{ asset('images/jata-negara.png') }}" alt="jata negara logo" style="width: 186px; height: 139px; margin-right: 15%;">
                 <img src="{{ asset('images/dashboard-eksekutif.svg') }}" alt="dashboard eksekutif logo" style="width: 153px; height: 158px;">
             </div>  
             @if (session('success'))
@@ -94,8 +94,8 @@
                 
                     <!-- Daftar and Reset buttons aligned to the end -->
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-primary mr-3" type="submit" style="width: 120px;">Daftar</button>
-                        <button class="btn btn-secondary" type="reset" style="width: 120px;">Reset</button>
+                        <button class="btn btn-primary mr-3" type="submit" style="width: 120px; background: rgba(33, 151, 225, 1);">Daftar</button>
+                        <button class="btn btn-reset" type="reset" style="width: 120px;">Reset</button>
                     </div>
                 </div>
                 
