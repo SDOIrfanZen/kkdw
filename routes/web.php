@@ -51,7 +51,7 @@ route::post('tambah-pengguna-process', [AdministrationController::class, 'tambah
 
 route::get('pengguna-approval/{id}', [AdministrationController::class, 'pengguna_approval_list'])->name('administration.pengguna_approval');
 route::put('pengguna-approval-process/{id}', [AdministrationController::class, 'pengguna_approval_process'])->name('administration.pengguna_approval_process');
-Route::delete('pengguna_reject/{id}', [AdministrationController::class, 'pengguna_reject'])->name('administration.pengguna_reject_process');
+Route::delete('pengguna_reject/{id}', [AdministrationController::class, 'pengguna_reject_process'])->name('administration.pengguna_reject_process');
 
 
 route::get('edit-pengguna/{id}', [AdministrationController::class, 'edit_pengguna'])->name('administration.edit_pengguna');
@@ -65,11 +65,11 @@ route::get('give-permission-to-role', function () {
     $role = Role::findOrFail(1); //ICT
     
     $permission = Permission::findOrFail(1);
-    // $permission1 = Permission::findOrFail(2);
-    // $permission2 = Permission::findOrFail(3);
-    // $permission3 = Permission::findOrFail(4);
-    // $permission4 = Permission::findOrFail(5);
-    // $permission5 = Permission::findOrFail(6);
+    $permission1 = Permission::findOrFail(2);
+    $permission2 = Permission::findOrFail(3);
+    $permission3 = Permission::findOrFail(4);
+    $permission4 = Permission::findOrFail(5);
+    $permission5 = Permission::findOrFail(6);
     // $permission6 = Permission::findOrFail(7);
     // $permission7 = Permission::findOrFail(8);
     // $permission8 = Permission::findOrFail(9);
@@ -77,14 +77,15 @@ route::get('give-permission-to-role', function () {
     // $permission10 = Permission::findOrFail(11);
     // $permission11 = Permission::findOrFail(12);
 
-    $role->givePermissionTo($permission);
+    // $role->givePermissionTo($permission);
+    $role->givePermissionTo([$permission, $permission1, $permission2, $permission3, $permission4, $permission5]);
 });
 
 Route::get('assign-role-to-user', function() {
      
-    $user = Pengguna::findOrFail(5);
+    $user = Pengguna::findOrFail(7);
 
-    $role = Role::findOrFail(1); 
+    $role = Role::findOrFail(3); 
 
 
     $user->assignRole($role);

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengguna;
+use App\Mail\UserRegistrationMail;
+use App\Mail\AdminUserRegistrationNotification;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -117,7 +120,7 @@ class AuthController extends Controller
             'kata_laluan.min' => 'Kata Laluan must be at least 8 characters.',
         ]);
         
-        Pengguna::create([
+        $user = Pengguna::create([
             'nama' => $request->nama,
             'kad_pengenalan' => $request->kad_pengenalan,
             'bahagian' => $request->bahagian,
@@ -127,6 +130,18 @@ class AuthController extends Controller
             'status' => 0, // New users are set as 0 = 'pending'
             'kata_laluan' => Hash::make($request->kata_laluan),
         ]);
+
+        Mail::to($user->emel)->send(new UserRegistrationMail($user));
+
+         // Send email to super admins (role_id = 1)
+        $superAdmins = Pengguna::whereHas('roles', function ($query) {
+            $query->where('id', 1);  // Assuming 1 is the ID for the super admin role
+        })->get();
+
+        foreach ($superAdmins as $superAdmin) {
+            // Send the registration notification email to each super admin
+            Mail::to($superAdmin->emel)->send(new AdminUserRegistrationNotification($user));
+        }
 
         // Redirect with success message
         return redirect()->back()->with('success', 'Terima kasih kerana menghantar pendaftaran, permohonan anda sedang diproses.');
