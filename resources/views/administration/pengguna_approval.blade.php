@@ -97,9 +97,9 @@ form .btn-reset {
                     </div>                   
                 </div>
                 <div class="d-flex justify-content-end mt-4">
-                    <button class="btn btn-primary me-3" type="submit">Terima</button>
+                    <button class="btn btn-primary me-3" type="submit">Lulus</button>
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal">
-                        Tidak Lulus
+                        Tolak
                     </button>
                 </div>
             </form>
@@ -115,22 +115,25 @@ form .btn-reset {
                 <h5 class="modal-title" id="rejectModalLabel">Menolak Pengguna</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                Adakah anda pasti ingin menolak pengguna ini?
-            </div>
-            <div class="modal-footer">
-                <!-- Button to cancel -->
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-
-                <!-- Form inside the modal for deletion -->
-                <form method="post" action="{{ route('administration.pengguna_reject_process', $userProfile->id) }}">
-                    @csrf
-                    @method('DELETE')
+            <form method="post" action="{{ route('administration.pengguna_reject_process', $userProfile->id) }}">
+                @csrf
+                @method('DELETE')
+                <div class="modal-body">
+                    <p>Adakah anda pasti ingin menolak pengguna ini?</p>
+                    <div class="form-group">
+                        <label for="remark">Sila masukkan sebab penolakan:</label>
+                        <textarea name="remark" id="remark" class="form-control" rows="3" placeholder="Masukkan nota di sini"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-danger">Tolak</button>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+
 
 @endsection

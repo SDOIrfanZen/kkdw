@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengguna;
+use App\Models\RejectedPengguna;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
 
 class AdministrationController extends Controller
 {
@@ -182,15 +184,38 @@ class AdministrationController extends Controller
         return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya diluluskan!');
     }
 
-    public function pengguna_reject($id)
+    public function pengguna_reject_process(Request $request, $id)
     {
-        // Find the user by ID and delete them
+        // Validate the remark input
+        $request->validate([
+            'remark' => 'required|string|max:255',
+        ]);
+
         $user = Pengguna::findOrFail($id);
+
+        // Create a new record in the rejected_pengguna table using Eloquent
+        RejectedPengguna::create([
+            'nama' => $user->nama,
+            'role' => $user->role,
+            'kad_pengenalan' => $user->kad_pengenalan,
+            'emel' => $user->emel,
+            'bahagian' => $user->bahagian,
+            'no_tel' => $user->no_tel,
+            'jawatan' => $user->jawatan,
+            'remark' => $request->input('remark'),  // The remark entered by the user
+            'created_at' => now(),  // Set the current timestamp
+            'updated_at' => now(),  // Set the current timestamp
+        ]);
+
+        // Delete the user from the pengguna table
         $user->delete();
 
-        // Redirect with a success message
+        // Redirect back with a success message
         return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya ditolak dan dipadamkan.');
     }
+    
+
+
 
 
     
