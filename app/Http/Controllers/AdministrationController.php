@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Mail\AccountApprovedMail;
+use App\Mail\UserRejectionMail;
+use Illuminate\Support\Facades\Mail;
 
 
 class AdministrationController extends Controller
@@ -179,9 +182,12 @@ class AdministrationController extends Controller
 
         // Save the changes
         $user->save();
+        
+        // Send the approval email
+        Mail::to($user->emel)->send(new AccountApprovedMail($user));
 
         // Redirect back with a success message
-        return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya diluluskan!');
+        return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Akaun pengguna telah berjaya diluluskan dan kini aktif!');
     }
 
     public function pengguna_reject_process(Request $request, $id)
@@ -210,14 +216,12 @@ class AdministrationController extends Controller
         // Delete the user from the pengguna table
         $user->delete();
 
+        // Send the rejected email
+        Mail::to($user->emel)->send(new UserRejectionMail($user, $request->input('remark')));
+
         // Redirect back with a success message
         return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya ditolak dan dipadamkan.');
     }
-    
-
-
-
-
     
     public function edit_pengguna($id) {
         $userProfile = Pengguna::findorFail($id);
