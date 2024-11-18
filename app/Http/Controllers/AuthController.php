@@ -144,7 +144,7 @@ class AuthController extends Controller
         }
 
         // Redirect with success message
-        return redirect()->back()->with('success', 'Terima kasih kerana menghantar pendaftaran, permohonan anda sedang diproses.');
+        return redirect()->back()->with('success', 'Terima kasih kerana menghantar pendaftaran. Permohonan anda sedang diproses, dan sila semak emel anda untuk maklumat lanjut.');
     }
 
     public function logout(Request $request)

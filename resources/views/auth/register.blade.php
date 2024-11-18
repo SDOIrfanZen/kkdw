@@ -5,9 +5,15 @@
 <div class="login-dark">
     <div class="container-fluid">
         <div class="form-container" style="width: 100%; max-width: 1080px;">
-            <div class="d-flex justify-content-center mb-2">
-                <img src="{{ asset('images/jata-negara.png') }}" alt="jata negara logo" style="width: 186px; height: 139px; margin-right: 15%;">
-                <img src="{{ asset('images/dashboard-eksekutif.svg') }}" alt="dashboard eksekutif logo" style="width: 153px; height: 158px;">
+            <div class="d-flex justify-content-center align-items-center">
+                <img src="{{ asset('images/jata-negara.png') }}" 
+                     alt="jata negara logo" 
+                     class="logo-image"
+                     style="width: 198px; height: 138px; transform: translateY(50px) translateX(22px);"> <!-- Adjust width as needed -->
+                     <img src="{{ asset('images/dashboard-eksekutif2.svg') }}" 
+                     alt="dashboard eksekutif logo" 
+                     class="logo-image"
+                     style="width: 302px; height: 279px; transform: translateY(78px) translateX(41px);"> <!-- Adjust width as needed -->
             </div>  
             @if (session('success'))
                 <div class="alert alert-success">

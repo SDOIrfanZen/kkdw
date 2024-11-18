@@ -29,7 +29,7 @@ class AdminUserRegistrationNotification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Admin User Registration Notification',
+            subject: 'Notifikasi Pendaftaran Pengguna Baharu',
         );
     }
 
