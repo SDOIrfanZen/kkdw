@@ -30,7 +30,7 @@ class UserRegistrationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'User Registration Successful',
+            subject: 'Pendaftaran Pengguna Berjaya',
         );
     }
 

@@ -6,10 +6,8 @@
     <title>Pendaftaran Pengguna Berjaya</title>
 </head>
 <body>
-    <h1>Hai, {{ $user->nama }}</h1>
-    <p>Terima kasih kerana mendaftar. Akaun anda telah berjaya dicipta.</p>
-    <p>Sila log masuk menggunakan maklumat yang anda berikan semasa pendaftaran.</p>
-
-    <p>Salam hormat, <br> Pasukan Syarikat Anda</p>
+    <h2>Hai, {{ $user->nama }}</h2>
+    <p>Terima kasih kerana mendaftar. Akaun anda telah berjaya dicipta dan sedang menunggu kelulusan daripada pentadbir sistem.</p>
+    <p>Sila tunggu notifikasi melalui emel anda setelah akaun anda diluluskan.</p>
 </body>
 </html>
