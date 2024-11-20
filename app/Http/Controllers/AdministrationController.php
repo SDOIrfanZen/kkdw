@@ -66,6 +66,10 @@ class AdministrationController extends Controller
         return back()->with('success', 'Kata laluan telah berjaya dikemaskini.');
     }
 
+    public function pengurusan_pengguna_main() {
+        return view('administration.homepage_pengurusan_pengguna');
+    }
+
     public function pengurusan_pengguna_list() {
         $pengguna_belum_berdaftar = Pengguna::where('status', '0')->get();
         $senaraiPengguna = Pengguna::where('status', '1')

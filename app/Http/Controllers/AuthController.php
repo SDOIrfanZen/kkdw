@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengguna;
+use App\Models\Agensi;
 use App\Mail\UserRegistrationMail;
 use App\Mail\AdminUserRegistrationNotification;
 use Illuminate\Support\Facades\Mail;
@@ -74,7 +75,10 @@ class AuthController extends Controller
 
 
     public function showRegisterForm() {
-        return view('auth.register');
+
+        $bahagian = Agensi::get();
+
+        return view('auth.register', compact('bahagian'));
     }
 
     public function registration_process(Request $request)
@@ -119,11 +123,14 @@ class AuthController extends Controller
             'kata_laluan.string' => 'Kata Laluan must be a valid string.',
             'kata_laluan.min' => 'Kata Laluan must be at least 8 characters.',
         ]);
+
+        // Retrieve the bahagian name based on the selected ID
+        $bahagianName = Agensi::where('id', $request->bahagian)->value('name');
         
         $user = Pengguna::create([
             'nama' => $request->nama,
             'kad_pengenalan' => $request->kad_pengenalan,
-            'bahagian' => $request->bahagian,
+            'bahagian' => $bahagianName,
             'jawatan' => $request->jawatan,
             'emel' => $request->emel,
             'no_tel' => $request->no_tel,

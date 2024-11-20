@@ -45,7 +45,8 @@ route::post('manage-account-profile', [AdministrationController::class, 'manage_
 route::post('manage-account-password', [AdministrationController::class, 'manage_account_password'])->name('administration.manage_account_password');
 
 // pengurusan pengguna
-route::get('pengurusan-pengguna', [AdministrationController::class, 'pengurusan_pengguna_list'])->name('administration.pengurusan_pengguna');
+route::get('pengurusan-pengguna', [AdministrationController::class, 'pengurusan_pengguna_main'])->name('administration.pengurusan_pengguna_main');
+route::get('pengurusan-pengguna-list', [AdministrationController::class, 'pengurusan_pengguna_list'])->name('administration.pengurusan_pengguna');
 route::get('tambah-pengguna', [AdministrationController::class, 'tambah_pengguna_list'])->name('administration.tambah_pengguna');
 route::post('tambah-pengguna-process', [AdministrationController::class, 'tambah_pengguna_process'])->name('administration.tambah_pengguna_process');
 
