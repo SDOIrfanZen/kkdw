@@ -28,11 +28,18 @@
 
 @section('content')
 
-@if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
+<div class="mx-auto" style="width: 90%;">
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if(session('successReject'))
+        <div class="alert alert-danger">
+            {{ session('successReject') }}
+        </div>
+    @endif
+</div>
 
 <div class="container-fluid d-flex justify-content-center">
     <div class="card mt-4 mx-auto" style="width: 90%;">
@@ -51,7 +58,7 @@
                         <th scope="col">Bahagian/Agensi/Institusi</th>
                         <th scope="col">Jawatan</th>
                         <th scope="col">Peranan</th>
-                        <th scope="col">Emel</th>
+                        <th scope="col">email</th>
                         <th scope="col">Status</th>
                         <th scope="col">Tindakan</th>
                       </tr>
@@ -65,7 +72,7 @@
                             <td>{{ $user->bahagian }}</td>
                             <td>{{ $user->jawatan }}</td>
                             <td>{{ $user->roles->first()->name ?? 'Peranan Belum Ditetapkan' }}</td>
-                            <td>{{ $user->emel }}</td>
+                            <td>{{ $user->email }}</td>
                             <td>
                                 @if($user->status === "0")
                                     <span class="text-warning">Menunggu kelulusan</span>
@@ -101,7 +108,7 @@
                         <th scope="col">Jawatan</th>
                         <th scope="col">Peranan</th>
                         {{-- <th scope="col">Peranan</th> --}}
-                        <th scope="col">Emel</th>
+                        <th scope="col">email</th>
                         <th scope="col">Status</th>
                         <th scope="col">Tindakan</th>
                       </tr>
@@ -116,7 +123,7 @@
                             <td>{{ $user->jawatan }}</td>
                             <td>{{ $user->roles->first()->name ?? 'Peranan Belum Ditetapkan' }}</td>
                             {{-- <td>{{ $user->Peranan->peranan }}</td> --}}
-                            <td>{{ $user->emel }}</td>
+                            <td>{{ $user->email }}</td>
                             <td>
                                 @if($user->status === "1")
                                     <span class="text-success">Aktif</span>
@@ -207,6 +214,24 @@ $(document).ready(function() {
 });
 </script>
 
+<script>
+    $(document).ready(function() {
+        $('#penggunaTable1').DataTable({
+            "pageLength": 5, // Limit to 5 entries per page
+            "lengthChange": false, // Disable the ability to change the number of entries per page
+            "searching": false, // Remove the search bar
+            "info": false, // Remove the "Showing X of Y entries" info text
+            "paging": true, // Ensure pagination is enabled
+            "ordering": false, // Disable column sorting
+            "language": {
+                "paginate": {
+                    "previous": "Sebelumnya",
+                    "next": "Seterusnya"
+                }
+            }
+        });
+    });
+</script>
 
 
 

@@ -2,7 +2,6 @@
 
 use App\Models\Pengguna;
 use Spatie\Permission\Models\Role;
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -29,12 +28,23 @@ Route::get('/', function () {
 // login
 // Route::get('login', [AuthController::class, 'showLoginForm'])->name('auth.login')->middleware('can:log masuk portal');
 Route::post('login', [AuthController::class, 'login_process'])->name('auth.login_process');
-
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('auth.login')->middleware('guest');
 
 // register
 route::get('register', [AuthController::class, 'showRegisterForm'])->name('auth.register');
 route::post('register', [AuthController::class, 'registration_process'])->name('auth.registration_process');
+
+// reset password
+Route::get('forgot-password', function () {
+    return view('auth.forgot-password');
+})->middleware('guest')->name('password.request');
+Route::post('forgot-password', [AuthController::class, 'forgotPassword'])->middleware('guest')->name('password.email');
+
+// after click reset password link in email
+Route::get('reset-password/{token}', function (string $token) {
+    return view('auth.reset-password', ['token' => $token]);
+})->middleware('guest')->name('password.reset');
+Route::post('reset-password', [AuthController::class, 'resetPassword'])->middleware('guest')->name('password.update');
 
 //logout
 Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout')->middleware('auth');

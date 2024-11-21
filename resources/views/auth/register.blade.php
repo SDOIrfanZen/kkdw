@@ -73,9 +73,9 @@
                     </div>
                     
                     <div class="form-group col-md-4">
-                        <label for="emel"><strong>Alamat E-mel Rasmi</strong></label>
-                        <input class="form-control" type="email" name="emel" value="{{ old('emel') }}" placeholder="Alamat E-mel Rasmi" required>
-                        @error('emel')
+                        <label for="email"><strong>Alamat E-mel Rasmi</strong></label>
+                        <input class="form-control" type="email" name="email" value="{{ old('email') }}" placeholder="Alamat E-mel Rasmi" required>
+                        @error('email')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>

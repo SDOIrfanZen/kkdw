@@ -71,17 +71,17 @@ form .btn-reset {
                 <div class="row pb-2">
                     <div class="col-md-3 label-column">Kad Pengenalan</div>
                     <div class="col-md-3">
-                        <input readonly class="form-control" name="kad_pengenalan" value="{{ $userProfile->kad_pengenalan }}">
+                        <input class="form-control" name="kad_pengenalan" value="{{ $userProfile->kad_pengenalan }}">
                     </div>
                     <div class="col-md-3 label-column">Alamat e-mel rasmi</div>
                     <div class="col-md-3">
-                        <input readonly class="form-control" name="emel" value="{{ $userProfile->emel }}">
+                        <input class="form-control" name="email" value="{{ $userProfile->email }}">
                     </div>
                 </div>
                 <div class="row pb-2">
                     <div class="col-md-3 label-column">Bahagian/Agensi/Institusi</div>
                     <div class="col-md-3">
-                        <input readonly class="form-control" name="bahagian" value="{{ $userProfile->bahagian }}">
+                        <input class="form-control" name="bahagian" value="{{ $userProfile->bahagian }}">
                     </div>
                     <div class="col-md-3 label-column">No Telefon</div>
                     <div class="col-md-3">
@@ -91,7 +91,7 @@ form .btn-reset {
                 <div class="row pb-2">
                     <div class="col-md-3 label-column">Jawatan</div>
                     <div class="col-md-3">
-                        <input readonly class="form-control" name="jawatan" value="{{ $userProfile->jawatan }}">
+                        <input class="form-control" name="jawatan" value="{{ $userProfile->jawatan }}">
                     </div>
                     <div class="col-md-3 label-column">Status</div>
                     <div class="col-md-3">

@@ -14,7 +14,7 @@ class RejectedPengguna extends Model
     protected $fillable = [
         'nama',
         'kad_pengenalan',
-        'emel',
+        'email',
         'bahagian',
         'no_tel',
         'jawatan',

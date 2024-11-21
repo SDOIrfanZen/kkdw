@@ -77,7 +77,7 @@ form .btn-reset {
                     </div>
                     <div class="col-md-3 label-column">Alamat e-mel rasmi</div>
                     <div class="col-md-3">
-                        <input readonly class="form-control" name="emel" value="{{ $userProfile->emel }}">
+                        <input readonly class="form-control" name="email" value="{{ $userProfile->email }}">
                     </div>
                 </div>
                 <div class="row pb-2">

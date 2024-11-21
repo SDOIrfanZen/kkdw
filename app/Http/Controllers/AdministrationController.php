@@ -99,9 +99,9 @@ class AdministrationController extends Controller
             'kad_pengenalan.numeric' => 'Kad Pengenalan mesti dalam format nombor.',
             'kad_pengenalan.unique' => 'Kad Pengenalan ini sudah wujud.',
             
-            'emel.required' => 'Alamat e-mel rasmi diperlukan.',
-            'emel.email' => 'Alamat e-mel rasmi mesti dalam format yang sah.',
-            'emel.unique' => 'Alamat e-mel rasmi ini sudah digunakan.',
+            'email.required' => 'Alamat e-mel rasmi diperlukan.',
+            'email.email' => 'Alamat e-mel rasmi mesti dalam format yang sah.',
+            'email.unique' => 'Alamat e-mel rasmi ini sudah digunakan.',
             
             'bahagian.required' => 'Bahagian/Agensi/Institusi diperlukan.',
             'bahagian.string' => 'Bahagian/Agensi/Institusi mesti dalam bentuk teks.',
@@ -124,7 +124,7 @@ class AdministrationController extends Controller
             'nama' => 'required|string|max:255',
             'peranan' => 'required|string|exists:roles,name',
             'kad_pengenalan' => 'required|numeric|unique:Pengguna,kad_pengenalan',
-            'emel' => 'required|email|unique:Pengguna,emel',
+            'email' => 'required|email|unique:Pengguna,email',
             'bahagian' => 'required|string|max:255',
             'no_tel' => 'required|string',
             'jawatan' => 'required|string|max:255',
@@ -135,7 +135,7 @@ class AdministrationController extends Controller
         $user = Pengguna::create([
             'nama' => $validated['nama'],
             'kad_pengenalan' => $validated['kad_pengenalan'],
-            'emel' => $validated['emel'],
+            'email' => $validated['email'],
             'bahagian' => $validated['bahagian'],
             'no_tel' => $validated['no_tel'],
             'jawatan' => $validated['jawatan'],
@@ -188,7 +188,7 @@ class AdministrationController extends Controller
         $user->save();
         
         // Send the approval email
-        Mail::to($user->emel)->send(new AccountApprovedMail($user));
+        Mail::to($user->email)->send(new AccountApprovedMail($user));
 
         // Redirect back with a success message
         return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Akaun pengguna telah berjaya diluluskan dan kini aktif!');
@@ -208,7 +208,7 @@ class AdministrationController extends Controller
             'nama' => $user->nama,
             'role' => $user->role,
             'kad_pengenalan' => $user->kad_pengenalan,
-            'emel' => $user->emel,
+            'email' => $user->email,
             'bahagian' => $user->bahagian,
             'no_tel' => $user->no_tel,
             'jawatan' => $user->jawatan,
@@ -221,10 +221,10 @@ class AdministrationController extends Controller
         $user->delete();
 
         // Send the rejected email
-        Mail::to($user->emel)->send(new UserRejectionMail($user, $request->input('remark')));
+        Mail::to($user->email)->send(new UserRejectionMail($user, $request->input('remark')));
 
         // Redirect back with a success message
-        return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya ditolak dan dipadamkan.');
+        return redirect()->route('administration.pengurusan_pengguna')->with('successReject', 'Pengguna berjaya ditolak dan dipadamkan.');
     }
     
     public function edit_pengguna($id) {
@@ -247,9 +247,9 @@ class AdministrationController extends Controller
             'kad_pengenalan.required' => 'Kad Pengenalan diperlukan.',
             'kad_pengenalan.numeric' => 'Kad Pengenalan mesti dalam format nombor.',
             
-            'emel.required' => 'Alamat e-mel rasmi diperlukan.',
-            'emel.email' => 'Alamat e-mel rasmi mesti dalam format yang sah.',
-            'emel.unique' => 'Alamat e-mel rasmi ini sudah digunakan.',
+            'email.required' => 'Alamat e-mel rasmi diperlukan.',
+            'email.email' => 'Alamat e-mel rasmi mesti dalam format yang sah.',
+            'email.unique' => 'Alamat e-mel rasmi ini sudah digunakan.',
             
             'bahagian.required' => 'Bahagian/Agensi/Institusi diperlukan.',
             'bahagian.string' => 'Bahagian/Agensi/Institusi mesti dalam bentuk teks.',
@@ -275,7 +275,7 @@ class AdministrationController extends Controller
             'nama' => 'required|string|max:255',
             'role' => 'required|exists:roles,id',  // Make sure the role exists
             'kad_pengenalan' => 'required|numeric', // Unique check can be skipped for updating
-            'emel' => 'required|email|unique:Pengguna,emel,' . $id, // Update with unique constraint excluding current user's email
+            'email' => 'required|email|unique:Pengguna,email,' . $id, // Update with unique constraint excluding current user's email
             'bahagian' => 'required|string|max:255',
             'no_tel' => 'required|string',
             'jawatan' => 'required|string|max:255',
@@ -290,7 +290,7 @@ class AdministrationController extends Controller
         $user->update([
             'nama' => $validated['nama'],
             'kad_pengenalan' => $validated['kad_pengenalan'],
-            'emel' => $validated['emel'],
+            'email' => $validated['email'],
             'bahagian' => $validated['bahagian'],
             'no_tel' => $validated['no_tel'],
             'jawatan' => $validated['jawatan'],
