@@ -68,7 +68,7 @@
 
             <div class="d-flex justify-content-center mt-4">
                 <button class="btn btn-reset mr-3" type="button" onclick="resetForm()" style="width: 140px">Reset</button>
-                <button class="btn btn-primary" type="submit" style="width: 140px; background: rgba(33, 151, 225, 1);
+                <button class="btn btn-primary" type="submit" style="width: 210px; background: rgba(33, 151, 225, 1);
                     ">Sahkan Kata Laluan Baharu
                 </button>
             </div>

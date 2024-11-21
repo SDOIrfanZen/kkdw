@@ -67,7 +67,7 @@ class AdministrationController extends Controller
     }
 
     public function pengurusan_pengguna_main() {
-        return view('administration.homepage_pengurusan_pengguna');
+        return view('administration.pengurusan_pengguna.homepage_pengurusan_pengguna');
     }
 
     public function pengurusan_pengguna_list() {
@@ -76,12 +76,12 @@ class AdministrationController extends Controller
         ->orWhere('status', '2')
         ->get();
 
-        return view('administration.pengurusan_pengguna', compact('pengguna_belum_berdaftar', 'senaraiPengguna'));
+        return view('administration.pengurusan_pengguna.pengurusan_pengguna', compact('pengguna_belum_berdaftar', 'senaraiPengguna'));
     }
 
     public function tambah_pengguna_list() {
         $roles = Role::all();
-        return view ('administration.pengguna_create', compact('roles'));
+        return view ('administration.pengurusan_pengguna.pengguna_create', compact('roles'));
     }
 
     public function tambah_pengguna_process (Request $request) 
@@ -148,13 +148,13 @@ class AdministrationController extends Controller
         $user->assignRole($role); // Assign the role to the user
     
         // Redirect with success message
-        return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya ditambah!');
+        return redirect()->route('administration.pengurusan_pengguna.pengurusan_pengguna')->with('success', 'Pengguna berjaya ditambah!');
     }
 
     public function pengguna_approval_list($id) {
         $userProfile = Pengguna::findorFail($id);
         $roles = Role::all();
-        return view ('administration.pengguna_approval', compact('userProfile', 'roles'));
+        return view ('administration.pengurusan_pengguna.pengguna_approval', compact('userProfile', 'roles'));
     }
 
     public function pengguna_approval_process(Request $request, $id)
@@ -191,7 +191,7 @@ class AdministrationController extends Controller
         Mail::to($user->email)->send(new AccountApprovedMail($user));
 
         // Redirect back with a success message
-        return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Akaun pengguna telah berjaya diluluskan dan kini aktif!');
+        return redirect()->route('administration.pengurusan_pengguna.pengurusan_pengguna')->with('success', 'Akaun pengguna telah berjaya diluluskan dan kini aktif!');
     }
 
     public function pengguna_reject_process(Request $request, $id)
@@ -224,13 +224,13 @@ class AdministrationController extends Controller
         Mail::to($user->email)->send(new UserRejectionMail($user, $request->input('remark')));
 
         // Redirect back with a success message
-        return redirect()->route('administration.pengurusan_pengguna')->with('successReject', 'Pengguna berjaya ditolak dan dipadamkan.');
+        return redirect()->route('administration.pengurusan_pengguna.pengurusan_pengguna')->with('successReject', 'Pengguna berjaya ditolak dan dipadamkan.');
     }
     
     public function edit_pengguna($id) {
         $userProfile = Pengguna::findorFail($id);
         $roles = Role::all();
-        return view ('administration.pengguna_edit', compact('userProfile', 'roles'));
+        return view ('administration.pengurusan_pengguna.pengguna_edit', compact('userProfile', 'roles'));
     }
 
     public function update_pengguna(Request $request, $id)
@@ -310,7 +310,7 @@ class AdministrationController extends Controller
         }
 
         // Redirect with success message
-        return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya dikemaskini!');
+        return redirect()->route('administration.pengurusan_pengguna.pengurusan_pengguna')->with('success', 'Pengguna berjaya dikemaskini!');
     }
 
     public function update_pengguna_password(Request $request, $id)
@@ -344,7 +344,13 @@ class AdministrationController extends Controller
         
         $user->delete();
         
-        return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya dihapus.');
+        return redirect()->route('administration.pengurusan_pengguna.pengurusan_pengguna')->with('success', 'Pengguna berjaya dihapus.');
+    }
+
+    // pengurusan data
+
+    public function pengurusan_data_main() {
+        return view('administration.pengurusan_data.homepage_pengurusan_data');
     }
 
 

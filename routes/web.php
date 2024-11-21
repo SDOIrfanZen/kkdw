@@ -70,6 +70,14 @@ Route::put('update-pengguna/{id}', [AdministrationController::class, 'update_pen
 Route::put('update-pengguna-password/{id}', [AdministrationController::class, 'update_pengguna_password'])->name('administration.update_pengguna_password');
 Route::delete('delete-pengguna/{id}', [AdministrationController::class, 'delete_pengguna'])->name('administration.delete_pengguna');
 
+// pengurusan data
+route::get('pengurusan-data', [AdministrationController::class, 'pengurusan_data_main'])->name('administration.pengurusan_pengguna_data');
+
+
+
+route::get('reset-password-try', function () {
+    return view('auth.reset-password_backup');
+});
 
 route::get('give-permission-to-role', function () {
 
