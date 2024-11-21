@@ -13,7 +13,7 @@
                  class="logo-image"
                  style="width: 302px; height: 279px; transform: translateY(78px) translateX(42px);"> <!-- Adjust width as needed -->
         </div>      
-        <form method="post" action="{{ route('password.email') }}">
+        <form method="post" action="{{ route('password.update') }}">
             @csrf
             <div class="text-center mb-5 mt-3">
                 <!-- Display General Error Messages -->
@@ -29,11 +29,14 @@
                         {{ session()->get('status') }}
                     </div>
                 @endif
-                <h2><strong>Terlupa Kata Laluan ?</strong></h2>
-                <p>Sila masukkan email anda untuk memohon reset semula kata laluan.</p>
+                <h2><strong>Tetapkan Semula Kata Laluan</strong></h2>
+                <p>Sila masukkan kata laluan baharu anda untuk mengemas kini akaun anda.</p>
             </div>
+
+            <input type="hidden" name="token" value="{{request()->token}}">
+            <input type="hidden" name="email" value="{{request()->email}}">
         
-            <!-- Email Row -->
+            <!-- Password Row -->
             <div class="form-group row justify-content-center">
                 <div class="col-sm-12 col-md-8 col-lg-10"> <!-- Increased column width here -->
                     <div class="input-group">
@@ -43,15 +46,30 @@
                                 <img src="{{ asset('images/user.png') }}" alt="Custom Icon" style="width: 20px; height: 20px;">
                             </span>
                         </div>
-                        <input class="form-control" type="email" name="email" placeholder="example@kkdw.gov.my">
+                        <input class="form-control" type="password" name="password" placeholder="********">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Password Confirmation Row -->
+            <div class="form-group row justify-content-center">
+                <div class="col-sm-12 col-md-8 col-lg-10"> <!-- Increased column width here -->
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <!-- Custom Icon as Background -->
+                            <span class="input-group-text" style="background-color: white; border: 1px solid #ccc;">
+                                <img src="{{ asset('images/user.png') }}" alt="Custom Icon" style="width: 20px; height: 20px;">
+                            </span>
+                        </div>
+                        <input class="form-control" type="password" name="password_confirmation" placeholder="********">
                     </div>
                 </div>
             </div>
 
             <div class="d-flex justify-content-center mt-4">
-                <a href="{{ route('auth.login') }}" style="width: 146px" class="btn btn-secondary mr-3">Kembali</a>
-                <button class="btn btn-primary" type="submit" style="width: 146px; background: rgba(33, 151, 225, 1);
-                    ">Reset Kata Laluan
+                <button class="btn btn-reset mr-3" type="button" onclick="resetForm()" style="width: 140px">Reset</button>
+                <button class="btn btn-primary" type="submit" style="width: 140px; background: rgba(33, 151, 225, 1);
+                    ">Sahkan Kata Laluan Baharu
                 </button>
             </div>
         </form>
@@ -60,4 +78,11 @@
     </div>
 </div>
 
+<script>
+    function resetForm() {
+        // Clear the input fields
+        document.querySelector('input[name="kad_pengenalan"]').value = '';
+        document.querySelector('input[name="kata_laluan"]').value = '';
+    }
+</script>
 @endsection

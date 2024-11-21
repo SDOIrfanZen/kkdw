@@ -65,7 +65,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#!">
+                        <a class="nav-link" href="{{ route('administration.pengurusan_pengguna_data') }}">
                             <img src="{{ asset('images/pengurusan-data.svg') }}" alt="Pengurusan Data" class="nav-icon"> Pengurusan Data
                         </a>
                     </li>
