@@ -47,11 +47,19 @@
                     
                     <div class="form-group col-md-4">
                         <label for="bahagian"><strong>Bahagian / Agensi / Institusi</strong></label>
-                        <input class="form-control" type="text" name="bahagian" value="{{ old('bahagian') }}" placeholder="Bahagian / Agensi / Institusi" required>
+                        <select class="form-control" name="bahagian" id="bahagian" required>
+                            <option value="" disabled selected>Sila Pilih</option>
+                            @foreach($bahagian as $item)
+                                <option value="{{ $item->id }}" {{ old('bahagian') == $item->id ? 'selected' : '' }}>
+                                    {{ $item->name }}
+                                </option>
+                            @endforeach
+                        </select>
                         @error('bahagian')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
+                    
                 </div>
             
                 <div class="form-row mb-3">
@@ -65,9 +73,9 @@
                     </div>
                     
                     <div class="form-group col-md-4">
-                        <label for="emel"><strong>Alamat E-mel Rasmi</strong></label>
-                        <input class="form-control" type="email" name="emel" value="{{ old('emel') }}" placeholder="Alamat E-mel Rasmi" required>
-                        @error('emel')
+                        <label for="email"><strong>Alamat E-mel Rasmi</strong></label>
+                        <input class="form-control" type="email" name="email" value="{{ old('email') }}" placeholder="Alamat E-mel Rasmi" required>
+                        @error('email')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>

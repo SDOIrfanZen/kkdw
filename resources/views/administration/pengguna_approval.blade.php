@@ -77,7 +77,7 @@ form .btn-reset {
                     </div>
                     <div class="col-md-3 label-column">Alamat e-mel rasmi</div>
                     <div class="col-md-3">
-                        <input readonly class="form-control" name="emel" value="{{ $userProfile->emel }}">
+                        <input readonly class="form-control" name="email" value="{{ $userProfile->email }}">
                     </div>
                 </div>
                 <div class="row pb-2">
@@ -126,8 +126,8 @@ form .btn-reset {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-danger">Tolak</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="width: 20%">Batal</button>
+                    <button type="submit" class="btn btn-danger" style="width: 20%">Tolak</button>
                 </div>
             </form>
         </div>

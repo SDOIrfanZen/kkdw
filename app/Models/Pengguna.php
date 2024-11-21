@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Peranan;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable; // Make sure to use Authenticatable
 
@@ -13,6 +14,7 @@ class Pengguna extends Authenticatable // Change this line
     use HasRoles;
     use HasFactory;
     use Notifiable;
+    use CanResetPassword;
 
     protected $table = 'pengguna';
 
@@ -22,7 +24,7 @@ class Pengguna extends Authenticatable // Change this line
         'bahagian',
         'jawatan',
         'peranan',
-        'emel',
+        'email',
         'no_tel',
         'status',
         'kata_laluan'
@@ -34,5 +36,10 @@ class Pengguna extends Authenticatable // Change this line
     public function Peranan()
     {
         return $this->belongsTo(Peranan::class, 'peranan', 'id');
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->kata_laluan; 
     }
 }

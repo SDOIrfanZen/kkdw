@@ -13,20 +13,7 @@
                  class="logo-image"
                  style="width: 302px; height: 279px; transform: translateY(78px) translateX(42px);"> <!-- Adjust width as needed -->
         </div>      
-        <form method="post" action="{{ route('auth.login_process') }}">
-            <!-- Display General Error Messages -->
-            @if ($errors->any())
-            <div class="alert alert-danger">
-                @foreach ($errors->all() as $error)
-                    <div>{{ $error }}</div>
-                @endforeach
-            </div>
-            @endif
-            @if (session()->has('status'))
-                <div class="alert alert-success">
-                    {{ session()->get('status') }}
-                </div>
-            @endif
+        <form method="post" action="{{ route('password.update') }}">
             @csrf
             <div class="text-center mb-5 mt-3">
                 <!-- Display General Error Messages -->
@@ -37,10 +24,19 @@
                     @endforeach
                 </div>
                 @endif
-                <h2><strong>LOG MASUK</strong></h2>
+                @if (session()->has('status'))
+                    <div class="alert alert-success">
+                        {{ session()->get('status') }}
+                    </div>
+                @endif
+                <h2><strong>Tetapkan Semula Kata Laluan</strong></h2>
+                <p>Sila masukkan kata laluan baharu anda untuk mengemas kini akaun anda.</p>
             </div>
+
+            <input type="hidden" name="token" value="{{request()->token}}">
+            <input type="hidden" name="email" value="{{request()->email}}">
         
-            <!-- ID Pengguna Row -->
+            <!-- Password Row -->
             <div class="form-group row justify-content-center">
                 <div class="col-sm-12 col-md-8 col-lg-10"> <!-- Increased column width here -->
                     <div class="input-group">
@@ -50,48 +46,31 @@
                                 <img src="{{ asset('images/user.png') }}" alt="Custom Icon" style="width: 20px; height: 20px;">
                             </span>
                         </div>
-                        <input class="form-control @error('kad_pengenalan') is-invalid @enderror" type="text" name="kad_pengenalan" placeholder="ID Pengguna" value="{{ old('kad_pengenalan') }}">
+                        <input class="form-control" type="password" name="password" placeholder="********">
                     </div>
-                    @error('kad_pengenalan')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
                 </div>
             </div>
-            
-            <!-- Kata Laluan Row -->
+
+            <!-- Password Confirmation Row -->
             <div class="form-group row justify-content-center">
                 <div class="col-sm-12 col-md-8 col-lg-10"> <!-- Increased column width here -->
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <!-- Custom Icon for Password -->
+                            <!-- Custom Icon as Background -->
                             <span class="input-group-text" style="background-color: white; border: 1px solid #ccc;">
-                                <img src="{{ asset('images/lock.png') }}" alt="Password Icon" style="width: 20px; height: 20px;">
+                                <img src="{{ asset('images/user.png') }}" alt="Custom Icon" style="width: 20px; height: 20px;">
                             </span>
                         </div>
-                        <input class="form-control @error('kata_laluan') is-invalid @enderror" type="password" name="kata_laluan" placeholder="Kata Laluan" value="{{ old('kata_laluan') }}">
+                        <input class="form-control" type="password" name="password_confirmation" placeholder="********">
                     </div>
-                    @error('kata_laluan')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
                 </div>
-            </div>
-            
-        
-            
-        
-            <div class="d-flex justify-content-center mt-4">
-                <button class="btn btn-primary mr-3" type="submit" style="width: 135px; background: rgba(33, 151, 225, 1);
-                    ">Log Masuk
-                </button>
-                <button class="btn btn-reset" type="button" onclick="resetForm()" style="width: 135px">Reset</button>
             </div>
 
             <div class="d-flex justify-content-center mt-4">
-                <a href="{{ route('auth.register') }}" class="d-flex align-items-center mr-3" style="font-size: 14px;">
-                    <img src="{{ asset('images/pendaftaranBaharu.png') }}" alt="Custom Icon" style="width: 18px; height: 18px; margin-right: 8px;">
-                    Pendaftaran Baharu
-                </a>
-                <a href="{{ route('password.request') }}" style="font-size: 14px; margin-right: 34px">Lupa Kata Laluan</a>
+                <button class="btn btn-reset mr-3" type="button" onclick="resetForm()" style="width: 140px">Reset</button>
+                <button class="btn btn-primary" type="submit" style="width: 140px; background: rgba(33, 151, 225, 1);
+                    ">Sahkan Kata Laluan Baharu
+                </button>
             </div>
         </form>
         

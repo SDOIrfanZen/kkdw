@@ -42,7 +42,7 @@ class AdminUserRegistrationNotification extends Mailable
             view: 'emails.admin.registration_notification',
             with: [
                 'userName' => $this->user->nama,
-                'userEmail' => $this->user->emel,
+                'userEmail' => $this->user->email,
                 'userPhone' => $this->user->no_tel,
             ]
         );

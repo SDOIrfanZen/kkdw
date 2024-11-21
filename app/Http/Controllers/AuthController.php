@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengguna;
+use App\Models\Agensi;
 use App\Mail\UserRegistrationMail;
 use App\Mail\AdminUserRegistrationNotification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
+use Illuminate\Auth\Events\PasswordReset;
 
 class AuthController extends Controller
 {
@@ -68,13 +72,65 @@ class AuthController extends Controller
         return redirect()->intended(route('administration.manage_account'));
     }
 
+    public function forgotPassword(Request $request) 
+    {
+        // Validate the email
+        $request->validate([
+            'email' => 'required|email',
+        ]);
 
+        // Send the reset link to the user's email
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
 
+        // Check if the status is successful or not
+        if ($status === Password::RESET_LINK_SENT) {
+            return back()->with(['status' => 'Pautan tetapan semula kata laluan telah dihantar ke emel anda!']);
+        } else {
+            return back()->withErrors(['email' => 'Kami tidak dapat mencari pengguna dengan emel itu.']);
+        }
+    }
 
+    public function resetPassword(Request $request)
+    {
+        // Validate incoming request
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
 
+        // Custom logic for password reset
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (Pengguna $pengguna, string $password) {
+                // Use 'kata_laluan' column instead of 'password'
+                $pengguna->forceFill([
+                    'kata_laluan' => Hash::make($password),
+                ])->setRememberToken(Str::random(60));
+
+                $pengguna->save();
+
+                // Fire password reset event
+                event(new PasswordReset($pengguna));
+            }
+        );
+
+        // Return response based on the password reset status
+        if ($status === Password::PASSWORD_RESET) {
+                    return redirect()->route('auth.login')->with('status', 'Kata laluan anda telah berjaya ditetapkan semula!');
+         } else {
+                    return back()->withErrors(['email' => [__($status)]]);
+            }
+    }
+    
 
     public function showRegisterForm() {
-        return view('auth.register');
+
+        $bahagian = Agensi::get();
+
+        return view('auth.register', compact('bahagian'));
     }
 
     public function registration_process(Request $request)
@@ -85,7 +141,7 @@ class AuthController extends Controller
             'kad_pengenalan' => 'required|string|max:20|unique:pengguna',
             'bahagian' => 'required|string|max:255',
             'jawatan' => 'required|string|max:255',
-            'emel' => 'required|string|email|max:255|unique:pengguna',
+            'email' => 'required|string|email|max:255|unique:pengguna',
             'no_tel' => 'required|string|max:15',
             'kata_laluan' => 'required|string|min:8',
         ], [
@@ -105,11 +161,11 @@ class AuthController extends Controller
             'jawatan.string' => 'Jawatan must be a valid string.',
             'jawatan.max' => 'Jawatan cannot exceed 255 characters.',
         
-            'emel.required' => 'Emel is required.',
-            'emel.string' => 'Emel must be a valid string.',
-            'emel.email' => 'Emel must be a valid email address.',
-            'emel.max' => 'Emel cannot exceed 255 characters.',
-            'emel.unique' => 'Emel telah wujud.',
+            'email.required' => 'email is required.',
+            'email.string' => 'email must be a valid string.',
+            'email.email' => 'email must be a valid email address.',
+            'email.max' => 'email cannot exceed 255 characters.',
+            'email.unique' => 'email telah wujud.',
         
             'no_tel.required' => 'No Tel is required.',
             'no_tel.string' => 'No Tel must be a valid string.',
@@ -119,19 +175,22 @@ class AuthController extends Controller
             'kata_laluan.string' => 'Kata Laluan must be a valid string.',
             'kata_laluan.min' => 'Kata Laluan must be at least 8 characters.',
         ]);
+
+        // Retrieve the bahagian name based on the selected ID
+        $bahagianName = Agensi::where('id', $request->bahagian)->value('name');
         
         $user = Pengguna::create([
             'nama' => $request->nama,
             'kad_pengenalan' => $request->kad_pengenalan,
-            'bahagian' => $request->bahagian,
+            'bahagian' => $bahagianName,
             'jawatan' => $request->jawatan,
-            'emel' => $request->emel,
+            'email' => $request->email,
             'no_tel' => $request->no_tel,
             'status' => 0, // New users are set as 0 = 'pending'
             'kata_laluan' => Hash::make($request->kata_laluan),
         ]);
 
-        Mail::to($user->emel)->send(new UserRegistrationMail($user));
+        Mail::to($user->email)->send(new UserRegistrationMail($user));
 
          // Send email to super admins (role_id = 1)
         $superAdmins = Pengguna::whereHas('roles', function ($query) {
@@ -140,11 +199,11 @@ class AuthController extends Controller
 
         foreach ($superAdmins as $superAdmin) {
             // Send the registration notification email to each super admin
-            Mail::to($superAdmin->emel)->send(new AdminUserRegistrationNotification($user));
+            Mail::to($superAdmin->email)->send(new AdminUserRegistrationNotification($user));
         }
 
         // Redirect with success message
-        return redirect()->back()->with('success', 'Terima kasih kerana menghantar pendaftaran. Permohonan anda sedang diproses, dan sila semak emel anda untuk maklumat lanjut.');
+        return redirect()->back()->with('success', 'Terima kasih kerana menghantar pendaftaran. Permohonan anda sedang diproses, dan sila semak email anda untuk maklumat lanjut.');
     }
 
     public function logout(Request $request)

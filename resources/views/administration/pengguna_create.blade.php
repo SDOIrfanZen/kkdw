@@ -86,9 +86,9 @@
                         </div>
                         <div class="col-md-3 label-column">Alamat e-mel rasmi</div>
                         <div class="col-md-3">
-                            <input class="form-control @error('emel') is-invalid @enderror" name="emel"
-                                value="{{ old('emel') }}">
-                            @error('emel')
+                            <input class="form-control @error('email') is-invalid @enderror" name="email"
+                                value="{{ old('email') }}">
+                            @error('email')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>

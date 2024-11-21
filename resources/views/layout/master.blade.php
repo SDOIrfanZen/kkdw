@@ -3,12 +3,18 @@
     <head>
         @include('layout.header')
     </head>
-    <body style="padding-top: 7rem; padding-bottom: 7rem">
-        <!-- Page Content-->
-        <div class="container-fluid px-4 px-lg-5">
-            @yield('content')
-        </div>
-        
+    <body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
+        <!-- Header -->
+        @include('layout.header')
+
+        <!-- Page Content -->
+        <main style="flex: 1; padding-top: 7rem; padding-bottom: 5rem;">
+            <div>
+                @yield('content')
+            </div>
+        </main>
+
+        <!-- Footer -->
         @include('layout.footer')
     </body>
 </html>
