@@ -8,6 +8,9 @@
             <i class="fas fa-users-cog mr-2"></i> Pengurusan Pengguna > Peranan
         </div>
         <div class="card-body">
+            <div class="mb-3">
+                <h4><strong>SENARAI PERANAN</strong></h4>
+            </div>
             <table id="rolesTable" class="table">
                 <thead class="thead-dark">
                     <tr style="background: rgba(222, 225, 230, 1);">

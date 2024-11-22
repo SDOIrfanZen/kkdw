@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengguna;
-use App\Models\RejectedPengguna;
 use Illuminate\Http\Request;
+use App\Mail\UserRejectionMail;
+use App\Models\RejectedPengguna;
+use App\Mail\AccountApprovedMail;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Mail\AccountApprovedMail;
-use App\Mail\UserRejectionMail;
 use Illuminate\Support\Facades\Mail;
+use Spatie\Permission\Models\Permission;
 
 
 class AdministrationController extends Controller
@@ -191,7 +192,7 @@ class AdministrationController extends Controller
         Mail::to($user->email)->send(new AccountApprovedMail($user));
 
         // Redirect back with a success message
-        return redirect()->route('administration.pengurusan_pengguna.pengurusan_pengguna')->with('success', 'Akaun pengguna telah berjaya diluluskan dan kini aktif!');
+        return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Akaun pengguna telah berjaya diluluskan dan kini aktif!');
     }
 
     public function pengguna_reject_process(Request $request, $id)
@@ -224,7 +225,7 @@ class AdministrationController extends Controller
         Mail::to($user->email)->send(new UserRejectionMail($user, $request->input('remark')));
 
         // Redirect back with a success message
-        return redirect()->route('administration.pengurusan_pengguna.pengurusan_pengguna')->with('successReject', 'Pengguna berjaya ditolak dan dipadamkan.');
+        return redirect()->route('administration.pengurusan_pengguna')->with('successReject', 'Pengguna berjaya ditolak dan dipadamkan.');
     }
     
     public function edit_pengguna($id) {
@@ -310,7 +311,7 @@ class AdministrationController extends Controller
         }
 
         // Redirect with success message
-        return redirect()->route('administration.pengurusan_pengguna.pengurusan_pengguna')->with('success', 'Pengguna berjaya dikemaskini!');
+        return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya dikemaskini!');
     }
 
     public function update_pengguna_password(Request $request, $id)
@@ -344,7 +345,7 @@ class AdministrationController extends Controller
         
         $user->delete();
         
-        return redirect()->route('administration.pengurusan_pengguna.pengurusan_pengguna')->with('success', 'Pengguna berjaya dihapus.');
+        return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya dihapus.');
     }
 
     public function senarai_peranan()
@@ -354,6 +355,13 @@ class AdministrationController extends Controller
 
         // Return the view with the roles data
         return view('administration.pengurusan_pengguna.peranan_list', compact('roles'));
+    }
+
+    public function kemaskini_peranan($id)
+    {
+        $role = Role::findOrFail($id);
+        $permissions = Permission::all(); 
+        return view('administration.pengurusan_pengguna.kemaskini_peranan', compact('role', 'permissions'));
     }
 
     // pengurusan data

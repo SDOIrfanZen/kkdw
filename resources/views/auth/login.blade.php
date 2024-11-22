@@ -30,12 +30,10 @@
             @csrf
             <div class="text-center mb-5 mt-3">
                 <!-- Display General Error Messages -->
-                @if ($errors->any())
-                <div class="alert alert-danger">
-                    @foreach ($errors->all() as $error)
-                        <div>{{ $error }}</div>
-                    @endforeach
-                </div>
+                @if (session('faillogin'))
+                    <div class="alert alert-danger">
+                        {{ session('faillogin') }}
+                    </div>
                 @endif
                 <h2><strong>LOG MASUK</strong></h2>
             </div>

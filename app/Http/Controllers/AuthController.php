@@ -39,30 +39,22 @@ class AuthController extends Controller
 
         if (!$user) {
             // Kad Pengenalan does not exist
-            return back()->withErrors([
-                'kad_pengenalan' => 'Kad Pengenalan tidak wujud.',
-            ]);
+            return back()->with('faillogin', 'Kad Pengenalan tidak wujud.');
         }
 
         if (!Hash::check($validatedData['kata_laluan'], $user->kata_laluan)) {
-            // Kata Laluan is incorrect
-            return back()->withErrors([
-                'kata_laluan' => 'Kata Laluan tidak sah.',
-            ]);
+           // Kata Laluan is incorrect
+            return back()->with('faillogin', 'Kata Laluan tidak sah.');
         }
 
         if ($user->status === "0") {
             // Status is "0", indicating the account is pending approval
-            return back()->withErrors([
-                'status' => 'Akaun anda belum diluluskan oleh pentadbir. Sila tunggu sehingga akaun anda disahkan.',
-            ]);
+        return back()->with('faillogin', 'Akaun anda belum diluluskan oleh pentadbir. Sila tunggu sehingga akaun anda disahkan.');
         }
 
         if ($user->status !== "1") {
             // Status is not "1", so login is not allowed
-            return back()->withErrors([
-                'status' => 'Akaun anda tidak aktif. Sila hubungi pentadbir.',
-            ]);
+            return back()->with('faillogin', 'Akaun anda tidak aktif. Sila hubungi pentadbir.');
         }
 
         // Log the user in if status is 1
