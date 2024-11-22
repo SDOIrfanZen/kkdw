@@ -347,10 +347,24 @@ class AdministrationController extends Controller
         return redirect()->route('administration.pengurusan_pengguna.pengurusan_pengguna')->with('success', 'Pengguna berjaya dihapus.');
     }
 
+    public function senarai_peranan()
+    {
+        // Fetch roles with their associated users and permissions
+        $roles = Role::with(['users', 'permissions'])->get();
+
+        // Return the view with the roles data
+        return view('administration.pengurusan_pengguna.peranan_list', compact('roles'));
+    }
+
     // pengurusan data
 
     public function pengurusan_data_main() {
         return view('administration.pengurusan_data.homepage_pengurusan_data');
+    }
+
+    // dashboard
+    public function dashboard_main() {
+        return view('administration.dashboard.homepage_dashboard');
     }
 
 

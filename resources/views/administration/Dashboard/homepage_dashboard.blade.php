@@ -25,14 +25,23 @@
 
 <div class="container-fluid centered-content">
     <!-- Image links centered in the middle -->
-    <a href="{{ route('administration.pengurusan_pengguna') }}" class="image-link">
-        <img src="{{ asset('images/pengguna-card.png') }}" alt="Image 1" class="img-fluid image-size">
-    </a>
-    <a href="{{ route('administration.senarai_peranan') }}" class="image-link">
-        <img src="{{ asset('images/peranan-card.png') }}" alt="Image 2" class="img-fluid image-size">
+    <a href="#" class="image-link">
+        <img src="{{ asset('images/d-infrastruktur.png') }}" alt="Image 1" class="img-fluid image-size">
     </a>
     <a href="#" class="image-link">
-        <img src="{{ asset('images/capaian-card.png') }}" alt="Image 3" class="img-fluid image-size">
+        <img src="{{ asset('images/d-ekonomi.png') }}" alt="Image 2" class="img-fluid image-size">
+    </a>
+    <a href="#" class="image-link">
+        <img src="{{ asset('images/d-modal-insan.png') }}" alt="Image 3" class="img-fluid image-size">
+    </a>
+</div>
+
+<div class="container-fluid centered-content">
+    <a href="#" class="image-link">
+        <img src="{{ asset('images/d-usahawan.png') }}" alt="Image 1" class="img-fluid image-size">
+    </a>
+    <a href="#" class="image-link">
+        <img src="{{ asset('images/d-profil-kampung.png') }}" alt="Image 2" class="img-fluid image-size">
     </a>
 </div>
 

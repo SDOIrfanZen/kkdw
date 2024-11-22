@@ -70,8 +70,14 @@ Route::put('update-pengguna/{id}', [AdministrationController::class, 'update_pen
 Route::put('update-pengguna-password/{id}', [AdministrationController::class, 'update_pengguna_password'])->name('administration.update_pengguna_password');
 Route::delete('delete-pengguna/{id}', [AdministrationController::class, 'delete_pengguna'])->name('administration.delete_pengguna');
 
+route::get('senarai-peranan', [AdministrationController::class, 'senarai_peranan'])->name('administration.senarai_peranan');
+route::get('kemaskini-peranan/{id}', [AdministrationController::class, 'kemaskini_peranan'])->name('administration.kemaskini_peranan');
+
 // pengurusan data
 route::get('pengurusan-data', [AdministrationController::class, 'pengurusan_data_main'])->name('administration.pengurusan_pengguna_data');
+
+//dashboard
+route::get('dashboard', [AdministrationController::class, 'dashboard_main'])->name('administration.dashboard');
 
 
 
@@ -81,22 +87,25 @@ route::get('reset-password-try', function () {
 
 route::get('give-permission-to-role', function () {
 
-    $role = Role::findOrFail(1); //ICT
+    $role = Role::findOrFail(10); //R
     
-    $permission = Permission::findOrFail(1);
-    $permission1 = Permission::findOrFail(2);
-    $permission2 = Permission::findOrFail(3);
-    $permission3 = Permission::findOrFail(4);
-    $permission4 = Permission::findOrFail(5);
-    $permission5 = Permission::findOrFail(6);
-    // $permission6 = Permission::findOrFail(7);
-    // $permission7 = Permission::findOrFail(8);
-    // $permission8 = Permission::findOrFail(9);
-    // $permission9 = Permission::findOrFail(10);
-    // $permission10 = Permission::findOrFail(11);
-    // $permission11 = Permission::findOrFail(12);
+    $permission = Permission::findOrFail(13);
+    $permission1 = Permission::findOrFail(16);
+    $permission2 = Permission::findOrFail(20);
+    $permission3 = Permission::findOrFail(23);
+    $permission4 = Permission::findOrFail(24);
+    $permission5 = Permission::findOrFail(25);
+    $permission6 = Permission::findOrFail(25);
+    $permission7 = Permission::findOrFail(25);
+    $permission8 = Permission::findOrFail(22);
+    $permission9 = Permission::findOrFail(23);
+    $permission10 = Permission::findOrFail(24);
+    $permission11 = Permission::findOrFail(25);
+    $permission12 = Permission::findOrFail(24);
+    $permission13 = Permission::findOrFail(25);
 
     // $role->givePermissionTo($permission);
+    // $role->givePermissionTo([$permission, $permission1, $permission2, $permission3, $permission4, $permission5, $permission6, $permission7, $permission8, $permission9, $permission10, $permission11]);
     $role->givePermissionTo([$permission, $permission1, $permission2, $permission3, $permission4, $permission5]);
 });
 
@@ -111,3 +120,12 @@ Route::get('assign-role-to-user', function() {
 
 });
 
+Route::get('remove-permission-from-role', function () {
+    $role = Role::findOrFail(2); // Find the role by ID (e.g., ID 2)
+    $permission = Permission::findOrFail(6); // Find the specific permission by ID (e.g., ID 6)
+
+    // Revoke the specific permission from the role
+    $role->revokePermissionTo($permission);
+
+    return "Permission '{$permission->name}' has been revoked from role '{$role->name}'.";
+});

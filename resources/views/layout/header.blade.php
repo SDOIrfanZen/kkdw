@@ -55,7 +55,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#!">
+                        <a class="nav-link" href="{{ route('administration.dashboard') }}">
                             <img src="{{ asset('images/dashboard.svg') }}" alt="Dashboard" class="nav-icon"> Dashboard
                         </a>
                     </li>
