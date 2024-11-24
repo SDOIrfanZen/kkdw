@@ -72,6 +72,7 @@ Route::delete('delete-pengguna/{id}', [AdministrationController::class, 'delete_
 
 route::get('senarai-peranan', [AdministrationController::class, 'senarai_peranan'])->name('administration.senarai_peranan');
 route::get('kemaskini-peranan/{id}', [AdministrationController::class, 'kemaskini_peranan'])->name('administration.kemaskini_peranan');
+Route::put('kemaskini-peranan/{id}', [AdministrationController::class, 'update_peranan'])->name('administration.update_peranan');
 
 // pengurusan data
 route::get('pengurusan-data', [AdministrationController::class, 'pengurusan_data_main'])->name('administration.pengurusan_pengguna_data');

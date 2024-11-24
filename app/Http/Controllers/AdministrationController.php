@@ -364,6 +364,38 @@ class AdministrationController extends Controller
         return view('administration.pengurusan_pengguna.kemaskini_peranan', compact('role', 'permissions'));
     }
 
+    public function update_peranan(Request $request, $id)
+    {
+        // Validate the input
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'permissions' => 'array',
+            'permissions.*' => 'string',
+        ]);
+
+        // Find the role by ID
+        $role = Role::findOrFail($id);
+
+        // Update the role name
+        $role->name = $request->input('nama');
+        $role->save();
+
+        // Sync the selected permissions with the role
+        if ($request->has('permissions')) {
+            $permissions = Permission::whereIn('name', $request->input('permissions'))->get();
+            $role->syncPermissions($permissions);
+        } else {
+            // If no permissions are selected, revoke all permissions
+            $role->syncPermissions([]);
+        }
+
+        // Redirect back with a success message
+        return redirect()->route('administration.kemaskini_peranan', $id)
+                        ->with('success', 'Peranan berjaya dikemaskini.');
+    }
+
+
+
     // pengurusan data
 
     public function pengurusan_data_main() {

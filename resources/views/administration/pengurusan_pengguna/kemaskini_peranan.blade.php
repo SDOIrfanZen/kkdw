@@ -1,16 +1,22 @@
 @extends('layout.master')
 
 @section('content')
+    @if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
     <div class="container-fluid d-flex justify-content-center">
         <div class="card mt-4 mx-auto" style="width: 90%; border-radius: 8px;">
-            <div class="card-header d-flex align-items-center custom-card-header" style="background: rgba(8, 12, 85, 1); height: 3.5rem; color: white;">
+            <div class="card-header d-flex align-items-center custom-card-header"
+                style="background: rgba(8, 12, 85, 1); height: 3.5rem; color: white;">
                 <i class="fas fa-users-cog mr-2"></i> Pengurusan Pengguna > Peranan
             </div>
             <div class="card-body">
                 <div class="mb-3">
                     <h4><strong>KEMASKINI PERANAN</strong></h4>
                     <div class="container">
-                        <form action="" method="POST">
+                        <form action="{{ route('administration.update_peranan', $role->id) }}" method="POST">
                             @csrf
                             @method('PUT')
 
@@ -20,7 +26,8 @@
                                     <label for="role-name" class="form-label">Peranan</label>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" id="role-name" class="form-control" name="nama" value="{{ $role->name }}">
+                                    <input type="text" id="role-name" class="form-control" name="nama"
+                                        value="{{ $role->name }}">
                                 </div>
                                 <div class="col-md-3 d-flex align-items-center">
                                     <label for="status" class="form-label">Status</label>
@@ -38,7 +45,9 @@
                                     <div class="checkbox-group">
                                         @foreach ($permissions->whereBetween('id', [1, 6]) as $permission)
                                             <div class="form-check">
-                                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}" class="form-check-input" id="permission-{{ $permission->id }}" {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
+                                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
+                                                    class="form-check-input" id="permission-{{ $permission->id }}"
+                                                    {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
                                                 <label for="permission-{{ $permission->id }}" class="form-check-label">
                                                     {{ ucfirst(str_replace('_', ' ', $permission->name)) }}
                                                 </label>
@@ -53,7 +62,9 @@
                                     <div class="checkbox-group">
                                         @foreach ($permissions->whereBetween('id', [7, 11]) as $permission)
                                             <div class="form-check">
-                                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}" class="form-check-input" id="permission-{{ $permission->id }}" {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
+                                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
+                                                    class="form-check-input" id="permission-{{ $permission->id }}"
+                                                    {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
                                                 <label for="permission-{{ $permission->id }}" class="form-check-label">
                                                     {{ ucfirst(str_replace('_', ' ', $permission->name)) }}
                                                 </label>
@@ -68,7 +79,9 @@
                                     <div class="checkbox-group">
                                         @foreach ($permissions->whereBetween('id', [16, 22]) as $permission)
                                             <div class="form-check">
-                                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}" class="form-check-input" id="permission-{{ $permission->id }}" {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
+                                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
+                                                    class="form-check-input" id="permission-{{ $permission->id }}"
+                                                    {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
                                                 <label for="permission-{{ $permission->id }}" class="form-check-label">
                                                     {{ ucfirst(str_replace('_', ' ', $permission->name)) }}
                                                 </label>
@@ -86,7 +99,9 @@
                                     <div class="checkbox-group">
                                         @foreach ($permissions->whereBetween('id', [13, 15]) as $permission)
                                             <div class="form-check">
-                                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}" class="form-check-input" id="permission-{{ $permission->id }}" {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
+                                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
+                                                    class="form-check-input" id="permission-{{ $permission->id }}"
+                                                    {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
                                                 <label for="permission-{{ $permission->id }}" class="form-check-label">
                                                     {{ ucfirst(str_replace('_', ' ', $permission->name)) }}
                                                 </label>
@@ -101,7 +116,9 @@
                                     <div class="checkbox-group">
                                         @foreach ($permissions->whereBetween('id', [23, 25]) as $permission)
                                             <div class="form-check">
-                                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}" class="form-check-input" id="permission-{{ $permission->id }}" {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
+                                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
+                                                    class="form-check-input" id="permission-{{ $permission->id }}"
+                                                    {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
                                                 <label for="permission-{{ $permission->id }}" class="form-check-label">
                                                     {{ ucfirst(str_replace('_', ' ', $permission->name)) }}
                                                 </label>
@@ -116,7 +133,9 @@
                                     <div class="checkbox-group">
                                         @foreach ($permissions->whereBetween('id', [26, 28]) as $permission)
                                             <div class="form-check">
-                                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}" class="form-check-input" id="permission-{{ $permission->id }}" {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
+                                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
+                                                    class="form-check-input" id="permission-{{ $permission->id }}"
+                                                    {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
                                                 <label for="permission-{{ $permission->id }}" class="form-check-label">
                                                     {{ ucfirst(str_replace('_', ' ', $permission->name)) }}
                                                 </label>
@@ -132,7 +151,9 @@
                                     <div class="checkbox-group">
                                         @foreach ($permissions->whereBetween('id', [29, 41]) as $permission)
                                             <div class="form-check">
-                                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}" class="form-check-input" id="permission-{{ $permission->id }}" {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
+                                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
+                                                    class="form-check-input" id="permission-{{ $permission->id }}"
+                                                    {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
                                                 <label for="permission-{{ $permission->id }}" class="form-check-label">
                                                     {{ ucfirst(str_replace('_', ' ', $permission->name)) }}
                                                 </label>
