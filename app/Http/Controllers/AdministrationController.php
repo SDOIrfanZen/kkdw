@@ -231,7 +231,8 @@ class AdministrationController extends Controller
     public function edit_pengguna($id) {
         $userProfile = Pengguna::findorFail($id);
         $roles = Role::all();
-        return view ('administration.pengurusan_pengguna.pengguna_edit', compact('userProfile', 'roles'));
+        $permissions = Permission::all();
+        return view ('administration.pengurusan_pengguna.pengguna_edit', compact('userProfile', 'roles', 'permissions'));
     }
 
     public function update_pengguna(Request $request, $id)

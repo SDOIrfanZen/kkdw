@@ -147,7 +147,7 @@
 
                             <div class="row mt-4">
                                 <div class="col-md-4">
-                                    <h4>Audit Trail</h4>
+                                    <h4>Sistem</h4>
                                     <div class="checkbox-group">
                                         @foreach ($permissions->whereBetween('id', [29, 41]) as $permission)
                                             <div class="form-check">
@@ -166,7 +166,7 @@
                             <!-- Submit and Back Buttons -->
                             <div class="d-flex justify-content-end mt-4">
                                 <button type="submit" class="btn btn-primary">Kemaskini Peranan</button>
-                                <a href="" class="btn btn-secondary ms-2">Kembali</a>
+                                <a href="{{ route('administration.senarai_peranan') }}" class="btn btn-secondary ms-2">Kembali</a>
                             </div>
                         </form>
                     </div>

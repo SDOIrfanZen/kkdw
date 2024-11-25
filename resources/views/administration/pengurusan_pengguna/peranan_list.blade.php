@@ -18,7 +18,9 @@
                             <th>Peranan</th>
                             <th>Pengguna</th>
                             <th>Capaian</th>
+                            @can('Mengemaskini Peranan')
                             <th>Tindakan</th>
+                            @endcan
                         </tr>
                     </thead>
                     <tbody>
@@ -44,6 +46,7 @@
                                         Tiada capaian
                                     @endif
                                 </td>
+                                @can('Mengemaskini Peranan')
                                 <td class="text-center">
                                     <a href="{{ route('administration.kemaskini_peranan', $role->id) }}"
                                         class="d-flex justify-content-center align-items-center"
@@ -52,6 +55,7 @@
                                             height="18" style="cursor: pointer;">
                                     </a>
                                 </td>
+                                @endcan
                             </tr>
                         @endforeach
                     </tbody>

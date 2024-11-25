@@ -22,78 +22,123 @@
 
 <style>
     .custom-small-text {
-    font-size: 0.75rem; /* Adjust the size as needed */
-}
+        font-size: 0.75rem;
+        /* Adjust the size as needed */
+    }
 </style>
 
 <!-- Header: Welcome message and navbar -->
 <header>
     <!-- Line and Welcome Message above navbar -->
-    <div class="bg-primary text-white text-end py-1 fixed-top" style="background: linear-gradient(90deg, #0B1A93 0%, #03082D 100%);">
+    <div class="bg-primary text-white text-end py-1 fixed-top"
+        style="background: linear-gradient(90deg, #0B1A93 0%, #03082D 100%);">
         <h6 class="mb-0 me-5 custom-small-text"> <!-- Use custom class here -->
-            Selamat Datang {{Auth::user()->nama}}
+            Selamat Datang {{ Auth::user()->nama }}
         </h6> <!-- Welcome message -->
     </div>
-    
+
     <!-- Responsive navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark custom-navbar fixed-top" style="top: 1.4rem;">
         <div class="container-fluid d-flex justify-content-between">
-            
+
             <!-- Left Section (Logo) -->
             <div class="d-flex justify-content-start">
                 <a class="nav-link me-5" href="#!">
-                    <img src="{{ asset('images/kkdw-logo.svg') }}" alt="Laman Utama" class="nav-icon" style="width: 100px">
+                    <img src="{{ asset('images/kkdw-logo.svg') }}" alt="Laman Utama" class="nav-icon"
+                        style="width: 100px">
                 </a>
             </div>
-    
+
             <!-- Center Section (Nav Links) -->
             <div class="d-flex justify-content-center">
                 <ul class="navbar-nav mb-2 mb-lg-0 d-flex">
                     <li class="nav-item">
                         <a class="nav-link" href="#!">
-                            <img src="{{ asset('images/laman-utama.svg') }}" alt="Laman Utama" class="nav-icon"> Laman Utama
+                            <img src="{{ asset('images/laman-utama.svg') }}" alt="Laman Utama" class="nav-icon"> Laman
+                            Utama
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('administration.dashboard') }}">
-                            <img src="{{ asset('images/dashboard.svg') }}" alt="Dashboard" class="nav-icon"> Dashboard
-                        </a>
+                        @if (Gate::any([
+                                'Dashboard Utama',
+                                'Prestasi Perbelanjaan Negeri',
+                                'Dashboard Infrastruktur Asas & Laporan',
+                                'Dashboard Ekonomi & Laporan',
+                                'Dashboard Modal Insan & Laporan',
+                                'Dashboard Usahawan',
+                                'Dashboard Profil Kampung',
+                            ]))
+                            <a class="nav-link" href="{{ route('administration.dashboard') }}">
+                                <img src="{{ asset('images/dashboard.svg') }}" alt="Dashboard" class="nav-icon">
+                                Dashboard
+                            </a>
+                        @endif
                     </li>
                     <li class="nav-item">
+                        @if (Gate::any([
+                                'Prestasi Perbelanjaan Bahagian PP',
+                                'Prestasi Perbelanjaan Bahagian PRA',
+                                'Prestasi Perbelanjaan Bahagian K',
+                                'Prestasi Perbelanjaan Bahagian KR',
+                                'Prestasi Perbelanjaan Bahagian EK',
+                                'Prestasi Perbelanjaan Bahagian KD',
+                                'Prestasi Perbelanjaan Bahagian INFRA',
+                                'Prestasi Perbelanjaan Bahagian TW',
+                                'Prestasi Perbelanjaan Bahagian UD',
+                            ]))
                         <a class="nav-link" href="#!">
-                            <img src="{{ asset('images/prestasi-perbelanjaan-bahagian.svg') }}" alt="Prestasi Perbelanjaan Bahagian" class="nav-icon"> Prestasi Perbelanjaan Bahagian
+                            <img src="{{ asset('images/prestasi-perbelanjaan-bahagian.svg') }}"
+                                alt="Prestasi Perbelanjaan Bahagian" class="nav-icon"> Prestasi Perbelanjaan Bahagian
                         </a>
+                        @endif
                     </li>
                     <li class="nav-item">
+                        @if (Gate::any(['Muat Naik Data', 'Purata Nasional', 'Unjuran']))
                         <a class="nav-link" href="{{ route('administration.pengurusan_pengguna_data') }}">
-                            <img src="{{ asset('images/pengurusan-data.svg') }}" alt="Pengurusan Data" class="nav-icon"> Pengurusan Data
+                            <img src="{{ asset('images/pengurusan-data.svg') }}" alt="Pengurusan Data" class="nav-icon">
+                            Pengurusan Data
                         </a>
+                        @endif
                     </li>
                     <li class="nav-item">
-                        @can('Melihat Senarai Pengguna')
-                        <a class="nav-link" href="{{route('administration.pengurusan_pengguna_main')}}">
-                            <img src="{{ asset('images/pengurusan-pengguna.svg') }}" alt="Pengurusan Pengguna" class="nav-icon"> Pengurusan Pengguna
-                        </a>
-                        @endcan
+                        @if (Gate::any([
+                                'Melihat Senarai Pengguna',
+                                'Melihat Senarai Peranan',
+                            ]))
+                            <a class="nav-link" href="{{ route('administration.pengurusan_pengguna_main') }}">
+                                <img src="{{ asset('images/pengurusan-pengguna.svg') }}" alt="Pengurusan Pengguna"
+                                    class="nav-icon"> Pengurusan Pengguna
+                            </a>
+                        @endif
                     </li>
                     <li class="nav-item">
+                        @if (Gate::any([
+                                'Papar Senarai Log',
+                                'Carian Log (hari atau pengguna)',
+                                'Export Excel/PDF',
+                            ]))
                         <a class="nav-link" href="#!">
-                            <img src="{{ asset('images/audit-trail.svg') }}" alt="Audit Trail" class="nav-icon"> Audit Trail
+                            <img src="{{ asset('images/audit-trail.svg') }}" alt="Audit Trail" class="nav-icon"> Audit
+                            Trail
                         </a>
+                        @endif
                     </li>
                 </ul>
             </div>
-    
+
             <!-- Right Section (Profile Dropdown) -->
             <div class="d-flex justify-content-end">
                 <div class="nav-item dropdown ms-5">
-                    <a class="nav-link dropdown-toggle fs-5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img class="img-xs rounded-circle" src="{{ asset('images/example-profile-picture.svg') }}" alt="Default Profile Image" width="60%">
+                    <a class="nav-link dropdown-toggle fs-5" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class="img-xs rounded-circle" src="{{ asset('images/example-profile-picture.svg') }}"
+                            alt="Default Profile Image" width="60%">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{route('administration.manage_account')}}">View Information</a></li>
+                        <li><a class="dropdown-item" href="{{ route('administration.manage_account') }}">View
+                                Information</a></li>
                         <li>
-                            <form action="{{route('auth.logout')}}" method="POST">
+                            <form action="{{ route('auth.logout') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="dropdown-item">Sign Out</button>
                             </form>
@@ -103,5 +148,5 @@
             </div>
         </div>
     </nav>
-    
+
 </header>
