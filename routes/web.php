@@ -68,6 +68,7 @@ Route::delete('pengguna_reject/{id}', [AdministrationController::class, 'penggun
 route::get('edit-pengguna/{id}', [AdministrationController::class, 'edit_pengguna'])->name('administration.edit_pengguna');
 Route::put('update-pengguna/{id}', [AdministrationController::class, 'update_pengguna'])->name('administration.update_pengguna');
 Route::put('update-pengguna-password/{id}', [AdministrationController::class, 'update_pengguna_password'])->name('administration.update_pengguna_password');
+Route::put('update-pengguna-peranan/{id}', [AdministrationController::class, 'update_pengguna_peranan'])->name('administration.update_pengguna_peranan');
 Route::delete('delete-pengguna/{id}', [AdministrationController::class, 'delete_pengguna'])->name('administration.delete_pengguna');
 
 route::get('senarai-peranan', [AdministrationController::class, 'senarai_peranan'])->name('administration.senarai_peranan');

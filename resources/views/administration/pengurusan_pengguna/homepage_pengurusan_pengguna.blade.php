@@ -31,9 +31,9 @@
     <a href="{{ route('administration.senarai_peranan') }}" class="image-link">
         <img src="{{ asset('images/peranan-card.png') }}" alt="Image 2" class="img-fluid image-size">
     </a>
-    <a href="#" class="image-link">
+    {{-- <a href="#" class="image-link">
         <img src="{{ asset('images/capaian-card.png') }}" alt="Image 3" class="img-fluid image-size">
-    </a>
+    </a> --}}
 </div>
 
 @endsection
