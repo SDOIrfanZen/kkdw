@@ -13,13 +13,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Permission;
 
-
 class AdministrationController extends Controller
 {
-    public function manage_account() 
+    public function manage_account()
     {
         $userProfile = Auth::user();
-        return view ('administration.manage_account', compact('userProfile'));
+        return view('administration.manage_account', compact('userProfile'));
     }
 
     public function manage_account_profile(Request $request)
@@ -36,7 +35,7 @@ class AdministrationController extends Controller
         // Update the user's profile
         $user->nama = $validatedData['nama'];
         $user->no_tel = $validatedData['no_tel'];
-        
+
         // Save the updated user information
         $user->save();
 
@@ -44,90 +43,93 @@ class AdministrationController extends Controller
         return redirect()->back()->with('success', 'Maklumat berjaya dikemaskini.');
     }
 
-    public function manage_account_password (Request $request)
+    public function manage_account_password(Request $request)
     {
         // Validate the request
-    $request->validate([
-        'kata_laluan_baharu' => [
-            'required',
-            'min:8',
-            'max:12',
-            'regex:/[A-Z]/', // At least one uppercase letter
-            'regex:/[a-z]/', // At least one lowercase letter
-            'regex:/[0-9]/', // At least one number
-            'regex:/[\W_]/', // At least one symbol (non-word character or special character)
-            function ($attribute, $value, $fail) use ($request) {
-                // Custom validation to ensure password does not match Kad Pengenalan
-                if ($value === $request->kad_pengenalan) {
-                    $fail('Kata laluan tidak boleh sama dengan Kad Pengenalan.');
-                }
-            },
-        ],
-        'kata_laluan_pengesahan' => 'required|same:kata_laluan_baharu', // Ensure confirmation matches new password
-    ], [
-        'kata_laluan_baharu.required' => 'Sila masukkan kata laluan baharu untuk kemas kini.',
-        'kata_laluan_baharu.min' => 'Kata laluan baharu mesti sekurang-kurangnya 8 aksara.',
-        'kata_laluan_baharu.max' => 'Kata laluan baharu tidak boleh melebihi 12 aksara.',
-        'kata_laluan_baharu.regex' => 'Kata laluan baharu mesti mengandungi sekurang-kurangnya satu huruf besar, satu huruf kecil, satu nombor, dan satu simbol.',
-        'kata_laluan_pengesahan.required' => 'Sila masukkan kata laluan pengesahan.',
-        'kata_laluan_pengesahan.same' => 'Kata laluan baharu dan kata laluan pengesahan tidak sepadan. Sila pastikan kedua-duanya adalah sama.',
-    ]);
-    
-        
+        $request->validate(
+            [
+                'kata_laluan_baharu' => [
+                    'required',
+                    'min:8',
+                    'max:12',
+                    'regex:/[A-Z]/', // At least one uppercase letter
+                    'regex:/[a-z]/', // At least one lowercase letter
+                    'regex:/[0-9]/', // At least one number
+                    'regex:/[\W_]/', // At least one symbol (non-word character or special character)
+                    function ($attribute, $value, $fail) use ($request) {
+                        // Custom validation to ensure password does not match Kad Pengenalan
+                        if ($value === $request->kad_pengenalan) {
+                            $fail('Kata laluan tidak boleh sama dengan Kad Pengenalan.');
+                        }
+                    },
+                ],
+                'kata_laluan_pengesahan' => 'required|same:kata_laluan_baharu', // Ensure confirmation matches new password
+            ],
+            [
+                'kata_laluan_baharu.required' => 'Sila masukkan kata laluan baharu untuk kemas kini.',
+                'kata_laluan_baharu.min' => 'Kata laluan baharu mesti sekurang-kurangnya 8 aksara.',
+                'kata_laluan_baharu.max' => 'Kata laluan baharu tidak boleh melebihi 12 aksara.',
+                'kata_laluan_baharu.regex' => 'Kata laluan baharu mesti mengandungi sekurang-kurangnya satu huruf besar, satu huruf kecil, satu nombor, dan satu simbol.',
+                'kata_laluan_pengesahan.required' => 'Sila masukkan kata laluan pengesahan.',
+                'kata_laluan_pengesahan.same' => 'Kata laluan baharu dan kata laluan pengesahan tidak sepadan. Sila pastikan kedua-duanya adalah sama.',
+            ],
+        );
+
         $user = Auth::user();
-    
+
         // Update the password
         $user->kata_laluan = Hash::make($request->kata_laluan_baharu); // Hash the new password
         $user->save(); // Save the updated user
-    
+
         // Redirect with success message
         return back()->with('success', 'Kata laluan telah berjaya dikemaskini.');
     }
 
-    public function pengurusan_pengguna_main() {
+    public function pengurusan_pengguna_main()
+    {
         return view('administration.pengurusan_pengguna.homepage_pengurusan_pengguna');
     }
 
-    public function pengurusan_pengguna_list() {
+    public function pengurusan_pengguna_list()
+    {
         $pengguna_belum_berdaftar = Pengguna::where('status', '0')->get();
-        $senaraiPengguna = Pengguna::where('status', '1')
-        ->orWhere('status', '2')
-        ->get();
+        $senaraiPengguna = Pengguna::where('status', '1')->orWhere('status', '2')->get();
 
         return view('administration.pengurusan_pengguna.pengurusan_pengguna', compact('pengguna_belum_berdaftar', 'senaraiPengguna'));
     }
 
-    public function tambah_pengguna_list() {
+    public function tambah_pengguna_list()
+    {
         $roles = Role::all();
-        return view ('administration.pengurusan_pengguna.pengguna_create', compact('roles'));
+        return view('administration.pengurusan_pengguna.pengguna_create', compact('roles'));
     }
 
-    public function tambah_pengguna_process (Request $request) 
+    public function tambah_pengguna_process(Request $request)
     {
         $customMessages = [
             'nama.required' => 'Nama Penuh diperlukan.',
             'nama.string' => 'Nama Penuh mesti dalam bentuk teks.',
             'nama.max' => 'Nama Penuh tidak boleh melebihi 255 aksara.',
-            
+
             'peranan.required' => 'Peranan diperlukan.',
             'peranan.string' => 'Peranan mesti dalam bentuk teks.',
             'peranan.max' => 'Peranan tidak boleh melebihi 255 aksara.',
-            
+
             'kad_pengenalan.required' => 'Kad Pengenalan diperlukan.',
             'kad_pengenalan.numeric' => 'Kad Pengenalan mesti dalam format nombor.',
             'kad_pengenalan.unique' => 'Kad Pengenalan ini sudah wujud.',
-            
+
             'email.required' => 'Alamat e-mel rasmi diperlukan.',
             'email.email' => 'Alamat e-mel rasmi mesti dalam format yang sah.',
             'email.unique' => 'Alamat e-mel rasmi ini sudah digunakan.',
-            
+
             'bahagian.required' => 'Bahagian/Agensi/Institusi diperlukan.',
             'bahagian.string' => 'Bahagian/Agensi/Institusi mesti dalam bentuk teks.',
             'bahagian.max' => 'Bahagian/Agensi/Institusi tidak boleh melebihi 255 aksara.',
-            
+
             'no_tel.required' => 'No Telefon diperlukan.',
             'no_tel.string' => 'No Telefon mesti dalam format nombor.',
-            
+
             'jawatan.required' => 'Jawatan diperlukan.',
             'jawatan.string' => 'Jawatan mesti dalam bentuk teks.',
             'jawatan.max' => 'Jawatan tidak boleh melebihi 255 aksara.',
@@ -136,19 +138,22 @@ class AdministrationController extends Controller
             'kata_laluan.string' => 'Kata Laluan must be a valid string.',
             'kata_laluan.min' => 'Kata Laluan must be at least 8 characters.',
         ];
-    
+
         // Validate the incoming data with custom messages
-        $validated = $request->validate([
-            'nama' => 'required|string|max:255',
-            'peranan' => 'required|string|exists:roles,name',
-            'kad_pengenalan' => 'required|numeric|unique:Pengguna,kad_pengenalan',
-            'email' => 'required|email|unique:Pengguna,email',
-            'bahagian' => 'required|string|max:255',
-            'no_tel' => 'required|string',
-            'jawatan' => 'required|string|max:255',
-            'kata_laluan' => 'required|string|min:8',
-        ], $customMessages); // Pass custom messages as second parameter
-    
+        $validated = $request->validate(
+            [
+                'nama' => 'required|string|max:255',
+                'peranan' => 'required|string|exists:roles,name',
+                'kad_pengenalan' => 'required|numeric|unique:Pengguna,kad_pengenalan',
+                'email' => 'required|email|unique:Pengguna,email',
+                'bahagian' => 'required|string|max:255',
+                'no_tel' => 'required|string',
+                'jawatan' => 'required|string|max:255',
+                'kata_laluan' => 'required|string|min:8',
+            ],
+            $customMessages,
+        ); // Pass custom messages as second parameter
+
         // Store the validated data
         $user = Pengguna::create([
             'nama' => $validated['nama'],
@@ -157,22 +162,23 @@ class AdministrationController extends Controller
             'bahagian' => $validated['bahagian'],
             'no_tel' => $validated['no_tel'],
             'jawatan' => $validated['jawatan'],
-            'status' => "1",
+            'status' => '1',
             'kata_laluan' => Hash::make($request->kata_laluan),
         ]);
 
         // Assign the selected role to the user
         $role = Role::findByName($validated['peranan']); // Get the role by its name
         $user->assignRole($role); // Assign the role to the user
-    
+
         // Redirect with success message
         return redirect()->route('administration.pengurusan_pengguna.pengurusan_pengguna')->with('success', 'Pengguna berjaya ditambah!');
     }
 
-    public function pengguna_approval_list($id) {
+    public function pengguna_approval_list($id)
+    {
         $userProfile = Pengguna::findorFail($id);
         $roles = Role::all();
-        return view ('administration.pengurusan_pengguna.pengguna_approval', compact('userProfile', 'roles'));
+        return view('administration.pengurusan_pengguna.pengguna_approval', compact('userProfile', 'roles'));
     }
 
     public function pengguna_approval_process(Request $request, $id)
@@ -184,16 +190,19 @@ class AdministrationController extends Controller
         ];
 
         // Validate the incoming data
-        $validated = $request->validate([
-            'role' => 'required|exists:roles,name', // Validate role selection
-        ], $customMessages);
+        $validated = $request->validate(
+            [
+                'role' => 'required|exists:roles,name', // Validate role selection
+            ],
+            $customMessages,
+        );
 
         // Find the user by ID
         $user = Pengguna::findOrFail($id); // Assuming you're working with a 'User' model
 
         // Update the user status to 1 (aktif)
-        $user->status = "1";  // Approved status (assuming 1 means approved)
-        
+        $user->status = '1'; // Approved status (assuming 1 means approved)
+
         // Assign the selected role to the user
         $role = Role::findByName($validated['role']); // Find the role by name
         if ($role) {
@@ -204,7 +213,7 @@ class AdministrationController extends Controller
 
         // Save the changes
         $user->save();
-        
+
         // Send the approval email
         Mail::to($user->email)->send(new AccountApprovedMail($user));
 
@@ -230,9 +239,9 @@ class AdministrationController extends Controller
             'bahagian' => $user->bahagian,
             'no_tel' => $user->no_tel,
             'jawatan' => $user->jawatan,
-            'remark' => $request->input('remark'),  // The remark entered by the user
-            'created_at' => now(),  // Set the current timestamp
-            'updated_at' => now(),  // Set the current timestamp
+            'remark' => $request->input('remark'), // The remark entered by the user
+            'created_at' => now(), // Set the current timestamp
+            'updated_at' => now(), // Set the current timestamp
         ]);
 
         // Delete the user from the pengguna table
@@ -244,12 +253,14 @@ class AdministrationController extends Controller
         // Redirect back with a success message
         return redirect()->route('administration.pengurusan_pengguna')->with('successReject', 'Pengguna berjaya ditolak dan dipadamkan.');
     }
-    
-    public function edit_pengguna($id) {
+
+    public function edit_pengguna($id)
+    {
         $userProfile = Pengguna::findorFail($id);
         $roles = Role::all();
         $permissions = Permission::all();
-        return view ('administration.pengurusan_pengguna.pengguna_edit', compact('userProfile', 'roles', 'permissions'));
+        $userPermissions = $userProfile->getAllPermissions()->pluck('id')->toArray();
+        return view('administration.pengurusan_pengguna.pengguna_edit', compact('userProfile', 'roles', 'permissions', 'userPermissions'));
     }
 
     public function update_pengguna(Request $request, $id)
@@ -259,28 +270,28 @@ class AdministrationController extends Controller
             'nama.required' => 'Nama Penuh diperlukan.',
             'nama.string' => 'Nama Penuh mesti dalam bentuk teks.',
             'nama.max' => 'Nama Penuh tidak boleh melebihi 255 aksara.',
-            
+
             'role.required' => 'Peranan diperlukan.',
             'role.exists' => 'Peranan yang dipilih tidak sah.',
-            
+
             'kad_pengenalan.required' => 'Kad Pengenalan diperlukan.',
             'kad_pengenalan.numeric' => 'Kad Pengenalan mesti dalam format nombor.',
-            
+
             'email.required' => 'Alamat e-mel rasmi diperlukan.',
             'email.email' => 'Alamat e-mel rasmi mesti dalam format yang sah.',
             'email.unique' => 'Alamat e-mel rasmi ini sudah digunakan.',
-            
+
             'bahagian.required' => 'Bahagian/Agensi/Institusi diperlukan.',
             'bahagian.string' => 'Bahagian/Agensi/Institusi mesti dalam bentuk teks.',
             'bahagian.max' => 'Bahagian/Agensi/Institusi tidak boleh melebihi 255 aksara.',
-            
+
             'no_tel.required' => 'No Telefon diperlukan.',
             'no_tel.string' => 'No Telefon mesti dalam format nombor.',
-            
+
             'jawatan.required' => 'Jawatan diperlukan.',
             'jawatan.string' => 'Jawatan mesti dalam bentuk teks.',
             'jawatan.max' => 'Jawatan tidak boleh melebihi 255 aksara.',
-            
+
             'kata_laluan.required' => 'Kata Laluan diperlukan.',
             'kata_laluan.string' => 'Kata Laluan mesti dalam bentuk teks.',
             'kata_laluan.min' => 'Kata Laluan mesti sekurang-kurangnya 8 aksara.',
@@ -290,17 +301,20 @@ class AdministrationController extends Controller
         ];
 
         // Validate the incoming data with custom messages
-        $validated = $request->validate([
-            'nama' => 'required|string|max:255',
-            'role' => 'required|exists:roles,id',  // Make sure the role exists
-            'kad_pengenalan' => 'required|numeric', // Unique check can be skipped for updating
-            'email' => 'required|email|unique:Pengguna,email,' . $id, // Update with unique constraint excluding current user's email
-            'bahagian' => 'required|string|max:255',
-            'no_tel' => 'required|string',
-            'jawatan' => 'required|string|max:255',
-            'kata_laluan' => 'nullable|string|min:8',  // Optional during update
-            'status' => 'required|string|in:1,2',
-        ], $customMessages);
+        $validated = $request->validate(
+            [
+                'nama' => 'required|string|max:255',
+                'role' => 'required|exists:roles,id', // Make sure the role exists
+                'kad_pengenalan' => 'required|numeric', // Unique check can be skipped for updating
+                'email' => 'required|email|unique:Pengguna,email,' . $id, // Update with unique constraint excluding current user's email
+                'bahagian' => 'required|string|max:255',
+                'no_tel' => 'required|string',
+                'jawatan' => 'required|string|max:255',
+                'kata_laluan' => 'nullable|string|min:8', // Optional during update
+                'status' => 'required|string|in:1,2',
+            ],
+            $customMessages,
+        );
 
         // Find the user by ID
         $user = Pengguna::findOrFail($id);
@@ -313,7 +327,7 @@ class AdministrationController extends Controller
             'bahagian' => $validated['bahagian'],
             'no_tel' => $validated['no_tel'],
             'jawatan' => $validated['jawatan'],
-            'status' => $validated['status'] ?? $user->status,  // Keep the old status if not updated
+            'status' => $validated['status'] ?? $user->status, // Keep the old status if not updated
         ]);
 
         // If password is provided, update it
@@ -332,25 +346,66 @@ class AdministrationController extends Controller
         return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya dikemaskini!');
     }
 
+    public function assignRoles(Request $request, $userId)
+    {
+        $user = Pengguna::findOrFail($userId);
+
+        // Detach any existing roles
+        $user->roles()->detach();
+        $user->permissions()->detach();
+
+        // Check if roles are selected
+        if ($request->has('roles')) {
+            // Retrieve the selected role IDs
+            $roleIds = $request->input('roles');
+
+            // Make sure each role ID exists in the database before assigning it
+            $roles = Role::whereIn('id', $roleIds)->get();
+
+            // Only assign roles that exist in the database
+            if ($roles->count() > 0) {
+                $user->assignRole($roles); // Assign the roles to the user
+            } else {
+                return back()->with('error', 'Invalid role selection.');
+            }
+        }
+
+        // Assign selected permissions
+        if ($request->has('permissions')) {
+            $permissionIds = $request->input('permissions');
+            $permissions = Permission::whereIn('id', $permissionIds)->get();
+            if ($permissions->count() > 0) {
+                $user->givePermissionTo($permissions); // Assign permissions to the user
+            } else {
+                return back()->with('error', 'Invalid permission selection.');
+            }
+        }
+
+        return redirect()->back()->with('success', 'Roles assigned successfully!');
+    }
+
     public function update_pengguna_password(Request $request, $id)
     {
         // Validate the request
-        $request->validate([
-            'kata_laluan_baharu' => 'required|min:8',
-            'kata_laluan_pengesahan' => 'required|same:kata_laluan_baharu', // Ensure confirmation matches new password
-        ], [
-            'kata_laluan_baharu.required' => 'Sila masukkan kata laluan baharu.',
-            'kata_laluan_pengesahan.same' => 'Kata laluan baharu dan kata laluan pengesahan tidak sepadan.', // Error message for mismatch
-            'kata_laluan_pengesahan.required' => 'Sila masukkan kata laluan pengesahan.',
-        ]);
-    
+        $request->validate(
+            [
+                'kata_laluan_baharu' => 'required|min:8',
+                'kata_laluan_pengesahan' => 'required|same:kata_laluan_baharu', // Ensure confirmation matches new password
+            ],
+            [
+                'kata_laluan_baharu.required' => 'Sila masukkan kata laluan baharu.',
+                'kata_laluan_pengesahan.same' => 'Kata laluan baharu dan kata laluan pengesahan tidak sepadan.', // Error message for mismatch
+                'kata_laluan_pengesahan.required' => 'Sila masukkan kata laluan pengesahan.',
+            ],
+        );
+
         // Find the user by ID
         $user = Pengguna::findOrFail($id);
-    
+
         // Update the password
         $user->kata_laluan = Hash::make($request->kata_laluan_baharu); // Hash the new password
         $user->save(); // Save the updated user
-    
+
         // Redirect with success message
         return back()->with('success', 'Kata laluan telah berjaya dikemaskini.');
     }
@@ -358,11 +413,11 @@ class AdministrationController extends Controller
     public function delete_pengguna($id)
     {
         $user = Pengguna::findOrFail($id);
-        
+
         // Ensure you perform any necessary checks like authorization
-        
+
         $user->delete();
-        
+
         return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya dihapus.');
     }
 
@@ -378,7 +433,7 @@ class AdministrationController extends Controller
     public function kemaskini_peranan($id)
     {
         $role = Role::findOrFail($id);
-        $permissions = Permission::all(); 
+        $permissions = Permission::all();
         return view('administration.pengurusan_pengguna.kemaskini_peranan', compact('role', 'permissions'));
     }
 
@@ -408,22 +463,19 @@ class AdministrationController extends Controller
         }
 
         // Redirect back with a success message
-        return redirect()->route('administration.kemaskini_peranan', $id)
-                        ->with('success', 'Peranan berjaya dikemaskini.');
+        return redirect()->route('administration.kemaskini_peranan', $id)->with('success', 'Peranan berjaya dikemaskini.');
     }
-
-
 
     // pengurusan data
 
-    public function pengurusan_data_main() {
+    public function pengurusan_data_main()
+    {
         return view('administration.pengurusan_data.homepage_pengurusan_data');
     }
 
     // dashboard
-    public function dashboard_main() {
+    public function dashboard_main()
+    {
         return view('administration.dashboard.homepage_dashboard');
     }
-
-
 }
