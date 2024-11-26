@@ -135,37 +135,50 @@ class AuthController extends Controller
             'jawatan' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:pengguna',
             'no_tel' => 'required|string|max:15',
-            'kata_laluan' => 'required|string|min:8',
+            'kata_laluan' => [
+            'required',
+            'string',
+            'min:8',
+            'max:12',
+            'regex:/[A-Z]/',    // At least one uppercase letter
+            'regex:/[a-z]/',    // At least one lowercase letter
+            'regex:/\d/',       // At least one digit
+            'regex:/[@$!%*?&]/', // At least one special character
+            'different:kad_pengenalan', // Password must not be the same as Kad Pengenalan
+        ],
         ], [
-            'nama.required' => 'Nama is required.',
+            'nama.required' => 'Nama penuh perlu dilengkapkan.',
             'nama.string' => 'Nama must be a valid string.',
         
-            'kad_pengenalan.required' => 'Kad Pengenalan is required.',
+            'kad_pengenalan.required' => 'Nombor Kad Pengenalan perlu dilengkapkan.',
             'kad_pengenalan.string' => 'Kad Pengenalan must be a valid string.',
             'kad_pengenalan.max' => 'Kad Pengenalan cannot exceed 20 characters.',
-            'kad_pengenalan.unique' => 'Kad Pengenalan telah wujud.',
+            'kad_pengenalan.unique' => 'Nombor Kad Pengenalan telah wujud dalam rekod sistem.',
         
-            'bahagian.required' => 'Bahagian is required.',
+            'bahagian.required' => 'Bahagian perlu dilengkapkan.',
             'bahagian.string' => 'Bahagian must be a valid string.',
             'bahagian.max' => 'Bahagian cannot exceed 255 characters.',
         
-            'jawatan.required' => 'Jawatan is required.',
+            'jawatan.required' => 'Jawatan perlu dilengkapkan.',
             'jawatan.string' => 'Jawatan must be a valid string.',
             'jawatan.max' => 'Jawatan cannot exceed 255 characters.',
         
-            'email.required' => 'email is required.',
+            'email.required' => 'Email perlu dilengkapkan.',
             'email.string' => 'email must be a valid string.',
             'email.email' => 'email must be a valid email address.',
             'email.max' => 'email cannot exceed 255 characters.',
             'email.unique' => 'email telah wujud.',
         
-            'no_tel.required' => 'No Tel is required.',
+            'no_tel.required' => 'Nombor Telefon perlu dilengkapkan.',
             'no_tel.string' => 'No Tel must be a valid string.',
             'no_tel.max' => 'No Tel cannot exceed 15 characters.',
         
-            'kata_laluan.required' => 'Kata Laluan is required.',
-            'kata_laluan.string' => 'Kata Laluan must be a valid string.',
-            'kata_laluan.min' => 'Kata Laluan must be at least 8 characters.',
+            'kata_laluan.required' => 'Kata Laluan perlu dilengkapkan.',
+            'kata_laluan.string' => 'Kata laluan mesti merupakan rentetan yang sah.',
+            'kata_laluan.min' => 'Kata laluan mestilah sekurang-kurangnya 8 aksara.',
+            'kata_laluan.max' => 'Kata laluan tidak boleh melebihi 12 aksara.',
+            'kata_laluan.regex' => 'Kata laluan mesti mengandungi sekurang-kurangnya satu huruf besar, satu huruf kecil, satu nombor, dan satu simbol khas.',
+            'kata_laluan.different' => 'Kata laluan tidak boleh sama dengan Nombor Kad Pengenalan.',
         ]);
 
         // Retrieve the bahagian name based on the selected ID
