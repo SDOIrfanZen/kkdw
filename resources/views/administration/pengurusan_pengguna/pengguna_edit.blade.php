@@ -169,193 +169,84 @@
                 style="background: rgba(8, 12, 85, 1); height: 3.5rem;">
                 <img src="{{ asset('images/peranan-capaian-icon.png') }}" alt="Profile Icon" class="me-2"
                     style="width: 24px; height: 24px;">
-                Peranan Dan Capaian
+
             </div>
 
             <!-- Card Body -->
             <div class="card-body">
-                <form action="{{ route('administration.update_pengguna_peranan', $userProfile->id) }}" method="POST">
+                <form action="{{ route('assign-roles', $userProfile->id) }}" method="POST">
                     @csrf
-                    @method('PUT')
-                <!-- Mini-Card for Roles -->
-                <div class="card mb-4">
-                    <div class="card-header" style="background: rgba(8, 12, 85, 0.9); color: white; height: 3rem;">
-                        Peranan
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            @foreach ($roles as $key => $role)
-                                <div class="col-2">
+
+                    <!-- Mini-Card for Roles -->
+                    <div class="card mb-4">
+                        <div class="card-header" style="background: rgba(8, 12, 85, 0.9); color: white; height: 3rem;">
+                            Peranan
+                        </div>
+                        <div class="card-body">
+                            <div class="col-md-3">
+                                <h5>Select Roles</h5>
+                                @foreach ($roles as $role)
                                     <div class="form-check">
-                                        <input type="checkbox" name="roles[]" value="{{ $role->id }}" 
-                                            class="form-check-input" {{ $userProfile->hasRole($role->name) ? 'checked' : '' }}>
-                                        <label class="form-check-label">{{ $role->name }}</label>
+                                        <input class="form-check-input" type="checkbox" name="roles[]"
+                                            value="{{ $role->id }}" id="role-{{ $role->id }}"
+                                            {{ in_array($role->id, $userProfile->roles->pluck('id')->toArray()) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="role-{{ $role->id }}">
+                                            {{ $role->name }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Mini-Card for Permissions -->
+                    <!-- Mini-Card for Permissions -->
+                    <div class="card">
+                        <!-- Mini-Card for Permissions -->
+                        <div class="card">
+                            <div class="card-header"
+                                style="background: rgba(8, 12, 85, 0.9); color: white; height: 3rem;">
+                                Capaian
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <h5>Select Permissions</h5>
+                                        @foreach ($permissions as $permission)
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="permissions[]"
+                                                    value="{{ $permission->id }}" id="permission-{{ $permission->id }}"
+                                                    {{ in_array($permission->id, $userPermissions) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="permission-{{ $permission->id }}">
+                                                    {{ $permission->name }}
+                                                </label>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
-                    
-                                @if (($key + 1) % 5 == 0 && $key + 1 != count($roles)) 
-                                    </div><div class="row">
-                                @endif
-                            @endforeach
+                            </div>
                         </div>
-                    </div>                    
-                </div>
 
-                <!-- Mini-Card for Permissions -->
-                <div class="card">
-                    <div class="card-header" style="background: rgba(8, 12, 85, 0.9); color: white; height: 3rem;">
-                        Capaian
                     </div>
-                    <div class="card-body">
-                        <!-- Permission Groups -->
-                        <div class="row mt-5">
-                            <!-- Pengurusan Pengguna -->
-                            <div class="col-md-4">
-                                <h4>Pengurusan Pengguna</h4>
-                                <div class="checkbox-group">
-                                    @foreach ($permissions->whereBetween('id', [1, 6]) as $permission)
-                                        <div class="form-check">
-                                            <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
-                                                class="form-check-input" id="permission-{{ $permission->id }}"
-                                                {{ $userProfile->hasPermissionTo($permission->name) ? 'checked' : '' }}>
-                                            <label for="permission-{{ $permission->id }}" class="form-check-label">
-                                                {{ ucfirst(str_replace('_', ' ', $permission->name)) }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                
-                            <!-- Pengurusan Peranan -->
-                            <div class="col-md-4">
-                                <h4>Pengurusan Peranan</h4>
-                                <div class="checkbox-group">
-                                    @foreach ($permissions->whereBetween('id', [7, 11]) as $permission)
-                                        <div class="form-check">
-                                            <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
-                                                class="form-check-input" id="permission-{{ $permission->id }}"
-                                                {{ $userProfile->hasPermissionTo($permission->name) ? 'checked' : '' }}>
-                                            <label for="permission-{{ $permission->id }}" class="form-check-label">
-                                                {{ ucfirst(str_replace('_', ' ', $permission->name)) }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                
-                            <!-- Dashboard -->
-                            <div class="col-md-4">
-                                <h4>Dashboard</h4>
-                                <div class="checkbox-group">
-                                    @foreach ($permissions->whereBetween('id', [16, 22]) as $permission)
-                                        <div class="form-check">
-                                            <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
-                                                class="form-check-input" id="permission-{{ $permission->id }}"
-                                                {{ $userProfile->hasPermissionTo($permission->name) ? 'checked' : '' }}>
-                                            <label for="permission-{{ $permission->id }}" class="form-check-label">
-                                                {{ ucfirst(str_replace('_', ' ', $permission->name)) }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
 
 
-                
-                        <!-- Next Permission Group -->
-                        <div class="row mt-4">
-                            <!-- Pengurusan Data -->
-                            <div class="col-md-4">
-                                <h4>Pengurusan Data</h4>
-                                <div class="checkbox-group">
-                                    @foreach ($permissions->whereBetween('id', [13, 15]) as $permission)
-                                        <div class="form-check">
-                                            <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
-                                                class="form-check-input" id="permission-{{ $permission->id }}"
-                                                {{ $userProfile->hasPermissionTo($permission->name) ? 'checked' : '' }}>
-                                            <label for="permission-{{ $permission->id }}" class="form-check-label">
-                                                {{ ucfirst(str_replace('_', ' ', $permission->name)) }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                
-                            <!-- Pengurusan Profil -->
-                            <div class="col-md-4">
-                                <h4>Pengurusan Profil</h4>
-                                <div class="checkbox-group">
-                                    @foreach ($permissions->whereBetween('id', [23, 25]) as $permission)
-                                        <div class="form-check">
-                                            <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
-                                                class="form-check-input" id="permission-{{ $permission->id }}"
-                                                {{ $userProfile->hasPermissionTo($permission->name) ? 'checked' : '' }}>
-                                            <label for="permission-{{ $permission->id }}" class="form-check-label">
-                                                {{ ucfirst(str_replace('_', ' ', $permission->name)) }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                
-                            <!-- Audit Trail -->
-                            <div class="col-md-4">
-                                <h4>Audit Trail</h4>
-                                <div class="checkbox-group">
-                                    @foreach ($permissions->whereBetween('id', [26, 28]) as $permission)
-                                        <div class="form-check">
-                                            <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
-                                                class="form-check-input" id="permission-{{ $permission->id }}"
-                                                {{ $userProfile->hasPermissionTo($permission->name) ? 'checked' : '' }}>
-                                            <label for="permission-{{ $permission->id }}" class="form-check-label">
-                                                {{ ucfirst(str_replace('_', ' ', $permission->name)) }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                
-                        <!-- Last Permission Group -->
-                        <div class="row mt-4">
-                            <!-- Sistem -->
-                            <div class="col-md-4">
-                                <h4>Sistem</h4>
-                                <div class="checkbox-group">
-                                    @foreach ($permissions->whereBetween('id', [29, 41]) as $permission)
-                                        <div class="form-check">
-                                            <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
-                                                class="form-check-input" id="permission-{{ $permission->id }}"
-                                                {{ $userProfile->hasPermissionTo($permission->name) ? 'checked' : '' }}>
-                                            <label for="permission-{{ $permission->id }}" class="form-check-label">
-                                                {{ ucfirst(str_replace('_', ' ', $permission->name)) }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-
-                
-                <!-- Align Delete Button to the Right -->
-                <div class="d-flex justify-content-end mt-3">
-                    <!-- Trigger Button for Modal -->
-                    <button type="button" class="btn btn-danger" style="width: 100px;" data-bs-toggle="modal"
-                        data-bs-target="#deleteModal">
-                        Delete
-                    </button>
-                </div>
-                <!-- Submit Button -->
-                <div class="d-flex justify-content-end mt-3">
-                    <button type="submit" class="btn btn-primary" style="width: 100px;">Update</button>
-                </div>
-            </form>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
             </div>
+
         </div>
+    </div>
+
+
+    <!-- Align Delete Button to the Right -->
+    <div class="d-flex justify-content-end mt-3">
+        <!-- Trigger Button for Modal -->
+        <button type="button" class="btn btn-danger" style="width: 100px;" data-bs-toggle="modal"
+            data-bs-target="#deleteModal">
+            Delete
+        </button>
     </div>
 
     <!-- Delete Confirmation Modal -->

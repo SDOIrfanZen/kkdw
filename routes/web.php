@@ -116,9 +116,10 @@ Route::get('assign-role-to-user', function() {
     $user = Pengguna::findOrFail(9);
 
     $role = Role::findOrFail(1); 
+    $role1 = Role::findOrFail(2);
 
 
-    $user->assignRole($role);
+    $user->assignRole([$role, $role1]);
 
 });
 
@@ -131,3 +132,6 @@ Route::get('remove-permission-from-role', function () {
 
     return "Permission '{$permission->name}' has been revoked from role '{$role->name}'.";
 });
+
+
+Route::post('assign-roles/{userId}', [AdministrationController::class, 'assignRoles'])->name('assign-roles');
