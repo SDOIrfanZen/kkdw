@@ -335,12 +335,12 @@ class AdministrationController extends Controller
             $user->kata_laluan = Hash::make($validated['kata_laluan']);
         }
 
-        $role = Role::find($validated['role']); // Find the role by its ID
-        if ($role) {
-            $user->syncRoles($role); // Sync the role with the new role
-        } else {
-            return back()->withErrors(['role' => 'Role not found!']);
-        }
+        // $role = Role::find($validated['role']); // Find the role by its ID
+        // if ($role) {
+        //     $user->syncRoles($role); // Sync the role with the new role
+        // } else {
+        //     return back()->withErrors(['role' => 'Role not found!']);
+        // }
 
         // Redirect with success message
         return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya dikemaskini!');
@@ -381,7 +381,7 @@ class AdministrationController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Roles assigned successfully!');
+        return redirect()->back()->with('success', 'Peranan berjaya ditetapkan!');
     }
 
     public function update_pengguna_password(Request $request, $id)

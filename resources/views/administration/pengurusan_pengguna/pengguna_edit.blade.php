@@ -8,7 +8,7 @@
 
     form .btn {
         box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.25);
-        width: 8%;
+        width: 9%;
         text-shadow: none;
         outline: none;
     }
@@ -34,10 +34,12 @@
 </style>
 
 @section('content')
+<div class="mx-auto" style="width: 90%;">
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
+</div>
     @endif
 
 
@@ -60,7 +62,15 @@
                         <div class="col-md-3">
                             <input class="form-control" name="nama" value="{{ $userProfile->nama }}">
                         </div>
-                        <div class="col-md-3 label-column">Peranan</div>
+                        <div class="col-md-3 label-column">Status</div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="status" name="status" required>
+                                <option value="1" {{ $userProfile->status == '1' ? 'selected' : '' }}>Aktif</option>
+                                <option value="2" {{ $userProfile->status == '2' ? 'selected' : '' }}>Tidak Aktif
+                                </option>
+                            </select>
+                        </div>
+                        {{-- <div class="col-md-3 label-column">Peranan</div>
                         <div class="col-md-3">
                             <select class="form-select" name="role" required>
                                 <option value="">Select Role</option>
@@ -71,7 +81,7 @@
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="row pb-2">
                         <div class="col-md-3 label-column">Kad Pengenalan</div>
@@ -98,16 +108,9 @@
                         <div class="col-md-3">
                             <input class="form-control" name="jawatan" value="{{ $userProfile->jawatan }}">
                         </div>
-                        <div class="col-md-3 label-column">Status</div>
-                        <div class="col-md-3">
-                            <select class="form-select" id="status" name="status" required>
-                                <option value="1" {{ $userProfile->status == '1' ? 'selected' : '' }}>Aktif</option>
-                                <option value="2" {{ $userProfile->status == '2' ? 'selected' : '' }}>Tidak Aktif
-                                </option>
-                            </select>
-                        </div>
+                        
                     </div>
-                    <div class="d-flex justify-content-end mt-4">
+                    <div class="d-flex justify-content-end mt-2">
                         <button class="btn btn-primary me-3" type="submit">Kemaskini</button>
                         <button class="btn btn-reset" type="button">Batal</button>
                     </div>
@@ -169,7 +172,7 @@
                 style="background: rgba(8, 12, 85, 1); height: 3.5rem;">
                 <img src="{{ asset('images/peranan-capaian-icon.png') }}" alt="Profile Icon" class="me-2"
                     style="width: 24px; height: 24px;">
-
+                Peranan Dan Capaian
             </div>
 
             <!-- Card Body -->
@@ -183,70 +186,182 @@
                             Peranan
                         </div>
                         <div class="card-body">
-                            <div class="col-md-3">
-                                <h5>Select Roles</h5>
+                            <div class="row">
                                 @foreach ($roles as $role)
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="roles[]"
-                                            value="{{ $role->id }}" id="role-{{ $role->id }}"
-                                            {{ in_array($role->id, $userProfile->roles->pluck('id')->toArray()) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="role-{{ $role->id }}">
-                                            {{ $role->name }}
-                                        </label>
+                                    <div class="col-md-2 mb-2"> <!-- Dividing into 6 equal parts for 5 in a row -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="roles[]"
+                                                value="{{ $role->id }}" id="role-{{ $role->id }}"
+                                                {{ in_array($role->id, $userProfile->roles->pluck('id')->toArray()) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="role-{{ $role->id }}">
+                                                {{ $role->name }}
+                                            </label>
+                                        </div>
                                     </div>
                                 @endforeach
                             </div>
-
                         </div>
                     </div>
 
-                    <!-- Mini-Card for Permissions -->
-                    <!-- Mini-Card for Permissions -->
-                    <div class="card">
-                        <!-- Mini-Card for Permissions -->
-                        <div class="card">
-                            <div class="card-header"
-                                style="background: rgba(8, 12, 85, 0.9); color: white; height: 3rem;">
-                                Capaian
-                            </div>
-                            <div class="card-body">
+
+
+                    <!-- Card for Permissions -->
+                    <div class="card shadow-sm">
+                        <div class="card-header" style="background: rgba(8, 12, 85, 0.9); color: white; height: 3rem;">
+                            <h5 class="mb-0">Capaian</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
                                 <div class="row">
-                                    <div class="col-md-3">
-                                        <h5>Select Permissions</h5>
+                                    <!-- Group: Pengurusan Pengguna -->
+                                    <div class="col-md-4 mb-4">
+                                        <h4 class="">Pengurusan Pengguna</h4>
                                         @foreach ($permissions as $permission)
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="permissions[]"
-                                                    value="{{ $permission->id }}" id="permission-{{ $permission->id }}"
-                                                    {{ in_array($permission->id, $userPermissions) ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="permission-{{ $permission->id }}">
-                                                    {{ $permission->name }}
-                                                </label>
-                                            </div>
+                                            @if ($permission->id >= 1 && $permission->id <= 6)
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="permissions[]"
+                                                        value="{{ $permission->id }}"
+                                                        id="permission-{{ $permission->id }}"
+                                                        {{ in_array($permission->id, $userPermissions) ? 'checked' : '' }}>
+                                                    <label class="form-check-label"
+                                                        for="permission-{{ $permission->id }}">
+                                                        {{ $permission->name }}
+                                                    </label>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+
+                                    <!-- Group: Pengurusan Peranan -->
+                                    <div class="col-md-4 mb-4">
+                                        <h4 class="">Pengurusan Peranan</h4>
+                                        @foreach ($permissions as $permission)
+                                            @if ($permission->id >= 7 && $permission->id <= 11)
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="permissions[]"
+                                                        value="{{ $permission->id }}"
+                                                        id="permission-{{ $permission->id }}"
+                                                        {{ in_array($permission->id, $userPermissions) ? 'checked' : '' }}>
+                                                    <label class="form-check-label"
+                                                        for="permission-{{ $permission->id }}">
+                                                        {{ $permission->name }}
+                                                    </label>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+
+                                    <!-- Additional Permission Groups -->
+                                    <!-- Group: Dashboard -->
+                                    <div class="col-md-4 mb-4">
+                                        <h4 class="">Dashboard</h4>
+                                        @foreach ($permissions as $permission)
+                                            @if ($permission->id >= 16 && $permission->id <= 22)
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="permissions[]"
+                                                        value="{{ $permission->id }}"
+                                                        id="permission-{{ $permission->id }}"
+                                                        {{ in_array($permission->id, $userPermissions) ? 'checked' : '' }}>
+                                                    <label class="form-check-label"
+                                                        for="permission-{{ $permission->id }}">
+                                                        {{ $permission->name }}
+                                                    </label>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+
+                                    <!-- Continue other permission groups similarly -->
+                                    <!-- Group: Pengurusan Data -->
+                                    <div class="col-md-4 mb-4">
+                                        <h4 class="">Pengurusan Data</h4>
+                                        @foreach ($permissions as $permission)
+                                            @if ($permission->id >= 13 && $permission->id <= 15)
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="permissions[]"
+                                                        value="{{ $permission->id }}"
+                                                        id="permission-{{ $permission->id }}"
+                                                        {{ in_array($permission->id, $userPermissions) ? 'checked' : '' }}>
+                                                    <label class="form-check-label"
+                                                        for="permission-{{ $permission->id }}">
+                                                        {{ $permission->name }}
+                                                    </label>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+
+                                    <div class="col-md-4 mb-4">
+                                        <h4 class="">Pengurusan Profil</h4>
+                                        @foreach ($permissions as $permission)
+                                            @if ($permission->id >= 23 && $permission->id <= 25)
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="permissions[]"
+                                                        value="{{ $permission->id }}"
+                                                        id="permission-{{ $permission->id }}"
+                                                        {{ in_array($permission->id, $userPermissions) ? 'checked' : '' }}>
+                                                    <label class="form-check-label"
+                                                        for="permission-{{ $permission->id }}">
+                                                        {{ $permission->name }}
+                                                    </label>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+
+                                    <!-- Final Permission Groups -->
+                                    <div class="col-md-4 mb-4">
+                                        <h4 class="">Audit Trail</h4>
+                                        @foreach ($permissions as $permission)
+                                            @if ($permission->id >= 26 && $permission->id <= 28)
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="permissions[]"
+                                                        value="{{ $permission->id }}"
+                                                        id="permission-{{ $permission->id }}"
+                                                        {{ in_array($permission->id, $userPermissions) ? 'checked' : '' }}>
+                                                    <label class="form-check-label"
+                                                        for="permission-{{ $permission->id }}">
+                                                        {{ $permission->name }}
+                                                    </label>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+
+                                    <div class="col-md-4 mb-4">
+                                        <h4 class="">Sistem</h4>
+                                        @foreach ($permissions as $permission)
+                                            @if ($permission->id >= 29 && $permission->id <= 41)
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="permissions[]"
+                                                        value="{{ $permission->id }}"
+                                                        id="permission-{{ $permission->id }}"
+                                                        {{ in_array($permission->id, $userPermissions) ? 'checked' : '' }}>
+                                                    <label class="form-check-label"
+                                                        for="permission-{{ $permission->id }}">
+                                                        {{ $permission->name }}
+                                                    </label>
+                                                </div>
+                                            @endif
                                         @endforeach
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+                    </div>
+                    <!-- Align Delete Button to the Right -->
+                    <div class="d-flex justify-content-end mt-3">
+                        <button type="submit" class="btn btn-primary me-2">Kemaskini</button>
+                        <!-- Trigger Button for Modal -->
+                        <button type="button" class="btn btn-danger" style="width: 100px;" data-bs-toggle="modal"
+                            data-bs-target="#deleteModal">
+                            Hapus
+                        </button>
                     </div>
 
-
-
-                    <button type="submit" class="btn btn-primary">Update</button>
                 </form>
             </div>
-
         </div>
-    </div>
-
-
-    <!-- Align Delete Button to the Right -->
-    <div class="d-flex justify-content-end mt-3">
-        <!-- Trigger Button for Modal -->
-        <button type="button" class="btn btn-danger" style="width: 100px;" data-bs-toggle="modal"
-            data-bs-target="#deleteModal">
-            Delete
-        </button>
     </div>
 
     <!-- Delete Confirmation Modal -->
@@ -254,19 +369,19 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                    <h5 class="modal-title" id="deleteModalLabel">Sahkan Pemadaman</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this user?
+                    Adakah anda pasti mahu menghapus pengguna ini?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <form method="POST" action="{{ route('administration.delete_pengguna', $userProfile->id) }}"
                         class="d-inline">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger" style="width: 80px;">Delete</button>
+                        <button type="submit" class="btn btn-danger" style="width: 80px;">Hapus</button>
                     </form>
                 </div>
             </div>
