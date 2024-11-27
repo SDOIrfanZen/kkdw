@@ -90,7 +90,32 @@ class AuthController extends Controller
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
+            'password' => [
+                'required',
+                'min:8',
+                'max:12',
+                'regex:/[A-Z]/', // At least one uppercase letter
+                'regex:/[a-z]/', // At least one lowercase letter
+                'regex:/[0-9]/', // At least one number
+                'regex:/[\W_]/', // At least one symbol (non-word character or special character)
+                function ($attribute, $value, $fail) use ($request) {
+                    // Custom validation to ensure password does not exactly match Kad Pengenalan
+                    $pengguna = Pengguna::where('email', $request->email)->first(); // Get user by email
+    
+                    // Check if the password matches Kad Pengenalan
+                    if ($pengguna && $value === $pengguna->kad_pengenalan) {
+                        $fail('Kata laluan tidak boleh sama dengan Kad Pengenalan.');
+                    }
+                },
+            ],
+            'password_confirmation' => 'required|same:password', // Ensure confirmation matches new password
+        ], [
+            'password.required' => 'Sila masukkan kata laluan baharu untuk kemas kini.',
+            'password.min' => 'Kata laluan baharu mesti sekurang-kurangnya 8 aksara.',
+            'password.max' => 'Kata laluan baharu tidak boleh melebihi 12 aksara.',
+            'password.regex' => 'Kata laluan baharu mesti mengandungi sekurang-kurangnya satu huruf besar, satu huruf kecil, satu nombor, dan satu simbol.',
+            'password_confirmation.required' => 'Sila masukkan kata laluan pengesahan.',
+            'password_confirmation.same' => 'Kata laluan baharu dan kata laluan pengesahan tidak sepadan.',
         ]);
 
         // Custom logic for password reset

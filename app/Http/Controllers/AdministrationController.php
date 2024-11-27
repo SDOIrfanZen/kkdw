@@ -387,17 +387,35 @@ class AdministrationController extends Controller
     public function update_pengguna_password(Request $request, $id)
     {
         // Validate the request
-        $request->validate(
-            [
-                'kata_laluan_baharu' => 'required|min:8',
-                'kata_laluan_pengesahan' => 'required|same:kata_laluan_baharu', // Ensure confirmation matches new password
+    $request->validate(
+        [
+            'kata_laluan_baharu' => [
+                'required',
+                'string',
+                'min:8', // Minimum 8 characters
+                'max:12', // Maximum 12 characters
+                'regex:/[A-Z]/', // At least one uppercase letter
+                'regex:/[a-z]/', // At least one lowercase letter
+                'regex:/[0-9]/', // At least one number
+                'regex:/[\W_]/', // At least one symbol (non-word character or special character)
+                function ($attribute, $value, $fail) use ($request) {
+                    // Custom validation to ensure password does not exactly match Kad Pengenalan
+                    if ($value === $request->kad_pengenalan) {
+                        $fail('Kata laluan tidak boleh sama dengan Kad Pengenalan.');
+                    }
+                },
             ],
-            [
-                'kata_laluan_baharu.required' => 'Sila masukkan kata laluan baharu.',
-                'kata_laluan_pengesahan.same' => 'Kata laluan baharu dan kata laluan pengesahan tidak sepadan.', // Error message for mismatch
-                'kata_laluan_pengesahan.required' => 'Sila masukkan kata laluan pengesahan.',
-            ],
-        );
+            'kata_laluan_pengesahan' => 'required|same:kata_laluan_baharu', // Ensure confirmation matches new password
+        ],
+        [
+            'kata_laluan_baharu.required' => 'Sila masukkan kata laluan baharu untuk kemas kini.',
+            'kata_laluan_baharu.min' => 'Kata laluan baharu mesti sekurang-kurangnya 8 aksara.',
+            'kata_laluan_baharu.max' => 'Kata laluan baharu tidak boleh melebihi 12 aksara.',
+            'kata_laluan_baharu.regex' => 'Kata laluan baharu mesti mengandungi sekurang-kurangnya satu huruf besar, satu huruf kecil, satu nombor, dan satu simbol.',
+            'kata_laluan_pengesahan.required' => 'Sila masukkan kata laluan pengesahan.',
+            'kata_laluan_pengesahan.same' => 'Kata laluan baharu dan kata laluan pengesahan tidak sepadan. Sila pastikan kedua-duanya adalah sama.',
+        ]
+    );
 
         // Find the user by ID
         $user = Pengguna::findOrFail($id);
