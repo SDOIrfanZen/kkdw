@@ -8,7 +8,7 @@
 
     form .btn {
         box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.25);
-        width: 8%;
+        width: 9%;
         text-shadow: none;
         outline: none;
     }
@@ -34,10 +34,12 @@
 </style>
 
 @section('content')
+<div class="mx-auto" style="width: 90%;">
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
+</div>
     @endif
 
 
@@ -60,7 +62,15 @@
                         <div class="col-md-3">
                             <input class="form-control" name="nama" value="{{ $userProfile->nama }}">
                         </div>
-                        <div class="col-md-3 label-column">Peranan</div>
+                        <div class="col-md-3 label-column">Status</div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="status" name="status" required>
+                                <option value="1" {{ $userProfile->status == '1' ? 'selected' : '' }}>Aktif</option>
+                                <option value="2" {{ $userProfile->status == '2' ? 'selected' : '' }}>Tidak Aktif
+                                </option>
+                            </select>
+                        </div>
+                        {{-- <div class="col-md-3 label-column">Peranan</div>
                         <div class="col-md-3">
                             <select class="form-select" name="role" required>
                                 <option value="">Select Role</option>
@@ -71,7 +81,7 @@
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="row pb-2">
                         <div class="col-md-3 label-column">Kad Pengenalan</div>
@@ -98,16 +108,9 @@
                         <div class="col-md-3">
                             <input class="form-control" name="jawatan" value="{{ $userProfile->jawatan }}">
                         </div>
-                        <div class="col-md-3 label-column">Status</div>
-                        <div class="col-md-3">
-                            <select class="form-select" id="status" name="status" required>
-                                <option value="1" {{ $userProfile->status == '1' ? 'selected' : '' }}>Aktif</option>
-                                <option value="2" {{ $userProfile->status == '2' ? 'selected' : '' }}>Tidak Aktif
-                                </option>
-                            </select>
-                        </div>
+                        
                     </div>
-                    <div class="d-flex justify-content-end mt-4">
+                    <div class="d-flex justify-content-end mt-2">
                         <button class="btn btn-primary me-3" type="submit">Kemaskini</button>
                         <button class="btn btn-reset" type="button">Batal</button>
                     </div>
@@ -348,11 +351,11 @@
                     </div>
                     <!-- Align Delete Button to the Right -->
                     <div class="d-flex justify-content-end mt-3">
-                        <button type="submit" class="btn btn-primary me-2">Update</button>
+                        <button type="submit" class="btn btn-primary me-2">Kemaskini</button>
                         <!-- Trigger Button for Modal -->
                         <button type="button" class="btn btn-danger" style="width: 100px;" data-bs-toggle="modal"
                             data-bs-target="#deleteModal">
-                            Delete
+                            Hapus
                         </button>
                     </div>
 
@@ -366,19 +369,19 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                    <h5 class="modal-title" id="deleteModalLabel">Sahkan Pemadaman</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this user?
+                    Adakah anda pasti mahu menghapus pengguna ini?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <form method="POST" action="{{ route('administration.delete_pengguna', $userProfile->id) }}"
                         class="d-inline">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger" style="width: 80px;">Delete</button>
+                        <button type="submit" class="btn btn-danger" style="width: 80px;">Hapus</button>
                     </form>
                 </div>
             </div>
