@@ -171,7 +171,7 @@ class AdministrationController extends Controller
         $user->assignRole($role); // Assign the role to the user
 
         // Redirect with success message
-        return redirect()->route('administration.pengurusan_pengguna.pengurusan_pengguna')->with('success', 'Pengguna berjaya ditambah!');
+        return redirect()->route('administration.pengurusan_pengguna')->with('success', 'Pengguna berjaya ditambah!');
     }
 
     public function pengguna_approval_list($id)
@@ -305,7 +305,7 @@ class AdministrationController extends Controller
             [
                 'nama' => 'required|string|max:255',
                 'role' => 'required|exists:roles,id', // Make sure the role exists
-                'kad_pengenalan' => 'required|numeric', // Unique check can be skipped for updating
+                'kad_pengenalan' => 'required', // Unique check can be skipped for updating
                 'email' => 'required|email|unique:Pengguna,email,' . $id, // Update with unique constraint excluding current user's email
                 'bahagian' => 'required|string|max:255',
                 'no_tel' => 'required|string',
