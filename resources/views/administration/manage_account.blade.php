@@ -69,7 +69,7 @@ form .btn-reset {
                 <div class="row pb-2">
                     <div class="col-md-3 label-column">Kad Pengenalan</div>
                     <div class="col-md-3">
-                        <input readonly class="form-control" value="{{ $userProfile->kad_pengenalan }}">
+                        <input readonly class="form-control" value="{{ substr($userProfile->kad_pengenalan, 0, 6) . '-' . substr($userProfile->kad_pengenalan, 6, 2) . '-' . substr($userProfile->kad_pengenalan, 8) }}">
                     </div>
                     <div class="col-md-3 label-column">Alamat e-mel rasmi</div>
                     <div class="col-md-3">
