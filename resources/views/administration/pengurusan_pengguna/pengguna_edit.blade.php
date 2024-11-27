@@ -86,7 +86,7 @@
                     <div class="row pb-2">
                         <div class="col-md-3 label-column">Kad Pengenalan</div>
                         <div class="col-md-3">
-                            <input class="form-control" name="kad_pengenalan" value="{{ substr($userProfile->kad_pengenalan, 0, 6) . '-' . substr($userProfile->kad_pengenalan, 6, 2) . '-' . substr($userProfile->kad_pengenalan, 8) }}">
+                            <input class="form-control" name="kad_pengenalan" value="{{ $userProfile->kad_pengenalan }}">
                         </div>
                         <div class="col-md-3 label-column">Alamat e-mel rasmi</div>
                         <div class="col-md-3">

@@ -68,9 +68,7 @@
                         <tr>
                             <th scope="row">{{ $index + 1 }}</th>
                             <td>{{ $user->nama }}</td>
-                            <td>
-                                {{ substr($user->kad_pengenalan, 0, 6) . '-' . substr($user->kad_pengenalan, 6, 2) . '-' . substr($user->kad_pengenalan, 8) }}
-                            </td> 
+                            <td>{{ $user->kad_pengenalan }}</td>
                             <td>{{ $user->bahagian }}</td>
                             <td>{{ $user->jawatan }}</td>
                             <td>{{ $user->roles->first()->name ?? 'Peranan Belum Ditetapkan' }}</td>
@@ -120,9 +118,7 @@
                         <tr>
                             <th scope="row">{{ $index + 1 }}</th>
                             <td>{{ $user->nama }}</td>
-                            <td>
-                                {{ substr($user->kad_pengenalan, 0, 6) . '-' . substr($user->kad_pengenalan, 6, 2) . '-' . substr($user->kad_pengenalan, 8) }}
-                            </td>                            
+                            <td>{{ $user->kad_pengenalan }}</td>
                             <td>{{ $user->bahagian }}</td>
                             <td>{{ $user->jawatan }}</td>
                             <td>{{ $user->roles->first()->name ?? 'Peranan Belum Ditetapkan' }}</td>
