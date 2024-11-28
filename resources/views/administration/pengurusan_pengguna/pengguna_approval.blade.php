@@ -54,7 +54,7 @@ form .btn-reset {
                 <div class="row pb-2">
                     <div class="col-md-3 label-column">Nama Penuh</div>
                     <div class="col-md-3">
-                        <input class="form-control" name="nama" value="{{ $userProfile->nama }}">
+                        <input readonly class="form-control" name="nama" value="{{ $userProfile->nama }}">
                     </div>
                     <div class="col-md-3 label-column">Peranan</div>
                         <div class="col-md-3">
@@ -87,7 +87,7 @@ form .btn-reset {
                     </div>
                     <div class="col-md-3 label-column">No Telefon</div>
                     <div class="col-md-3">
-                        <input class="form-control" name="no_tel" value="{{ $userProfile->no_tel }}">
+                        <input readonly class="form-control" name="no_tel" value="{{ $userProfile->no_tel }}">
                     </div>
                 </div>
                 <div class="row pb-2">
