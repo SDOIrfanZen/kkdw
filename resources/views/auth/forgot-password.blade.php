@@ -29,8 +29,27 @@
                         {{ session()->get('status') }}
                     </div>
                 @endif
-                <h2><strong>Terlupa Kata Laluan ?</strong></h2>
-                <p>Sila masukkan email anda untuk memohon reset semula kata laluan.</p>
+                <h2><strong>Lupa Kata Laluan</strong></h2>
+                <p>
+                    Terlupa kata laluan anda? Anda perlu melengkapkan 
+                    <br />
+                    maklumat di bawah untuk menetapkan kata laluan baru.
+                  </p>
+                  
+            </div>
+
+            <!-- Kad Pengenalan Row -->
+            <div class="form-group row justify-content-center">
+                <div class="col-sm-12 col-md-8 col-lg-10">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="background-color: white; border: 1px solid #ccc;">
+                                <img src="{{ asset('images/user.png') }}" alt="Custom Icon" style="width: 20px; height: 20px;">
+                            </span>
+                        </div>
+                        <input class="form-control" type="text" name="kad_pengenalan" placeholder="Kad Pengenalan">
+                    </div>
+                </div>
             </div>
         
             <!-- Email Row -->
@@ -40,10 +59,10 @@
                         <div class="input-group-prepend">
                             <!-- Custom Icon as Background -->
                             <span class="input-group-text" style="background-color: white; border: 1px solid #ccc;">
-                                <img src="{{ asset('images/user.png') }}" alt="Custom Icon" style="width: 20px; height: 20px;">
+                                <img src="{{ asset('images/email.png') }}" alt="Custom Icon" style="width: 20px; height: 20px;">
                             </span>
                         </div>
-                        <input class="form-control" type="email" name="email" placeholder="example@kkdw.gov.my">
+                        <input class="form-control" type="email" name="email" placeholder="Emel">
                     </div>
                 </div>
             </div>

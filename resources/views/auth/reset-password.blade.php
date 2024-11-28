@@ -43,10 +43,10 @@
                         <div class="input-group-prepend">
                             <!-- Custom Icon as Background -->
                             <span class="input-group-text" style="background-color: white; border: 1px solid #ccc;">
-                                <img src="{{ asset('images/user.png') }}" alt="Custom Icon" style="width: 20px; height: 20px;">
+                                <img src="{{ asset('images/lock.png') }}" alt="Custom Icon" style="width: 20px; height: 20px;">
                             </span>
                         </div>
-                        <input class="form-control" type="password" name="password" placeholder="********">
+                        <input class="form-control" type="password" name="password" placeholder="Kata Laluan Baharu">
                     </div>
                 </div>
             </div>
@@ -58,10 +58,10 @@
                         <div class="input-group-prepend">
                             <!-- Custom Icon as Background -->
                             <span class="input-group-text" style="background-color: white; border: 1px solid #ccc;">
-                                <img src="{{ asset('images/user.png') }}" alt="Custom Icon" style="width: 20px; height: 20px;">
+                                <img src="{{ asset('images/lock.png') }}" alt="Custom Icon" style="width: 20px; height: 20px;">
                             </span>
                         </div>
-                        <input class="form-control" type="password" name="password_confirmation" placeholder="********">
+                        <input class="form-control" type="password" name="password_confirmation" placeholder="Pengesahan Kata Laluan Baharu">
                     </div>
                 </div>
             </div>
