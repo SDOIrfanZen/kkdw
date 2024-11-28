@@ -30,17 +30,21 @@
 
     <div class="container-fluid centered-content">
         <!-- Image links centered in the middle -->
+        @can('Muat Naik Data')
         <a href="#" class="image-link">
             <img src="{{ asset('images/muat-naik-data.png') }}" alt="Image 1" class="img-fluid image-size">
         </a>
+        @endcan
         @if (Gate::any(['Purata Nasional']))
             <a href="#" class="image-link">
                 <img src="{{ asset('images/purata-nasional.png') }}" alt="Image 2" class="img-fluid image-size">
             </a>
         @endif
+        @can('Unjuran')
         <a href="#" class="image-link">
             <img src="{{ asset('images/unjuran.png') }}" alt="Image 1" class="img-fluid image-size">
         </a>
+        @endcan
     </div>
     <div class="container-fluid centered-content">
         <a href="#" class="image-link">

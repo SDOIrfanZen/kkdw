@@ -62,6 +62,7 @@
                         <div class="col-md-3">
                             <input class="form-control" name="nama" value="{{ $userProfile->nama }}">
                         </div>
+                        @can('Mengemaskini Status Pengguna (Aktif/Tidak Aktif)')
                         <div class="col-md-3 label-column">Status</div>
                         <div class="col-md-3">
                             <select class="form-select" id="status" name="status" required>
@@ -70,6 +71,7 @@
                                 </option>
                             </select>
                         </div>
+                        @endcan
                         {{-- <div class="col-md-3 label-column">Peranan</div>
                         <div class="col-md-3">
                             <select class="form-select" name="role" required>
@@ -119,6 +121,7 @@
         </div>
     </div>
 
+    @can('Mengemaskini Kata Laluan')
     <div class="container-fluid d-flex justify-content-center">
         <div class="card mt-4 mx-auto" style="width: 90%;">
             <div class="card-header d-flex align-items-center custom-card-header"
@@ -163,6 +166,7 @@
             </div>
         </div>
     </div>
+    @endcan
 
     <div class="container-fluid d-flex justify-content-center">
         <!-- Big Card -->
@@ -353,10 +357,12 @@
                     <div class="d-flex justify-content-end mt-3">
                         <button type="submit" class="btn btn-primary me-2">Kemaskini</button>
                         <!-- Trigger Button for Modal -->
+                        @can('Menghapuskan Akaun Pengguna')
                         <button type="button" class="btn btn-danger" style="width: 100px;" data-bs-toggle="modal"
                             data-bs-target="#deleteModal">
                             Hapus
                         </button>
+                        @endcan
                     </div>
 
                 </form>

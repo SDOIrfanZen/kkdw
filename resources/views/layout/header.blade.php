@@ -53,14 +53,15 @@
             <div class="d-flex justify-content-center">
                 <ul class="navbar-nav mb-2 mb-lg-0 d-flex">
                     <li class="nav-item">
+                        @if (Gate::any(['Dashboard Utama']))
                         <a class="nav-link" href="#!">
                             <img src="{{ asset('images/laman-utama.svg') }}" alt="Laman Utama" class="nav-icon"> Laman
                             Utama
                         </a>
+                        @endif
                     </li>
                     <li class="nav-item">
                         @if (Gate::any([
-                                'Dashboard Utama',
                                 'Prestasi Perbelanjaan Negeri',
                                 'Dashboard Infrastruktur Asas & Laporan',
                                 'Dashboard Ekonomi & Laporan',
@@ -135,12 +136,13 @@
                             alt="Default Profile Image" width="60%">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{ route('administration.manage_account') }}">View
-                                Information</a></li>
+                        @can('Papar Maklumat Profil Pengguna')
+                        <li><a class="dropdown-item" href="{{ route('administration.manage_account') }}">Lihat Profil</a></li>
+                        @endcan
                         <li>
                             <form action="{{ route('auth.logout') }}" method="POST">
                                 @csrf
-                                <button type="submit" class="dropdown-item">Sign Out</button>
+                                <button type="submit" class="dropdown-item">Log Keluar</button>
                             </form>
                         </li>
                     </ul>

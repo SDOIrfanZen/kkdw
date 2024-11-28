@@ -25,12 +25,16 @@
 
 <div class="container-fluid centered-content">
     <!-- Image links centered in the middle -->
+    @can('Melihat Senarai Pengguna')
     <a href="{{ route('administration.pengurusan_pengguna') }}" class="image-link">
         <img src="{{ asset('images/pengguna-card.png') }}" alt="Image 1" class="img-fluid image-size">
     </a>
+    @endcan
+    @can('Melihat Senarai Peranan')
     <a href="{{ route('administration.senarai_peranan') }}" class="image-link">
         <img src="{{ asset('images/peranan-card.png') }}" alt="Image 2" class="img-fluid image-size">
     </a>
+    @endcan
     {{-- <a href="#" class="image-link">
         <img src="{{ asset('images/capaian-card.png') }}" alt="Image 3" class="img-fluid image-size">
     </a> --}}

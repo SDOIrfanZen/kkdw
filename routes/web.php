@@ -50,36 +50,36 @@ Route::post('reset-password', [AuthController::class, 'resetPassword'])->middlew
 Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout')->middleware('auth');
 
 // after success login go to manage-account
-route::get('manage-account', [AdministrationController::class, 'manage_account'])->name('administration.manage_account')->middleware('auth');
+route::get('manage-account', [AdministrationController::class, 'manage_account'])->name('administration.manage_account')->middleware(['auth', 'can.any:Papar Maklumat Profil Pengguna']);;
 route::post('manage-account-profile', [AdministrationController::class, 'manage_account_profile'])->name('administration.manage_account_profile');
 route::post('manage-account-password', [AdministrationController::class, 'manage_account_password'])->name('administration.manage_account_password');
 
 // pengurusan pengguna
-route::get('pengurusan-pengguna', [AdministrationController::class, 'pengurusan_pengguna_main'])->name('administration.pengurusan_pengguna_main');
-route::get('pengurusan-pengguna-list', [AdministrationController::class, 'pengurusan_pengguna_list'])->name('administration.pengurusan_pengguna');
+route::get('pengurusan-pengguna', [AdministrationController::class, 'pengurusan_pengguna_main'])->name('administration.pengurusan_pengguna_main')->middleware('can.any:Melihat Senarai Pengguna|Melihat Senarai Peranan');
+route::get('pengurusan-pengguna-list', [AdministrationController::class, 'pengurusan_pengguna_list'])->name('administration.pengurusan_pengguna')->middleware('can.any:Melihat Senarai Pengguna|Melihat Senarai Peranan');
 route::get('tambah-pengguna', [AdministrationController::class, 'tambah_pengguna_list'])->name('administration.tambah_pengguna');
 route::post('tambah-pengguna-process', [AdministrationController::class, 'tambah_pengguna_process'])->name('administration.tambah_pengguna_process');
 
-route::get('pengguna-approval/{id}', [AdministrationController::class, 'pengguna_approval_list'])->name('administration.pengguna_approval');
+route::get('pengguna-approval/{id}', [AdministrationController::class, 'pengguna_approval_list'])->name('administration.pengguna_approval')->middleware('can.any:Meluluskan Permohonan Baru Pengguna');
 route::put('pengguna-approval-process/{id}', [AdministrationController::class, 'pengguna_approval_process'])->name('administration.pengguna_approval_process');
 Route::delete('pengguna_reject/{id}', [AdministrationController::class, 'pengguna_reject_process'])->name('administration.pengguna_reject_process');
 
 
-route::get('edit-pengguna/{id}', [AdministrationController::class, 'edit_pengguna'])->name('administration.edit_pengguna');
+route::get('edit-pengguna/{id}', [AdministrationController::class, 'edit_pengguna'])->name('administration.edit_pengguna')->middleware('can.any:Mengemaskini Maklumat Pengguna');
 Route::put('update-pengguna/{id}', [AdministrationController::class, 'update_pengguna'])->name('administration.update_pengguna');
 Route::put('update-pengguna-password/{id}', [AdministrationController::class, 'update_pengguna_password'])->name('administration.update_pengguna_password');
 Route::put('update-pengguna-peranan/{id}', [AdministrationController::class, 'update_pengguna_peranan'])->name('administration.update_pengguna_peranan');
 Route::delete('delete-pengguna/{id}', [AdministrationController::class, 'delete_pengguna'])->name('administration.delete_pengguna');
 
-route::get('senarai-peranan', [AdministrationController::class, 'senarai_peranan'])->name('administration.senarai_peranan');
-route::get('kemaskini-peranan/{id}', [AdministrationController::class, 'kemaskini_peranan'])->name('administration.kemaskini_peranan');
+route::get('senarai-peranan', [AdministrationController::class, 'senarai_peranan'])->name('administration.senarai_peranan')->middleware('can.any:Melihat Senarai Peranan');
+route::get('kemaskini-peranan/{id}', [AdministrationController::class, 'kemaskini_peranan'])->name('administration.kemaskini_peranan')->middleware('can.any:Mengemaskini Peranan');
 Route::put('kemaskini-peranan/{id}', [AdministrationController::class, 'update_peranan'])->name('administration.update_peranan');
 
 // pengurusan data
-route::get('pengurusan-data', [AdministrationController::class, 'pengurusan_data_main'])->name('administration.pengurusan_pengguna_data');
+route::get('pengurusan-data', [AdministrationController::class, 'pengurusan_data_main'])->name('administration.pengurusan_pengguna_data')->middleware('can.any:Muat Naik Data|Purata Nasional|Unjuran');
 
 //dashboard
-route::get('dashboard', [AdministrationController::class, 'dashboard_main'])->name('administration.dashboard');
+route::get('dashboard', [AdministrationController::class, 'dashboard_main'])->name('administration.dashboard')->middleware('can.any:Prestasi Perbelanjaan Negeri|Dashboard Infrastruktur Asas & Laporan|Dashboard Ekonomi & Laporan|Dashboard Modal Insan & Laporan|Dashboard Usahawan|Dashboard Profil Kampung');
 
 
 
