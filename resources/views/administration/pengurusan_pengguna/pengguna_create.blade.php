@@ -128,7 +128,7 @@
                         </div>
                         <div class="col-md-3 label-column">Kata Laluan</div>
                         <div class="col-md-3">
-                            <input class="form-control @error('kata_laluan') is-invalid @enderror" name="kata_laluan"
+                            <input type="password" class="form-control @error('kata_laluan') is-invalid @enderror" name="kata_laluan"
                                 value="{{ old('kata_laluan') }}">
                             @error('kata_laluan')
                                 <div class="invalid-feedback">{{ $message }}</div>

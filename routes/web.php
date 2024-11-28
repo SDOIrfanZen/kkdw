@@ -113,7 +113,7 @@ route::get('give-permission-to-role', function () {
 
 Route::get('assign-role-to-user', function() {
      
-    $user = Pengguna::findOrFail(1);
+    $user = Pengguna::findOrFail(6);
 
     $role = Role::findOrFail(1); 
     $role1 = Role::findOrFail(2);

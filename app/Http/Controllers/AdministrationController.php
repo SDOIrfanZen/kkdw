@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Crypt;
 
 class AdministrationController extends Controller
 {
@@ -136,9 +137,9 @@ class AdministrationController extends Controller
             'jawatan.string' => 'Jawatan mesti dalam bentuk teks.',
             'jawatan.max' => 'Jawatan tidak boleh melebihi 255 aksara.',
 
-            'kata_laluan.required' => 'Kata Laluan is required.',
+            'kata_laluan.required' => 'Kata Laluan diperlukan.',
             'kata_laluan.string' => 'Kata Laluan must be a valid string.',
-            'kata_laluan.min' => 'Kata Laluan must be at least 8 characters.',
+            'kata_laluan.min' => 'Kata Laluan sekurang-kurangnya 8 aksara.',
         ];
 
         // Validate the incoming data with custom messages
@@ -156,10 +157,12 @@ class AdministrationController extends Controller
             $customMessages,
         ); // Pass custom messages as second parameter
 
+        $encryptedKadPengenalan = Crypt::encryptString($validated['kad_pengenalan']);
+
         // Store the validated data
         $user = Pengguna::create([
             'nama' => $validated['nama'],
-            'kad_pengenalan' => $validated['kad_pengenalan'],
+            'kad_pengenalan' => $encryptedKadPengenalan,
             'email' => $validated['email'],
             'bahagian' => $validated['bahagian'],
             'no_tel' => $validated['no_tel'],
@@ -313,10 +316,13 @@ class AdministrationController extends Controller
         // Find the user by ID
         $user = Pengguna::findOrFail($id);
 
+        // Encrypt kad_pengenalan before updating
+        $encryptedKadPengenalan = Crypt::encryptString($validated['kad_pengenalan']);
+
         // Update the user's profile
         $user->update([
             'nama' => $validated['nama'],
-            'kad_pengenalan' => $validated['kad_pengenalan'],
+            'kad_pengenalan' => $encryptedKadPengenalan,
             'email' => $validated['email'],
             'bahagian' => $validated['bahagian'],
             'no_tel' => $validated['no_tel'],

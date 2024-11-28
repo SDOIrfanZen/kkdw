@@ -73,7 +73,7 @@ form .btn-reset {
                 <div class="row pb-2">
                     <div class="col-md-3 label-column">Kad Pengenalan</div>
                     <div class="col-md-3">
-                        <input readonly class="form-control" name="kad_pengenalan" value="{{ $userProfile->kad_pengenalan }}">
+                        <input readonly class="form-control" name="kad_pengenalan" value="{{ \Crypt::decryptString($userProfile->kad_pengenalan) }}">
                     </div>
                     <div class="col-md-3 label-column">Alamat e-mel rasmi</div>
                     <div class="col-md-3">
