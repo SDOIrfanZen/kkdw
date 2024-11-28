@@ -98,17 +98,19 @@ form .btn-reset {
                         <input readonly class="form-control" value="{{ $userProfile->status == 1 ? 'aktif' : 'tak aktif' }}">
                     </div>                    
                 </div>
+                @can('Kemaskini Maklumat Pengguna (data semasa daftar akaun)')
                 <div class="d-flex justify-content-end mt-4">
                     <button class="btn btn-primary me-3" type="submit">Simpan</button>
                     <button class="btn btn-reset" type="button">Batal</button>
                 </div>
+                @endcan
             </form>
         </div>
     </div>
 </div>
 
 
-
+@can('Tukar Kata Laluan')
 <div class="container-fluid d-flex justify-content-center">
     <div class="card mt-4 mx-auto" style="width: 90%;">
         <div class="card-header d-flex align-items-center custom-card-header" style="background: rgba(8, 12, 85, 1); height: 3.5rem;">
@@ -147,6 +149,7 @@ form .btn-reset {
         </div>        
     </div>
 </div>
+@endcan
 
     
     
