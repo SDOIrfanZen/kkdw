@@ -96,8 +96,14 @@
                     <div class="row pb-2">
                         <div class="col-md-3 label-column">Bahagian/Agensi/Institusi</div>
                         <div class="col-md-3">
-                            <input class="form-control @error('bahagian') is-invalid @enderror" name="bahagian"
-                                value="{{ old('bahagian') }}">
+                            <select class="form-control" name="bahagian" id="bahagian" required>
+                                <option value="" disabled selected>Sila Pilih</option>
+                                @foreach($bahagian as $item)
+                                    <option value="{{ $item->name }}" {{ old('bahagian') == $item->name ? 'selected' : '' }}>
+                                        {{ $item->name }}
+                                    </option>
+                                @endforeach
+                            </select>
                             @error('bahagian')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
