@@ -40,11 +40,11 @@ form .btn-reset {
 @endif
     
 <!-- User Image Section Above Card -->
-<div class="text-center">
+{{-- <div class="text-center">
     <div class="rounded-circle" style="width: 110px; height: 110px; background-color: silver; display: flex; justify-content: center; align-items: center; margin: 0 auto;">
         <img src="{{ asset('images/Profile.png') }}" alt="User Icon" class="img-fluid rounded-circle" style="width: 60px; height: 60px;">
     </div>
-</div>
+</div> --}}
 
 
 <div class="container-fluid d-flex justify-content-center">

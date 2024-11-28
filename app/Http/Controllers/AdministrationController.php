@@ -146,8 +146,8 @@ class AdministrationController extends Controller
             [
                 'nama' => 'required|string|max:255',
                 'peranan' => 'required|string|exists:roles,name',
-                'kad_pengenalan' => 'required|numeric|unique:Pengguna,kad_pengenalan',
-                'email' => 'required|email|unique:Pengguna,email',
+                'kad_pengenalan' => 'required|numeric|unique:pengguna,kad_pengenalan',
+                'email' => 'required|email|unique:pengguna,email',
                 'bahagian' => 'required|string|max:255',
                 'no_tel' => 'required|string',
                 'jawatan' => 'required|string|max:255',
@@ -301,7 +301,7 @@ class AdministrationController extends Controller
             [
                 'nama' => 'required|string|max:255',
                 'kad_pengenalan' => 'required', // Unique check can be skipped for updating
-                'email' => 'required|email|unique:Pengguna,email,' . $id, // Update with unique constraint excluding current user's email
+                'email' => 'required|email|unique:pengguna,email,' . $id, // Update with unique constraint excluding current user's email
                 'bahagian' => 'required|string|max:255',
                 'no_tel' => 'required|string',
                 'jawatan' => 'required|string|max:255',
