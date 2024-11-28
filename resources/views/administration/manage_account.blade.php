@@ -33,11 +33,13 @@ form .btn-reset {
 
 @section('content')
 
+<div class="mx-auto" style="width: 90%;">
 @if(session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
     </div>
 @endif
+</div>
     
 <!-- User Image Section Above Card -->
 {{-- <div class="text-center">
@@ -69,8 +71,8 @@ form .btn-reset {
                 <div class="row pb-2">
                     <div class="col-md-3 label-column">Kad Pengenalan</div>
                     <div class="col-md-3">
-                        <input readonly class="form-control" value="{{ $userProfile->kad_pengenalan }}">
-                    </div>
+                        <input readonly class="form-control" value="{{ \Crypt::decryptString($userProfile->kad_pengenalan) }}">
+                    </div>                    
                     <div class="col-md-3 label-column">Alamat e-mel rasmi</div>
                     <div class="col-md-3">
                         <input readonly class="form-control" value="{{ $userProfile->email }}">

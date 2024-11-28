@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Crypt;
 
 class AuthController extends Controller
 {
@@ -30,12 +31,19 @@ class AuthController extends Controller
 
         // Validate the request with dynamic rules
         $validatedData = $request->validate($rules, [
-            'kad_pengenalan.required' => 'Kad Pengenalan is required.',
-            'kata_laluan.required' => 'Kata Laluan is required.',
+            'kad_pengenalan.required' => 'Kad Pengenalan diperlukan.',
+            'kata_laluan.required' => 'Kata Laluan diperlukan.',
         ]);
 
-        // Retrieve user from the pengguna table
-        $user = Pengguna::where('kad_pengenalan', $validatedData['kad_pengenalan'])->first();
+        // Retrieve all users and decrypt kad_pengenalan for comparison
+        $users = Pengguna::all();
+        $user = $users->first(function ($user) use ($validatedData) {
+            try {
+                return Crypt::decryptString($user->kad_pengenalan) === $validatedData['kad_pengenalan'];
+            } catch (\Exception $e) {
+                return false; // Skip invalid decryption
+            }
+        });
 
         if (!$user) {
             // Kad Pengenalan does not exist
@@ -177,7 +185,7 @@ class AuthController extends Controller
         
             'kad_pengenalan.required' => 'Nombor Kad Pengenalan perlu dilengkapkan.',
             'kad_pengenalan.string' => 'Kad Pengenalan must be a valid string.',
-            'kad_pengenalan.max' => 'Kad Pengenalan cannot exceed 20 characters.',
+            'kad_pengenalan.max' => 'Kad Pengenalan tidak boleh melebihi 20 aksara.',
             'kad_pengenalan.unique' => 'Nombor Kad Pengenalan telah wujud dalam rekod sistem.',
         
             'bahagian.required' => 'Bahagian perlu dilengkapkan.',
@@ -206,12 +214,15 @@ class AuthController extends Controller
             'kata_laluan.different' => 'Kata laluan tidak boleh sama dengan Nombor Kad Pengenalan.',
         ]);
 
+        // Encrypt kad_pengenalan before saving
+        $encryptedKadPengenalan = Crypt::encryptString($request->kad_pengenalan);
+
         // Retrieve the bahagian name based on the selected ID
         $bahagianName = Agensi::where('id', $request->bahagian)->value('name');
         
         $user = Pengguna::create([
             'nama' => $request->nama,
-            'kad_pengenalan' => $request->kad_pengenalan,
+            'kad_pengenalan' => $encryptedKadPengenalan,
             'bahagian' => $bahagianName,
             'jawatan' => $request->jawatan,
             'email' => $request->email,
