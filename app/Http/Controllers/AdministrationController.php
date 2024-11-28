@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengguna;
+use App\Models\Agensi;
 use Illuminate\Http\Request;
 use App\Mail\UserRejectionMail;
 use App\Models\RejectedPengguna;
@@ -101,7 +102,8 @@ class AdministrationController extends Controller
     public function tambah_pengguna_list()
     {
         $roles = Role::all();
-        return view('administration.pengurusan_pengguna.pengguna_create', compact('roles'));
+        $bahagian = Agensi::get();
+        return view('administration.pengurusan_pengguna.pengguna_create', compact('roles', 'bahagian'));
     }
 
     public function tambah_pengguna_process(Request $request)
@@ -260,7 +262,8 @@ class AdministrationController extends Controller
         $roles = Role::all();
         $permissions = Permission::all();
         $userPermissions = $userProfile->getAllPermissions()->pluck('id')->toArray();
-        return view('administration.pengurusan_pengguna.pengguna_edit', compact('userProfile', 'roles', 'permissions', 'userPermissions'));
+        $bahagian = Agensi::get();
+        return view('administration.pengurusan_pengguna.pengguna_edit', compact('userProfile', 'roles', 'permissions', 'userPermissions', 'bahagian'));
     }
 
     public function update_pengguna(Request $request, $id)
@@ -270,9 +273,6 @@ class AdministrationController extends Controller
             'nama.required' => 'Nama Penuh diperlukan.',
             'nama.string' => 'Nama Penuh mesti dalam bentuk teks.',
             'nama.max' => 'Nama Penuh tidak boleh melebihi 255 aksara.',
-
-            'role.required' => 'Peranan diperlukan.',
-            'role.exists' => 'Peranan yang dipilih tidak sah.',
 
             'kad_pengenalan.required' => 'Kad Pengenalan diperlukan.',
             'kad_pengenalan.numeric' => 'Kad Pengenalan mesti dalam format nombor.',
@@ -292,10 +292,6 @@ class AdministrationController extends Controller
             'jawatan.string' => 'Jawatan mesti dalam bentuk teks.',
             'jawatan.max' => 'Jawatan tidak boleh melebihi 255 aksara.',
 
-            'kata_laluan.required' => 'Kata Laluan diperlukan.',
-            'kata_laluan.string' => 'Kata Laluan mesti dalam bentuk teks.',
-            'kata_laluan.min' => 'Kata Laluan mesti sekurang-kurangnya 8 aksara.',
-
             'status.required' => 'Status diperlukan.',
             'status.in' => 'Status mesti dalam pilihan yang sah.',
         ];
@@ -304,13 +300,11 @@ class AdministrationController extends Controller
         $validated = $request->validate(
             [
                 'nama' => 'required|string|max:255',
-                'role' => 'required|exists:roles,id', // Make sure the role exists
                 'kad_pengenalan' => 'required', // Unique check can be skipped for updating
                 'email' => 'required|email|unique:Pengguna,email,' . $id, // Update with unique constraint excluding current user's email
                 'bahagian' => 'required|string|max:255',
                 'no_tel' => 'required|string',
                 'jawatan' => 'required|string|max:255',
-                'kata_laluan' => 'nullable|string|min:8', // Optional during update
                 'status' => 'required|string|in:1,2',
             ],
             $customMessages,
@@ -331,9 +325,9 @@ class AdministrationController extends Controller
         ]);
 
         // If password is provided, update it
-        if ($request->filled('kata_laluan')) {
-            $user->kata_laluan = Hash::make($validated['kata_laluan']);
-        }
+        // if ($request->filled('kata_laluan')) {
+        //     $user->kata_laluan = Hash::make($validated['kata_laluan']);
+        // }
 
         // $role = Role::find($validated['role']); // Find the role by its ID
         // if ($role) {
