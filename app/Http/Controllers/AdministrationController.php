@@ -347,42 +347,56 @@ class AdministrationController extends Controller
     }
 
     public function assignRoles(Request $request, $userId)
-    {
-        $user = Pengguna::findOrFail($userId);
+{
+    $user = Pengguna::findOrFail($userId);
 
-        // Detach any existing roles
-        $user->roles()->detach();
-        $user->permissions()->detach();
+    // Validate input
+    $request->validate([
+        'role' => 'required|exists:roles,id',
+        'permissions' => 'nullable|array', // Add validation for permissions array
+    ]);
 
-        // Check if roles are selected
-        if ($request->has('roles')) {
-            // Retrieve the selected role IDs
-            $roleIds = $request->input('roles');
+    // Get the selected role
+    $roleId = $request->input('role');
+    $role = Role::findOrFail($roleId);
 
-            // Make sure each role ID exists in the database before assigning it
-            $roles = Role::whereIn('id', $roleIds)->get();
+    // Check if the role has changed
+    $currentRole = $user->roles->first();
 
-            // Only assign roles that exist in the database
-            if ($roles->count() > 0) {
-                $user->assignRole($roles); // Assign the roles to the user
-            } else {
-                return back()->with('error', 'Invalid role selection.');
-            }
-        }
+    // If the role has changed, reset the permissions to the default ones of the selected role
+    if ($currentRole && $currentRole->id != $role->id) {
+        // Sync the role (this will remove old roles and assign the new one)
+        $user->syncRoles([$role->name]);
 
-        // Assign selected permissions
+        // Get the default permissions for the selected role
+        $permissions = $role->permissions;
+
+        // Sync the permissions (reset to the new role's permissions)
+        $user->syncPermissions($permissions);
+    } else {
+        // If the role has not changed, just add the additional permissions
+        $permissions = $role->permissions; // Default permissions associated with the role
+
+        // If the user selected additional permissions, merge them
         if ($request->has('permissions')) {
-            $permissionIds = $request->input('permissions');
-            $permissions = Permission::whereIn('id', $permissionIds)->get();
-            if ($permissions->count() > 0) {
-                $user->givePermissionTo($permissions); // Assign permissions to the user
-            } else {
-                return back()->with('error', 'Invalid permission selection.');
-            }
+            $additionalPermissions = $request->input('permissions');
+            $additionalPermissions = Permission::whereIn('id', $additionalPermissions)->get();
+            // Merge the default permissions with the additional ones selected by the user
+            $permissions = $permissions->merge($additionalPermissions);
         }
 
-        return redirect()->back()->with('success', 'Peranan berjaya ditetapkan!');
+        // Sync the permissions (add new ones but preserve existing role permissions)
+        $user->syncPermissions($permissions);
     }
+
+    return redirect()->back()->with('success', 'Peranan dan capaian berjaya dikemaskini!');
+}
+
+
+
+
+    
+
 
     public function update_pengguna_password(Request $request, $id)
     {
