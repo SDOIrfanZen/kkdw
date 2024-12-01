@@ -510,4 +510,8 @@ class AdministrationController extends Controller
     {
         return view('administration.dashboard.homepage_dashboard');
     }
+
+    public function audit_trail_main() {
+        return view('administration.audit_trail.homepage_audit_trail');
+    }
 }
