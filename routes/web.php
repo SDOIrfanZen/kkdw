@@ -81,7 +81,8 @@ route::get('pengurusan-data', [AdministrationController::class, 'pengurusan_data
 //dashboard
 route::get('dashboard', [AdministrationController::class, 'dashboard_main'])->name('administration.dashboard')->middleware('can.any:Prestasi Perbelanjaan Negeri|Dashboard Infrastruktur Asas & Laporan|Dashboard Ekonomi & Laporan|Dashboard Modal Insan & Laporan|Dashboard Usahawan|Dashboard Profil Kampung');
 
-
+//audit
+route::get('audit-trail', [AdministrationController::class, 'audit_trail_main'])->name('administration.audit_trail');
 
 route::get('reset-password-try', function () {
     return view('auth.reset-password_backup');

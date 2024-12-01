@@ -118,7 +118,7 @@
                                 'Carian Log (hari atau pengguna)',
                                 'Export Excel/PDF',
                             ]))
-                        <a class="nav-link" href="#!">
+                        <a class="nav-link" href="{{ route('administration.audit_trail') }}">
                             <img src="{{ asset('images/audit-trail.svg') }}" alt="Audit Trail" class="nav-icon"> Audit
                             Trail
                         </a>
