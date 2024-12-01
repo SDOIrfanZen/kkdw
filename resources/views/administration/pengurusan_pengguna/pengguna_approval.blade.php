@@ -57,18 +57,20 @@ form .btn-reset {
                         <input readonly class="form-control" name="nama" value="{{ $userProfile->nama }}">
                     </div>
                     <div class="col-md-3 label-column">Peranan</div>
-                        <div class="col-md-3">
-                            <select class="form-control @error('role') is-invalid @enderror" name="role">
-                                <option value="">Pilih Peranan</option>
-                                @foreach ($roles as $role)
-                                    <option value="{{ $role->name }}"
-                                        {{ old('role') == $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('role')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
+                    <div class="col-md-3">
+                        <select class="form-control @error('role') is-invalid @enderror" name="role">
+                            <option value="">Pilih Peranan</option>
+                            @foreach ($roles as $role)
+                                <option value="{{ $role->name }}"
+                                    {{ (old('role') ?? $userProfile->roles->first()->name ?? '') == $role->name ? 'selected' : '' }}>
+                                    {{ $role->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('role')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
                 <div class="row pb-2">
                     <div class="col-md-3 label-column">Kad Pengenalan</div>

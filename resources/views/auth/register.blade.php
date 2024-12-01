@@ -71,6 +71,20 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="peranan"><strong>Peranan</strong></label>
+                        <select class="form-control" name="role" id="role" required>
+                            <option value="" disabled selected>Sila Pilih</option>
+                            @foreach ($roles as $role)
+                                    <option value="{{ $role->name }}"
+                                        {{ old('role') == $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
+                                @endforeach
+                        </select>
+                        @error('bahagian')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
                     
                     <div class="form-group col-md-4">
                         <label for="email"><strong>Alamat E-mel Rasmi</strong></label>
@@ -79,7 +93,9 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    
+                </div>
+            
+                <div class="form-row mb-4">
                     <div class="form-group col-md-4">
                         <label for="no_tel"><strong>No. Telefon</strong></label>
                         <input class="form-control" type="text" name="no_tel" value="{{ old('no_tel') }}" placeholder="No. Telefon" required>
@@ -87,9 +103,6 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
-            
-                <div class="form-row mb-4">
                     <!-- Kata Laluan Row -->
                     <div class="form-group col-md-4">
                         <label for="kata_laluan"><strong>Kata Laluan</strong></label>
