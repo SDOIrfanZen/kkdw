@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Crypt;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -75,16 +76,18 @@ class AuthController extends Controller
     public function forgotPassword(Request $request)
     {
         // Validate the input fields
-        $request->validate([
-            'email' => 'required|email',
-            'kad_pengenalan' => 'required|string',
-        ], [
-            'email.required' => 'Emel diperlukan.',
-            'email.email' => 'Sila masukkan emel yang sah.',
-            'kad_pengenalan.required' => 'Kad Pengenalan diperlukan.',
-            'kad_pengenalan.string' => 'Kad Pengenalan mesti dalam format teks.'
-        ]);
-        
+        $request->validate(
+            [
+                'email' => 'required|email',
+                'kad_pengenalan' => 'required|string',
+            ],
+            [
+                'email.required' => 'Emel diperlukan.',
+                'email.email' => 'Sila masukkan emel yang sah.',
+                'kad_pengenalan.required' => 'Kad Pengenalan diperlukan.',
+                'kad_pengenalan.string' => 'Kad Pengenalan mesti dalam format teks.',
+            ],
+        );
 
         // Retrieve user by email
         $user = Pengguna::where('email', $request->input('email'))->first();
@@ -173,18 +176,20 @@ class AuthController extends Controller
     public function showRegisterForm()
     {
         $bahagian = Agensi::get();
+        $roles = Role::all();
 
-        return view('auth.register', compact('bahagian'));
+        return view('auth.register', compact('bahagian', 'roles'));
     }
 
     public function registration_process(Request $request)
     {
-        // Validate the request data
-        $request->validate(
+        // Validate the request data and assign it to $validated
+        $validated = $request->validate(
             [
                 'nama' => 'required|string|max:255',
                 'kad_pengenalan' => 'required|string|max:20|unique:pengguna',
                 'bahagian' => 'required|string|max:255',
+                'role' => 'required|exists:roles,name',
                 'jawatan' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:pengguna',
                 'no_tel' => 'required|string|max:15',
@@ -201,32 +206,29 @@ class AuthController extends Controller
                 ],
             ],
             [
+                // Custom validation messages
                 'nama.required' => 'Nama penuh perlu dilengkapkan.',
                 'nama.string' => 'Nama must be a valid string.',
-
                 'kad_pengenalan.required' => 'Nombor Kad Pengenalan perlu dilengkapkan.',
                 'kad_pengenalan.string' => 'Kad Pengenalan must be a valid string.',
                 'kad_pengenalan.max' => 'Kad Pengenalan tidak boleh melebihi 20 aksara.',
                 'kad_pengenalan.unique' => 'Nombor Kad Pengenalan telah wujud dalam rekod sistem.',
-
                 'bahagian.required' => 'Bahagian perlu dilengkapkan.',
                 'bahagian.string' => 'Bahagian must be a valid string.',
                 'bahagian.max' => 'Bahagian cannot exceed 255 characters.',
-
+                'role.required' => 'Peranan diperlukan.',
+                'role.exists' => 'Peranan yang dipilih tidak sah.',
                 'jawatan.required' => 'Jawatan perlu dilengkapkan.',
                 'jawatan.string' => 'Jawatan must be a valid string.',
                 'jawatan.max' => 'Jawatan cannot exceed 255 characters.',
-
                 'email.required' => 'Email perlu dilengkapkan.',
                 'email.string' => 'email must be a valid string.',
                 'email.email' => 'email must be a valid email address.',
                 'email.max' => 'email cannot exceed 255 characters.',
                 'email.unique' => 'email telah wujud.',
-
                 'no_tel.required' => 'Nombor Telefon perlu dilengkapkan.',
                 'no_tel.string' => 'No Tel must be a valid string.',
                 'no_tel.max' => 'No Tel cannot exceed 15 characters.',
-
                 'kata_laluan.required' => 'Kata Laluan perlu dilengkapkan.',
                 'kata_laluan.string' => 'Kata laluan mesti merupakan rentetan yang sah.',
                 'kata_laluan.min' => 'Kata laluan mestilah sekurang-kurangnya 8 aksara.',
@@ -237,21 +239,29 @@ class AuthController extends Controller
         );
 
         // Encrypt kad_pengenalan before saving
-        $encryptedKadPengenalan = Crypt::encryptString($request->kad_pengenalan);
+        $encryptedKadPengenalan = Crypt::encryptString($validated['kad_pengenalan']);
 
         // Retrieve the bahagian name based on the selected ID
-        $bahagianName = Agensi::where('id', $request->bahagian)->value('name');
+        $bahagianName = Agensi::where('id', $validated['bahagian'])->value('name');
 
         $user = Pengguna::create([
-            'nama' => $request->nama,
+            'nama' => $validated['nama'],
             'kad_pengenalan' => $encryptedKadPengenalan,
             'bahagian' => $bahagianName,
-            'jawatan' => $request->jawatan,
-            'email' => $request->email,
-            'no_tel' => $request->no_tel,
+            'jawatan' => $validated['jawatan'],
+            'email' => $validated['email'],
+            'no_tel' => $validated['no_tel'],
             'status' => 0, // New users are set as 0 = 'pending'
-            'kata_laluan' => Hash::make($request->kata_laluan),
+            'kata_laluan' => Hash::make($validated['kata_laluan']),
         ]);
+
+        // Assign the selected role to the user
+        $role = Role::findByName($validated['role']); // Find the role by name
+        if ($role) {
+            $user->syncRoles($role); // Sync the selected role with the user
+        } else {
+            return back()->withErrors(['role' => 'Role not found!']);
+        }
 
         Mail::to($user->email)->send(new UserRegistrationMail($user));
 
