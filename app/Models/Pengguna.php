@@ -29,7 +29,8 @@ class Pengguna extends Authenticatable // Change this line
         'email',
         'no_tel',
         'status',
-        'kata_laluan'
+        'kata_laluan',
+        'bahagian_id'
     ];
     
     public $timestamps = true;
@@ -43,5 +44,10 @@ class Pengguna extends Authenticatable // Change this line
     public function getAuthPassword()
     {
         return $this->kata_laluan; 
+    }
+
+    public function Agensi()
+    {
+        return $this->belongsTo(Agensi::class, 'bahagian_id', 'id');
     }
 }

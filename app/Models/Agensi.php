@@ -10,4 +10,9 @@ class Agensi extends Model
     use HasFactory;
 
     protected $table = 'agensi';
+
+    public function Pengguna()
+    {
+        return $this->hasMany(Pengguna::class, 'bahagian_id', 'id');
+    }
 }

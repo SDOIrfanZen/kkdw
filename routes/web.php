@@ -33,6 +33,7 @@ Route::get('login', [AuthController::class, 'showLoginForm'])->name('auth.login'
 // register
 route::get('register', [AuthController::class, 'showRegisterForm'])->name('auth.register');
 route::post('register', [AuthController::class, 'registration_process'])->name('auth.registration_process');
+Route::get('get-roles-by-bahagian/{bahagian_id}', [AuthController::class, 'getRolesByBahagian']);
 
 // reset password
 Route::get('forgot-password', function () {
