@@ -275,6 +275,17 @@ class AuthController extends Controller
             Mail::to($superAdmin->email)->send(new AdminUserRegistrationNotification($user));
         }
 
+        // DB::table('activity_log')->insert([
+        //     'log_name' => 'Pendaftaran Baharu',
+        //     'description' => 'Pengguna Baharu Melakukan Pendaftaran.',
+        //     'subject_type' => 'App\Models\Pengguna',
+        //     'subject_id' => $user->id,
+        //     'causer_type' => Auth::check() ? 'App\Models\User' : null,
+        //     'causer_id' => Auth::id(),
+        //     'properties' => json_encode(['user' => $user]),
+        //     'created_at' => now(),
+        // ]);
+
         // Redirect with success message
         return redirect()->back()->with('success', 'Terima kasih kerana menghantar pendaftaran. Permohonan anda sedang diproses, dan sila semak email anda untuk maklumat lanjut.');
     }

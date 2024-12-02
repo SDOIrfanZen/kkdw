@@ -83,33 +83,22 @@ route::get('dashboard', [AdministrationController::class, 'dashboard_main'])->na
 
 //audit
 route::get('audit-trail', [AdministrationController::class, 'audit_trail_main'])->name('administration.audit_trail');
+route::get('audit-trail-list', [AdministrationController::class, 'audit_trail_list'])->name('administration.audit_trail_list');
 
 route::get('reset-password-try', function () {
     return view('auth.reset-password_backup');
 });
 
-route::get('give-permission-to-role', function () {
-
-    $role = Role::findOrFail(10); //R
+Route::get('give-permission-to-role', function () {
+    $role = Role::findOrFail(1); // Find the role
     
-    $permission = Permission::findOrFail(13);
-    $permission1 = Permission::findOrFail(16);
-    $permission2 = Permission::findOrFail(20);
-    $permission3 = Permission::findOrFail(23);
-    $permission4 = Permission::findOrFail(24);
-    $permission5 = Permission::findOrFail(25);
-    $permission6 = Permission::findOrFail(25);
-    $permission7 = Permission::findOrFail(25);
-    $permission8 = Permission::findOrFail(22);
-    $permission9 = Permission::findOrFail(23);
-    $permission10 = Permission::findOrFail(24);
-    $permission11 = Permission::findOrFail(25);
-    $permission12 = Permission::findOrFail(24);
-    $permission13 = Permission::findOrFail(25);
+    // Fetch permissions with IDs from 1 to 41
+    $permissions = Permission::whereIn('id', range(1, 41))->get();
+    
+    // Assign permissions to the role
+    $role->givePermissionTo($permissions);
 
-    // $role->givePermissionTo($permission);
-    // $role->givePermissionTo([$permission, $permission1, $permission2, $permission3, $permission4, $permission5, $permission6, $permission7, $permission8, $permission9, $permission10, $permission11]);
-    $role->givePermissionTo([$permission, $permission1, $permission2, $permission3, $permission4, $permission5]);
+    return 'Permissions successfully assigned to the role!';
 });
 
 Route::get('assign-role-to-user', function() {
@@ -117,10 +106,8 @@ Route::get('assign-role-to-user', function() {
     $user = Pengguna::findOrFail(6);
 
     $role = Role::findOrFail(1); 
-    $role1 = Role::findOrFail(2);
 
-
-    $user->assignRole([$role]);
+    $user->assignRole($role);
 
 });
 

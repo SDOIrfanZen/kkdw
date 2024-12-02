@@ -514,4 +514,8 @@ class AdministrationController extends Controller
     public function audit_trail_main() {
         return view('administration.audit_trail.homepage_audit_trail');
     }
+
+    public function audit_trail_list() {
+        return view('administration.audit_trail.audit_trail_list');
+    }
 }
