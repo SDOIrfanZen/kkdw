@@ -98,7 +98,7 @@
                     <div class="row pb-2">
                         <div class="col-md-3 label-column">Bahagian/Agensi/Institusi</div>
                         <div class="col-md-3">
-                            <input class="form-control" name="bahagian" value="{{ $userProfile->bahagian }}">
+                            <input class="form-control" name="bahagian" value="{{ $userProfile->Agensi->name ?? 'No Agensi' }}">
                         </div>
                         <div class="col-md-3 label-column">No Telefon</div>
                         <div class="col-md-3">

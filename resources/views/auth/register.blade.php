@@ -46,19 +46,19 @@
                     </div>
                     
                     <div class="form-group col-md-4">
-                        <label for="bahagian"><strong>Bahagian / Agensi / Institusi</strong></label>
-                        <select class="form-control" name="bahagian" id="bahagian" required>
+                        <label for="bahagian_id"><strong>Bahagian / Agensi / Institusi</strong></label>
+                        <select class="form-control" name="bahagian_id" id="bahagian_id" required>
                             <option value="" disabled selected>Sila Pilih</option>
                             @foreach($bahagian as $item)
-                                <option value="{{ $item->id }}" {{ old('bahagian') == $item->id ? 'selected' : '' }}>
+                                <option value="{{ $item->id }}" {{ old('bahagian_id') == $item->id ? 'selected' : '' }}>
                                     {{ $item->name }}
                                 </option>
                             @endforeach
                         </select>
-                        @error('bahagian')
+                        @error('bahagian_id')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div>                 
                     
                 </div>
             
@@ -76,12 +76,9 @@
                         <label for="peranan"><strong>Peranan</strong></label>
                         <select class="form-control" name="role" id="role" required>
                             <option value="" disabled selected>Sila Pilih</option>
-                            @foreach ($roles as $role)
-                                    <option value="{{ $role->name }}"
-                                        {{ old('role') == $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
-                                @endforeach
+                            <!-- Roles will be populated dynamically based on bahagian_id -->
                         </select>
-                        @error('bahagian')
+                        @error('role')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
@@ -147,4 +144,45 @@
         });
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const bahagianSelect = document.getElementById('bahagian_id');
+        const roleSelect = document.getElementById('role');
+    
+        // Listen for changes on the bahagian_id dropdown
+        bahagianSelect.addEventListener('change', function () {
+            const selectedBahagianId = bahagianSelect.value;
+    
+            // Clear the current options in the role dropdown
+            roleSelect.innerHTML = '<option value="" disabled selected>Sila Pilih</option>';
+    
+            // Fetch roles based on the selected bahagian_id
+            if (selectedBahagianId) {
+                fetch(`/get-roles-by-bahagian/${selectedBahagianId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.roles && data.roles.length > 0) {
+                            // Populate the role dropdown with the returned roles
+                            data.roles.forEach(function(role) {
+                                const option = document.createElement('option');
+                                option.value = role.name;  // Using role name for value
+                                option.textContent = role.name;  // Display role name in the dropdown
+                                roleSelect.appendChild(option);
+                            });
+                        } else {
+                            // If no roles are found, show a message
+                            const option = document.createElement('option');
+                            option.value = '';
+                            option.textContent = 'No Roles Available';
+                            roleSelect.appendChild(option);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching roles:', error);
+                    });
+            }
+        });
+    });
+    </script>
+    
 @endsection

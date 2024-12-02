@@ -69,7 +69,7 @@
                             <th scope="row">{{ $index + 1 }}</th>
                             <td>{{ $user->nama }}</td>
                             <td>{{ \Crypt::decryptString($user->kad_pengenalan) }}</td>
-                            <td>{{ $user->bahagian }}</td>
+                            <td>{{ $user->Agensi->name ?? 'No Agensi' }}</td>
                             <td>{{ $user->jawatan }}</td>
                             <td>{{ $user->roles->first()->name ?? 'Peranan Belum Ditetapkan' }}</td>
                             <td>{{ $user->email }}</td>
@@ -119,7 +119,7 @@
                             <th scope="row">{{ $index + 1 }}</th>
                             <td>{{ $user->nama }}</td>
                             <td>{{ \Crypt::decryptString($user->kad_pengenalan) }}</td>
-                            <td>{{ $user->bahagian }}</td>
+                            <td>{{ $user->Agensi->name ?? 'No Agensi' }}</td>
                             <td>{{ $user->jawatan }}</td>
                             <td>{{ $user->roles->first()->name ?? 'Peranan Belum Ditetapkan' }}</td>
                             {{-- <td>{{ $user->Peranan->peranan }}</td> --}}
