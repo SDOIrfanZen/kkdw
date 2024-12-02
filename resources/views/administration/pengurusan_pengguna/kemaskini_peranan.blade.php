@@ -60,7 +60,7 @@
                                 <div class="col-md-4">
                                     <h4>Pengurusan Peranan</h4>
                                     <div class="checkbox-group">
-                                        @foreach ($permissions->whereBetween('id', [7, 11]) as $permission)
+                                        @foreach ($permissions->whereBetween('id', [7, 12]) as $permission)
                                             <div class="form-check">
                                                 <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
                                                     class="form-check-input" id="permission-{{ $permission->id }}"
@@ -77,7 +77,7 @@
                                 <div class="col-md-4">
                                     <h4>Dashboard</h4>
                                     <div class="checkbox-group">
-                                        @foreach ($permissions->whereBetween('id', [16, 22]) as $permission)
+                                        @foreach ($permissions->whereBetween('id', [15, 21]) as $permission)
                                             <div class="form-check">
                                                 <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
                                                     class="form-check-input" id="permission-{{ $permission->id }}"
@@ -97,7 +97,7 @@
                                 <div class="col-md-4">
                                     <h4>Pengurusan Data</h4>
                                     <div class="checkbox-group">
-                                        @foreach ($permissions->whereBetween('id', [13, 15]) as $permission)
+                                        @foreach ($permissions->whereBetween('id', [13, 14]) as $permission)
                                             <div class="form-check">
                                                 <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
                                                     class="form-check-input" id="permission-{{ $permission->id }}"
@@ -114,7 +114,7 @@
                                 <div class="col-md-4">
                                     <h4>Pengurusan Profil</h4>
                                     <div class="checkbox-group">
-                                        @foreach ($permissions->whereBetween('id', [23, 25]) as $permission)
+                                        @foreach ($permissions->whereBetween('id', [22, 24]) as $permission)
                                             <div class="form-check">
                                                 <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
                                                     class="form-check-input" id="permission-{{ $permission->id }}"
@@ -131,7 +131,7 @@
                                 <div class="col-md-4">
                                     <h4>Audit Trail</h4>
                                     <div class="checkbox-group">
-                                        @foreach ($permissions->whereBetween('id', [26, 28]) as $permission)
+                                        @foreach ($permissions->whereBetween('id', [25, 27]) as $permission)
                                             <div class="form-check">
                                                 <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
                                                     class="form-check-input" id="permission-{{ $permission->id }}"
@@ -149,7 +149,7 @@
                                 <div class="col-md-4">
                                     <h4>Sistem</h4>
                                     <div class="checkbox-group">
-                                        @foreach ($permissions->whereBetween('id', [29, 41]) as $permission)
+                                        @foreach ($permissions->whereBetween('id', [28, 41]) as $permission)
                                             <div class="form-check">
                                                 <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
                                                     class="form-check-input" id="permission-{{ $permission->id }}"

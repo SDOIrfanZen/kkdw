@@ -35,23 +35,27 @@
             <img src="{{ asset('images/muat-naik-data.png') }}" alt="Image 1" class="img-fluid image-size">
         </a>
         @endcan
-        @if (Gate::any(['Purata Nasional']))
+        @if (Gate::any(['Purata Nasional, Unjuran, NOC, Baucar']))
             <a href="#" class="image-link">
                 <img src="{{ asset('images/purata-nasional.png') }}" alt="Image 2" class="img-fluid image-size">
             </a>
         @endif
-        @can('Unjuran')
+        @can('Purata Nasional, Unjuran, NOC, Baucar')
         <a href="#" class="image-link">
             <img src="{{ asset('images/unjuran.png') }}" alt="Image 1" class="img-fluid image-size">
         </a>
         @endcan
     </div>
     <div class="container-fluid centered-content">
+        @can('Purata Nasional, Unjuran, NOC, Baucar')
         <a href="#" class="image-link">
             <img src="{{ asset('images/NOC.png') }}" alt="Image 1" class="img-fluid image-size">
         </a>
+        @endcan
+        @can('Purata Nasional, Unjuran, NOC, Baucar')
         <a href="#" class="image-link">
             <img src="{{ asset('images/baucar.png') }}" alt="Image 1" class="img-fluid image-size">
         </a>
+        @endcan
     </div>
 @endsection

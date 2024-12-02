@@ -24,7 +24,7 @@
 </style>
 
 <div class="container-fluid centered-content">
-    <a href="{{ route('administration.senarai_peranan') }}" class="image-link">
+    <a href="{{ route('administration.audit_trail_list') }}" class="image-link">
         <img src="{{ asset('images/audit-log.png') }}" alt="Image 2" class="img-fluid image-size">
     </a>
 </div>

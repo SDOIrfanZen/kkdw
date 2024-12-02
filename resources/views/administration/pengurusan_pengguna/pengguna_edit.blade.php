@@ -220,9 +220,9 @@
                                     @php
                                         $permissionGroups = [
                                             'Pengurusan Pengguna' => range(1, 6),
-                                            'Pengurusan Peranan' => range(7, 11),
-                                            'Dashboard' => range(16, 22),
-                                            'Pengurusan Data' => range(13, 15),
+                                            'Pengurusan Peranan' => range(7, 12),
+                                            'Dashboard' => range(15, 22),
+                                            'Pengurusan Data' => range(13, 14),
                                             'Pengurusan Profil' => range(23, 25),
                                             'Audit Trail' => range(26, 28),
                                             'Sistem' => range(29, 41),
