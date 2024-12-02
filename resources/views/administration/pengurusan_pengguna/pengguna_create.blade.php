@@ -63,12 +63,9 @@
                         </div>
                         <div class="col-md-3 label-column">Peranan</div>
                         <div class="col-md-3">
-                            <select class="form-control @error('peranan') is-invalid @enderror" name="peranan">
+                            <select class="form-control @error('peranan') is-invalid @enderror" name="peranan" id="peranan">
                                 <option value="">Pilih Peranan</option>
-                                @foreach ($roles as $role)
-                                    <option value="{{ $role->name }}"
-                                        {{ old('peranan') == $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
-                                @endforeach
+                                <!-- Initially, there are no roles until a bahagian is selected -->
                             </select>
                             @error('peranan')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -96,15 +93,15 @@
                     <div class="row pb-2">
                         <div class="col-md-3 label-column">Bahagian/Agensi/Institusi</div>
                         <div class="col-md-3">
-                            <select class="form-control" name="bahagian" id="bahagian" required>
+                            <select class="form-control" name="bahagian_id" id="bahagian_id" required>
                                 <option value="" disabled selected>Sila Pilih</option>
                                 @foreach($bahagian as $item)
-                                    <option value="{{ $item->name }}" {{ old('bahagian') == $item->name ? 'selected' : '' }}>
+                                    <option value="{{ $item->id }}" {{ old('bahagian_id') == $item->id ? 'selected' : '' }}>
                                         {{ $item->name }}
                                     </option>
                                 @endforeach
                             </select>
-                            @error('bahagian')
+                            @error('bahagian_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -144,4 +141,51 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Listen for changes on the bahagian_id select box
+            $('#bahagian_id').change(function() {
+                var bahagianId = $(this).val();
+    
+                // If no bahagian_id is selected, reset the peranan dropdown to show "No Role"
+                if (!bahagianId) {
+                    $('#peranan').html('<option value="">Pilih Peranan</option>');  // No role options
+                    return;
+                }
+    
+                // Send AJAX request to fetch roles for the selected bahagian_id
+                $.ajax({
+                    url: '{{ route('administration.getRolesForBahagian') }}',
+                    method: 'GET',
+                    data: { bahagian_id: bahagianId },
+                    success: function(response) {
+                        var roles = response.roles;
+                        var roleOptions = '<option value="">Pilih Peranan</option>';  // Default option
+                        
+                        // If roles are returned, populate the dropdown
+                        if (roles.length === 0) {
+                            roleOptions = '<option value="">Sila Pilih Bahagian Dahulu</option>';
+                        } else {
+                            roles.forEach(function(role) {
+                                roleOptions += `<option value="${role.name}">${role.name}</option>`;
+                            });
+                        }
+    
+                        // Update the peranan select box with the new options
+                        $('#peranan').html(roleOptions);
+                    },
+                    error: function() {
+                        alert('Error fetching roles');
+                    }
+                });
+            });
+    
+            // If no bahagian_id is initially selected, show "No Role"
+            if (!$('#bahagian_id').val()) {
+                $('#peranan').html('<option value="">Sila Pilih Bahagian Dahulu</option>');
+            }
+        });
+    </script>
+
 @endsection

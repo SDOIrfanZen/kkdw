@@ -30,7 +30,7 @@
                     <!-- Name Row -->
                     <div class="form-group col-md-4">
                         <label for="nama"><strong>Nama Penuh</strong></label>
-                        <input class="form-control" type="text" name="nama" value="{{ old('nama') }}" placeholder="Nama Penuh" required>
+                        <input class="form-control" type="text" name="nama" value="{{ old('nama') }}" placeholder="Nama Penuh"  oninput="this.value = this.value.toUpperCase()" required>
                         @error('nama')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -66,7 +66,7 @@
                     <!-- Jawatan Row -->
                     <div class="form-group col-md-4">
                         <label for="jawatan"><strong>Jawatan</strong></label>
-                        <input class="form-control" type="text" name="jawatan" value="{{ old('jawatan') }}" placeholder="Jawatan" required>
+                        <input class="form-control" type="text" name="jawatan" value="{{ old('jawatan') }}" placeholder="Jawatan"  oninput="this.value = this.value.toUpperCase()" required>
                         @error('jawatan')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror

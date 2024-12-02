@@ -188,7 +188,7 @@ class AuthController extends Controller
             [
                 'nama' => 'required|string|max:255',
                 'kad_pengenalan' => 'required|string|max:20|unique:pengguna',
-                'bahagian' => 'required|string|max:255',
+                'bahagian_id' => 'required|string|max:255',
                 'role' => 'required|exists:roles,name',
                 'jawatan' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:pengguna',
@@ -213,9 +213,9 @@ class AuthController extends Controller
                 'kad_pengenalan.string' => 'Kad Pengenalan must be a valid string.',
                 'kad_pengenalan.max' => 'Kad Pengenalan tidak boleh melebihi 20 aksara.',
                 'kad_pengenalan.unique' => 'Nombor Kad Pengenalan telah wujud dalam rekod sistem.',
-                'bahagian.required' => 'Bahagian perlu dilengkapkan.',
-                'bahagian.string' => 'Bahagian must be a valid string.',
-                'bahagian.max' => 'Bahagian cannot exceed 255 characters.',
+                'bahagian_id.required' => 'Bahagian perlu dilengkapkan.',
+                'bahagian_id.string' => 'Bahagian must be a valid string.',
+                'bahagian_id.max' => 'Bahagian cannot exceed 255 characters.',
                 'role.required' => 'Peranan diperlukan.',
                 'role.exists' => 'Peranan yang dipilih tidak sah.',
                 'jawatan.required' => 'Jawatan perlu dilengkapkan.',
@@ -241,13 +241,10 @@ class AuthController extends Controller
         // Encrypt kad_pengenalan before saving
         $encryptedKadPengenalan = Crypt::encryptString($validated['kad_pengenalan']);
 
-        // Retrieve the bahagian name based on the selected ID
-        $bahagianName = Agensi::where('id', $validated['bahagian'])->value('name');
-
         $user = Pengguna::create([
             'nama' => $validated['nama'],
             'kad_pengenalan' => $encryptedKadPengenalan,
-            'bahagian' => $bahagianName,
+            'bahagian_id' => $validated['bahagian_id'],
             'jawatan' => $validated['jawatan'],
             'email' => $validated['email'],
             'no_tel' => $validated['no_tel'],
@@ -255,13 +252,17 @@ class AuthController extends Controller
             'kata_laluan' => Hash::make($validated['kata_laluan']),
         ]);
 
-        // Assign the selected role to the user
-        $role = Role::findByName($validated['role']); // Find the role by name
-        if ($role) {
-            $user->syncRoles($role); // Sync the selected role with the user
-        } else {
-            return back()->withErrors(['role' => 'Role not found!']);
-        }
+         // Assign the selected role to the user
+    $role = Role::findByName($validated['role']); // Find the role by name
+    if ($role) {
+        $user->syncRoles($role); // Sync the selected role with the user
+
+        // Explicitly sync the permissions associated with the role to the user
+        $permissions = $role->permissions; // Get the permissions of the role
+        $user->syncPermissions($permissions); // Sync them to the user
+    } else {
+        return back()->withErrors(['role' => 'Role not found!']);
+    }
 
         Mail::to($user->email)->send(new UserRegistrationMail($user));
 
@@ -289,6 +290,33 @@ class AuthController extends Controller
         // Redirect with success message
         return redirect()->back()->with('success', 'Terima kasih kerana menghantar pendaftaran. Permohonan anda sedang diproses, dan sila semak email anda untuk maklumat lanjut.');
     }
+
+    public function getRolesByBahagian($bahagian_id)
+    {
+        // Define role IDs based on bahagian_id
+        // Modify this mapping based on your actual business logic
+        $rolesMapping = [
+            1 => [1,2],
+            2 => [6, 15],
+            3 => [13, 22],
+            4 => [8, 17],
+            5 => [9, 18],
+            6 => [7,16],
+            7 => [10, 19], 
+            9 => [12,21],
+            10 => [11,20],
+            12 => [5,14],
+        ];
+
+        // Get the role IDs for the selected bahagian_id
+        $roleIds = $rolesMapping[$bahagian_id] ?? [];
+
+        // Fetch the roles using Spatie, if any are defined
+        $roles = Role::whereIn('id', $roleIds)->get();
+
+        return response()->json(['roles' => $roles]);
+    }
+
 
     public function logout(Request $request)
     {

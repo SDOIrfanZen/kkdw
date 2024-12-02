@@ -60,6 +60,7 @@ route::get('pengurusan-pengguna', [AdministrationController::class, 'pengurusan_
 route::get('pengurusan-pengguna-list', [AdministrationController::class, 'pengurusan_pengguna_list'])->name('administration.pengurusan_pengguna')->middleware('can.any:Melihat Senarai Pengguna|Melihat Senarai Peranan');
 route::get('tambah-pengguna', [AdministrationController::class, 'tambah_pengguna_list'])->name('administration.tambah_pengguna');
 route::post('tambah-pengguna-process', [AdministrationController::class, 'tambah_pengguna_process'])->name('administration.tambah_pengguna_process');
+Route::get('get-roles-for-bahagian', [AdministrationController::class, 'getRolesForBahagian'])->name('administration.getRolesForBahagian');
 
 route::get('pengguna-approval/{id}', [AdministrationController::class, 'pengguna_approval_list'])->name('administration.pengguna_approval')->middleware('can.any:Meluluskan Permohonan Baru Pengguna');
 route::put('pengguna-approval-process/{id}', [AdministrationController::class, 'pengguna_approval_process'])->name('administration.pengguna_approval_process');
