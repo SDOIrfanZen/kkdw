@@ -76,6 +76,9 @@ Route::delete('delete-pengguna/{id}', [AdministrationController::class, 'delete_
 route::get('senarai-peranan', [AdministrationController::class, 'senarai_peranan'])->name('administration.senarai_peranan')->middleware('can.any:Melihat Senarai Peranan');
 route::get('kemaskini-peranan/{id}', [AdministrationController::class, 'kemaskini_peranan'])->name('administration.kemaskini_peranan')->middleware('can.any:Mengemaskini Peranan');
 Route::put('kemaskini-peranan/{id}', [AdministrationController::class, 'update_peranan'])->name('administration.update_peranan');
+Route::get('tambah-peranan-list', [AdministrationController::class, 'tambah_peranan_list'])->name('administration.tambah_peranan');
+Route::post('tambah-peranan-process', [AdministrationController::class, 'tambah_peranan'])->name('administration.store_peranan');
+Route::delete('peranan/{id}', [AdministrationController::class, 'padam_peranan'])->name('administration.delete_peranan');
 
 // pengurusan data
 route::get('pengurusan-data', [AdministrationController::class, 'pengurusan_data_main'])->name('administration.pengurusan_pengguna_data')->middleware('can.any:Muat Naik Data|Purata Nasional|Unjuran');
