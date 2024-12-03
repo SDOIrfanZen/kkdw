@@ -1,5 +1,7 @@
 @extends('layout.master')
 
+
+
 @section('content')
     <div class="container-fluid d-flex justify-content-center">
         <div class="card mt-4 mx-auto" style="width: 90%; border-radius: 8px;">
@@ -8,6 +10,11 @@
                 <i class="fas fa-users-cog mr-2"></i> Pengurusan Pengguna > Peranan
             </div>
             <div class="card-body">
+                @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                </div>
+            @endif
                 <div class="mb-3">
                     <h4><strong>SENARAI PERANAN</strong></h4>
                 </div>
@@ -64,6 +71,10 @@
         </div>
     </div>
 
+    <div id="addButtonContainer">
+        <a href="{{ route('administration.tambah_peranan') }}" id="addButton" class="btn" style="background: rgba(8, 12, 85, 1); color:#fff">+Tambah Peranan</a>
+    </div>
+
     <script>
         $(document).ready(function() {
             var table = $('#rolesTable').DataTable({
@@ -75,12 +86,23 @@
                 "responsive": true, // Enable responsive design
             });
 
+            // Append the Add button next to the search filter
+            $('.dataTables_filter').appendTo('.dataTables_wrapper').after($('#addButtonContainer'));
+
+
             // Move the search box to the top right corner
             $('.dataTables_filter').css({
                 'position': 'absolute',
                 'top': '13px', // Create 20px gap between search box and top of the table
                 'left': '1px', // Move it to the top-right
                 'margin-bottom': '10px', // Additional gap to avoid overlap with table
+            });
+
+            $('#addButtonContainer').css({
+            'position': 'absolute',
+            'top': '13px',
+            'right': '20px', // Adjust for spacing
+            'margin-bottom': '10px',
             });
 
             // Ensure the table's border is visible by adjusting its wrapper's margin or padding

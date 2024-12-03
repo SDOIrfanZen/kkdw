@@ -522,6 +522,52 @@ class AdministrationController extends Controller
         return redirect()->route('administration.kemaskini_peranan', $id)->with('success', 'Peranan berjaya dikemaskini.');
     }
 
+    public function tambah_peranan_list()
+    {
+        // Fetch necessary data for the form, such as permissions
+        $permissions = Permission::all();
+
+        // Return the view for the add role form
+        return view('administration.pengurusan_pengguna.tambah_peranan', compact('permissions'));
+    }
+
+    public function tambah_peranan(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'name' => 'required|string|max:255|unique:roles,name',
+            'permissions' => 'required|array',
+            'permissions.*' => 'exists:permissions,name',
+        ]);
+
+        try {
+            // Create a new role
+            $role = Role::create(['name' => $request->name]);
+
+            // Assign selected permissions to the role
+            $permissions = Permission::whereIn('name', $request->permissions)->get();
+            $role->syncPermissions($permissions);
+
+            // Redirect back with success message
+            return redirect()->route('administration.senarai_peranan')->with('success', 'Peranan berjaya ditambah.');
+        } catch (Exception $e) {
+            // Handle exceptions
+            return back()
+                ->withErrors(['error' => 'Ralat berlaku: ' . $e->getMessage()])
+                ->withInput();
+        }
+    }
+
+    public function padam_peranan($id)
+    {
+        $role = Role::findOrFail($id);
+
+        // Delete the role
+        $role->delete();
+
+        return redirect()->route('administration.senarai_peranan')->with('success', 'Peranan berjaya dipadamkan.');
+    }
+
     // pengurusan data
 
     public function pengurusan_data_main()
